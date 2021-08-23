@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Titan_BugTracker.Data;
+using Titan_BugTracker.Models;
 
 namespace Titan_BugTracker
 {
@@ -32,8 +33,11 @@ namespace Titan_BugTracker
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddIdentity<BTUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultUI()
+                .AddDefaultTokenProviders();
+
             services.AddControllersWithViews();
         }
 
