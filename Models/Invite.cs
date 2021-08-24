@@ -15,8 +15,12 @@ namespace Titan_BugTracker.Models
         [DisplayName("Invite Date")]
         public DateTimeOffset InviteDate { get; set; }
 
-        [Required]
-        public string CompanyToken { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayName("Join Date")]
+        public DateTimeOffset JoinDate { get; set; }
+
+        [DisplayName("Code")]
+        public Guid CompanyToken { get; set; }
 
         [EmailAddress]
         [Required]
