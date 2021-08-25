@@ -13,6 +13,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Titan_BugTracker.Data;
 using Titan_BugTracker.Models;
+using Titan_BugTracker.Services;
+using Titan_BugTracker.Services.Interfaces;
 
 namespace Titan_BugTracker
 {
@@ -37,6 +39,11 @@ namespace Titan_BugTracker
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
+
+            // Custom Services
+            services.AddScoped<IBTRolesService, BTRolesService>();
+
+            // End Custom Services
 
             services.AddControllersWithViews();
         }
