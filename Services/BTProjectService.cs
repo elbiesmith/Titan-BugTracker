@@ -266,6 +266,8 @@ namespace Titan_BugTracker.Services
         {
             try
             {
+                _context.Update(project);
+                await _context.SaveChangesAsync();
             }
             catch (Exception)
             {
