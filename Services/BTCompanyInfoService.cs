@@ -73,10 +73,13 @@ namespace Titan_BugTracker.Services
         public async Task<List<Ticket>> GetAllTicketsAsync(int companyId)
         {
             List<Ticket> result = new();
+            List<Project> projects = new();
 
             try
             {
-                result = await _context.Tickets.Where(t => t.Project.CompanyId == companyId).ToListAsync();
+                projects = await GetAllProjectsAsync(companyId);
+                result = projects.SelectMany(p => p.Tickets).ToList();
+
                 return result;
             }
             catch (Exception)
