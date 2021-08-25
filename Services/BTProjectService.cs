@@ -138,6 +138,13 @@ namespace Titan_BugTracker.Services
         {
             try
             {
+                Project project = await _context.Projects
+                                                .Include(p => p.Tickets)
+                                                .Include(p => p.Members)
+                                                .Include(p => p.ProjectPriority)
+                                                .FirstOrDefaultAsync(p => p.Id == projectId && p.CompanyId == companyId);
+
+                return project;
             }
             catch (Exception)
             {
