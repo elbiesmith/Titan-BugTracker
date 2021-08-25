@@ -33,26 +33,14 @@ namespace Titan_BugTracker.Services
             }
         }
 
-        public async Task<bool> AddProjectManagerAsync(string userId, int projectId)
+        public Task<bool> AddProjectManagerAsync(string userId, int projectId)
         {
-            try
-            {
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            throw new NotImplementedException();
         }
 
-        public async Task<bool> AddUserToProjectAsync(string userId, int projectId)
+        public Task<bool> AddUserToProjectAsync(string userId, int projectId)
         {
-            try
-            {
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            throw new NotImplementedException();
         }
 
         public async Task ArchiveProjectAsync(Project project)
@@ -69,15 +57,9 @@ namespace Titan_BugTracker.Services
             }
         }
 
-        public async Task<List<BTUser>> GetAllProjectMembersExceptPMAsync(int projectId)
+        public Task<List<BTUser>> GetAllProjectMembersExceptPMAsync(int projectId)
         {
-            try
-            {
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            throw new NotImplementedException();
         }
 
         public async Task<List<Project>> GetAllProjectsByCompany(int companyId)
@@ -112,26 +94,14 @@ namespace Titan_BugTracker.Services
             }
         }
 
-        public async Task<List<Project>> GetArchivedProjectsByCompany(int companyId)
+        public Task<List<Project>> GetArchivedProjectsByCompany(int companyId)
         {
-            try
-            {
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            throw new NotImplementedException();
         }
 
-        public async Task<List<BTUser>> GetDevelopersOnProjectAsync(int projectId)
+        public Task<List<BTUser>> GetDevelopersOnProjectAsync(int projectId)
         {
-            try
-            {
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            throw new NotImplementedException();
         }
 
         public async Task<Project> GetProjectByIdAsync(int projectId, int companyId)
@@ -152,114 +122,54 @@ namespace Titan_BugTracker.Services
             }
         }
 
-        public async Task<BTUser> GetProjectManagerAsync(int projectId)
+        public Task<BTUser> GetProjectManagerAsync(int projectId)
         {
-            try
-            {
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            throw new NotImplementedException();
         }
 
-        public async Task<List<BTUser>> GetProjectMembersByRoleAsync(int projectId, string role)
+        public Task<List<BTUser>> GetProjectMembersByRoleAsync(int projectId, string role)
         {
-            try
-            {
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            throw new NotImplementedException();
         }
 
-        public async Task<List<BTUser>> GetSubmittersOnProjectAsync(int projectId)
+        public Task<List<BTUser>> GetSubmittersOnProjectAsync(int projectId)
         {
-            try
-            {
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            throw new NotImplementedException();
         }
 
-        public async Task<List<Project>> GetUserProjectsAsync(string userId)
+        public Task<List<Project>> GetUserProjectsAsync(string userId)
         {
-            try
-            {
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            throw new NotImplementedException();
         }
 
-        public async Task<List<BTUser>> GetUsersNotOnProjectAsync(int projectId, int companyId)
+        public Task<List<BTUser>> GetUsersNotOnProjectAsync(int projectId, int companyId)
         {
-            try
-            {
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            throw new NotImplementedException();
         }
 
-        public async Task<bool> IsUserOnProject(string userId, int projectId)
+        public Task<bool> IsUserOnProject(string userId, int projectId)
         {
-            try
-            {
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            throw new NotImplementedException();
         }
 
-        public async Task<int> LookupProjectPriorityId(string priorityName)
+        public Task<int> LookupProjectPriorityId(string priorityName)
         {
-            try
-            {
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            throw new NotImplementedException();
         }
 
-        public async Task RemoveProjectManagerAsync(int projectId)
+        public Task RemoveProjectManagerAsync(int projectId)
         {
-            try
-            {
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            throw new NotImplementedException();
         }
 
-        public async Task RemoveUserFromProjectAsync(string userId, int projectId)
+        public Task RemoveUserFromProjectAsync(string userId, int projectId)
         {
-            try
-            {
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            throw new NotImplementedException();
         }
 
-        public async Task RemoveUsersFromProjectByRoleAsync(string role, int projectId)
+        public Task RemoveUsersFromProjectByRoleAsync(string role, int projectId)
         {
-            try
-            {
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            throw new NotImplementedException();
         }
 
         public async Task UpdateProjectAsync(Project project)

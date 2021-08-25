@@ -33,6 +33,43 @@ namespace Titan_BugTracker.Services
             }
         }
 
+        public async Task<List<Project>> GetArchivedProjectsAsync(int companyId)
+        {
+            List<Project> result = new();
+
+            try
+            {
+                result = await _context.Projects.Where(p => p.CompanyId == companyId && p.Archived == true)
+                                                .Include(p => p.Members)
+                                                .Include(p => p.Tickets)
+                                                    .ThenInclude(t => t.Comments)
+                                                .Include(p => p.Tickets)
+                                                    .ThenInclude(t => t.Attachments)
+                                                .Include(p => p.Tickets)
+                                                    .ThenInclude(t => t.History)
+                                                .Include(p => p.Tickets)
+                                                    .ThenInclude(t => t.Notifications)
+                                                .Include(p => p.Tickets)
+                                                    .ThenInclude(t => t.DeveloperUser)
+                                                .Include(p => p.Tickets)
+                                                    .ThenInclude(t => t.OwnerUser)
+                                                .Include(p => p.Tickets)
+                                                    .ThenInclude(t => t.TicketStatus)
+                                                .Include(p => p.Tickets)
+                                                    .ThenInclude(t => t.TicketPriority)
+                                                .Include(p => p.Tickets)
+                                                    .ThenInclude(t => t.TicketType)
+                                                .Include(p => p.ProjectPriority)
+                                                .ToListAsync();
+
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task<List<Project>> GetAllProjectsAsync(int companyId)
         {
             List<Project> result = new();
