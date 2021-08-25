@@ -24,7 +24,7 @@ namespace Titan_BugTracker.Services
         {
             try
             {
-                _context.Add(project);
+                await _context.AddAsync(project);
                 await _context.SaveChangesAsync();
             }
             catch (Exception)
@@ -46,8 +46,6 @@ namespace Titan_BugTracker.Services
 
         public async Task<bool> AddUserToProjectAsync(string userId, int projectId)
         {
-            Project project = new();
-            BTUser user = new();
             try
             {
             }
@@ -62,7 +60,8 @@ namespace Titan_BugTracker.Services
             try
             {
                 project.Archived = true;
-                await UpdateProjectAsync(project);
+                _context.Update(project);
+                await _context.SaveChangesAsync();
             }
             catch (Exception)
             {
