@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Titan_BugTracker.Data;
 using Titan_BugTracker.Models;
 using Titan_BugTracker.Services.Interfaces;
 
@@ -9,10 +11,21 @@ namespace Titan_BugTracker.Services
 {
     public class BTProjectService : IBTProjectService
     {
+        private readonly ApplicationDbContext _context;
+        private readonly IBTRolesService _roleService;
+
+        public BTProjectService(ApplicationDbContext context, IBTRolesService roleService)
+        {
+            _context = context;
+            _roleService = roleService;
+        }
+
         public async Task AddNewProjectAsync(Project project)
         {
             try
             {
+                _context.Add(project);
+                await _context.SaveChangesAsync();
             }
             catch (Exception)
             {
@@ -33,6 +46,8 @@ namespace Titan_BugTracker.Services
 
         public async Task<bool> AddUserToProjectAsync(string userId, int projectId)
         {
+            Project project = new();
+            BTUser user = new();
             try
             {
             }
@@ -46,6 +61,8 @@ namespace Titan_BugTracker.Services
         {
             try
             {
+                project.Archived = true;
+                await UpdateProjectAsync(project);
             }
             catch (Exception)
             {
@@ -66,8 +83,12 @@ namespace Titan_BugTracker.Services
 
         public async Task<List<Project>> GetAllProjectsByCompany(int companyId)
         {
+            List<Project> result = new();
             try
             {
+                result = await _context.Projects.Where(p => p.CompanyId == companyId)
+                                                .Include(p => p.ProjectPriority).ToListAsync();
+                return result;
             }
             catch (Exception)
             {
@@ -77,8 +98,14 @@ namespace Titan_BugTracker.Services
 
         public async Task<List<Project>> GetAllProjectsByPriority(int companyId, string priorityName)
         {
+            List<Project> projects = new();
+            List<Project> result = new();
             try
             {
+                projects = await GetAllProjectsByCompany(companyId);
+                result = projects.Where(p => p.ProjectPriority.Name == priorityName).ToList();
+
+                return result;
             }
             catch (Exception)
             {
