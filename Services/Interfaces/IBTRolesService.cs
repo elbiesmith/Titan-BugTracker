@@ -19,7 +19,7 @@ namespace Titan_BugTracker.Services.Interfaces
 
         public Task<List<BTUser>> GetUsersNotInRoleAsync(string roleName, int companyId);
 
-        public Task<IEnumerable<string>> GetuserRolesAsync(BTUser user);
+        public Task<IEnumerable<string>> GetUserRolesAsync(BTUser user);
 
         public Task<bool> IsUserInRoleAsync(BTUser user, string roleName);
 
