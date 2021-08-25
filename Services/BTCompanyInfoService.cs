@@ -39,7 +39,7 @@ namespace Titan_BugTracker.Services
 
             try
             {
-                result = await _context.Projects.Where(p => p.CompanyId == companyId)
+                result = await _context.Projects.Where(p => p.CompanyId == companyId && p.Archived == false)
                                                 .Include(p => p.Members)
                                                 .Include(p => p.Tickets)
                                                     .ThenInclude(t => t.Comments)

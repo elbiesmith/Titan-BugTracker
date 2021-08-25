@@ -16,5 +16,7 @@ namespace Titan_BugTracker.Services.Interfaces
         public Task<List<Project>> GetAllProjectsAsync(int companyId);
 
         public Task<List<Ticket>> GetAllTicketsAsync(int companyId);
+
+        public Task<List<Project>> GetArchivedProjectsAsync(int companyId);
     }
 }
