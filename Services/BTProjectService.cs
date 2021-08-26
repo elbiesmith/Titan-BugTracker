@@ -162,9 +162,26 @@ namespace Titan_BugTracker.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<BTUser>> GetProjectMembersByRoleAsync(int projectId, string role)
+        public async Task<List<BTUser>> GetProjectMembersByRoleAsync(int projectId, string role)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Project project = await _context.Projects.Include(p => p.Members).FirstOrDefaultAsync(p => p.Id == projectId);
+                List<BTUser> members = new();
+
+                foreach (BTUser user in project.Members)
+                {
+                    if (await _roleService.IsUserInRoleAsync(user, role))
+                    {
+                        members.Add(user);
+                    }
+                }
+                return members;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public Task<List<BTUser>> GetSubmittersOnProjectAsync(int projectId)
@@ -172,9 +189,40 @@ namespace Titan_BugTracker.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<Project>> GetUserProjectsAsync(string userId)
+        public async Task<List<Project>> GetUserProjectsAsync(string userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<Project> userProjects = (await _context.Users.Include(u => u.Projects)
+                                                                    .ThenInclude(p => p.Company)
+                                                                   .Include(u => u.Projects)
+                                                                    .ThenInclude(p => p.Members)
+                                                                   .Include(u => u.Projects)
+                                                                    .ThenInclude(p => p.Tickets)
+                                                                   .Include(u => u.Projects)
+                                                                    .ThenInclude(t => t.Tickets)
+                                                                     .ThenInclude(t => t.DeveloperUser)
+                                                                   .Include(u => u.Projects)
+                                                                    .ThenInclude(t => t.Tickets)
+                                                                     .ThenInclude(t => t.OwnerUser)
+                                                                   .Include(u => u.Projects)
+                                                                    .ThenInclude(t => t.Tickets)
+                                                                     .ThenInclude(t => t.TicketPriority)
+                                                                   .Include(u => u.Projects)
+                                                                    .ThenInclude(t => t.Tickets)
+                                                                     .ThenInclude(t => t.TicketStatus)
+                                                                   .Include(u => u.Projects)
+                                                                    .ThenInclude(t => t.Tickets)
+                                                                     .ThenInclude(t => t.TicketType)
+                                                                   .FirstOrDefaultAsync(u => u.Id == userId)).Projects.ToList();
+
+                return userProjects;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"*** Error *** - Getting user projects list. --> {ex.Message}");
+                throw;
+            }
         }
 
         public Task<List<BTUser>> GetUsersNotOnProjectAsync(int projectId, int companyId)
@@ -212,14 +260,43 @@ namespace Titan_BugTracker.Services
             throw new NotImplementedException();
         }
 
-        public Task RemoveUserFromProjectAsync(string userId, int projectId)
+        public async Task RemoveUserFromProjectAsync(string userId, int projectId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                BTUser user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+                Project project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
+
+                try
+                {
+                    if (await IsUserOnProject(userId, projectId))
+                    {
+                        project.Members.Remove(user);
+                        await UpdateProjectAsync(project);
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        public Task RemoveUsersFromProjectByRoleAsync(string role, int projectId)
+        public async Task RemoveUsersFromProjectByRoleAsync(string role, int projectId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<BTUser> users = await GetProjectMembersByRoleAsync(projectId, role);
+                Project project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         // Crud : Update
