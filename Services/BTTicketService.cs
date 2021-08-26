@@ -70,6 +70,8 @@ namespace Titan_BugTracker.Services
                                                 .Include(t => t.TicketStatus)
                                                 .Include(t => t.TicketPriority)
                                                 .Include(t => t.TicketType)
+                                                .Include(p => p.Project)
+                                                .Include(p => p.ProjectId)
                                                 .ToListAsync();
                 return tickets;
             }
@@ -157,9 +159,22 @@ namespace Titan_BugTracker.Services
             }
         }
 
-        public Task<List<Ticket>> GetProjectTicketsByPriorityAsync(string priorityName, int companyId, int projectId)
+        public async Task<List<Ticket>> GetProjectTicketsByPriorityAsync(string priorityName, int companyId, int projectId)
         {
-            throw new NotImplementedException();
+            List<Ticket> tickets = new();
+
+            try
+            {
+                //probably need a null check in this method
+                tickets = await GetAllTicketsByCompanyAsync(companyId);
+                int priorityId = (int)await LookupTicketPriorityIdAsync(priorityName);
+
+                return tickets.Where(p => p.Id == priorityId && p.ProjectId == projectId).ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public Task<List<Ticket>> GetProjectTicketsByRoleAsync(string role, string userId, int projectId, int companyId)
@@ -167,14 +182,40 @@ namespace Titan_BugTracker.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<Ticket>> GetProjectTicketsByStatusAsync(string statusName, int companyId, int projectId)
+        public async Task<List<Ticket>> GetProjectTicketsByStatusAsync(string statusName, int companyId, int projectId)
         {
-            throw new NotImplementedException();
+            List<Ticket> tickets = new();
+
+            try
+            {
+                //probably need a null check in this method
+                tickets = await GetAllTicketsByCompanyAsync(companyId);
+                int priorityId = (int)await LookupTicketPriorityIdAsync(statusName);
+
+                return tickets.Where(p => p.Id == priorityId && p.ProjectId == projectId).ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        public Task<List<Ticket>> GetProjectTicketsByTypeAsync(string typeName, int companyId, int projectId)
+        public async Task<List<Ticket>> GetProjectTicketsByTypeAsync(string typeName, int companyId, int projectId)
         {
-            throw new NotImplementedException();
+            List<Ticket> tickets = new();
+
+            try
+            {
+                //probably need a null check in this method
+                tickets = await GetAllTicketsByCompanyAsync(companyId);
+                int priorityId = (int)await LookupTicketPriorityIdAsync(typeName);
+
+                return tickets.Where(p => p.Id == priorityId && p.ProjectId == projectId).ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         //CRUD : Read
