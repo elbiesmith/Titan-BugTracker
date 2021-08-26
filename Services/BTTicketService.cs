@@ -91,7 +91,7 @@ namespace Titan_BugTracker.Services
                 tickets = await GetAllTicketsByCompanyAsync(companyId);
                 int priorityId = (await LookupTicketPriorityIdAsync(priorityName)).Value;
 
-                return tickets.Where(p => p.Id == priorityId).ToList();
+                return tickets.Where(p => p.TicketPriorityId == priorityId).ToList();
             }
             catch (Exception)
             {
@@ -109,7 +109,7 @@ namespace Titan_BugTracker.Services
                 tickets = await GetAllTicketsByCompanyAsync(companyId);
                 int statusId = (await LookupTicketPriorityIdAsync(statusName)).Value;
 
-                return tickets.Where(p => p.Id == statusId).ToList();
+                return tickets.Where(p => p.TicketStatusId == statusId).ToList();
             }
             catch (Exception)
             {
@@ -127,7 +127,7 @@ namespace Titan_BugTracker.Services
                 tickets = await GetAllTicketsByCompanyAsync(companyId);
                 int typeId = (await LookupTicketPriorityIdAsync(typeName)).Value;
 
-                return tickets.Where(p => p.Id == typeId).ToList();
+                return tickets.Where(p => p.TicketTypeId == typeId).ToList();
             }
             catch (Exception)
             {
@@ -180,7 +180,7 @@ namespace Titan_BugTracker.Services
                 //tickets = await GetAllTicketsByCompanyAsync(companyId);
                 //int priorityId = (int)await LookupTicketPriorityIdAsync(priorityName);
 
-                //return tickets.Where(p => p.Id == priorityId && p.ProjectId == projectId).ToList();
+                //return tickets.Where(p => p.ProjectId == projectId && p.ProjectId == projectId).ToList();
             }
             catch (Exception)
             {
