@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Titan_BugTracker.Data;
 using Titan_BugTracker.Models;
 using Titan_BugTracker.Services.Interfaces;
 
@@ -9,16 +11,39 @@ namespace Titan_BugTracker.Services
 {
     public class BTTicketService : IBTTicketService
     {
-        //CRUD : Create
-        public Task AddNewTicketAsync(Ticket ticket)
+        private readonly ApplicationDbContext _context;
+
+        public BTTicketService(ApplicationDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+
+        //CRUD : Create
+        public async Task AddNewTicketAsync(Ticket ticket)
+        {
+            try
+            {
+                await _context.AddAsync(ticket);
+                await UpdateTicketAsync(ticket);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         //CRUD : Delete
-        public Task ArchiveTicketAsync(Ticket ticket)
+        public async Task ArchiveTicketAsync(Ticket ticket)
         {
-            throw new NotImplementedException();
+            try
+            {
+                ticket.Archived = true;
+                await UpdateTicketAsync(ticket);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public Task AssignTicketAsync(int ticketId, string userId)
@@ -72,9 +97,28 @@ namespace Titan_BugTracker.Services
         }
 
         //CRUD : Read
-        public Task<Ticket> GetTicketByIdAsync(int ticketId)
+        public async Task<Ticket> GetTicketByIdAsync(int ticketId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Ticket ticket = await _context.Tickets
+                                                .Include(p => p.TicketPriority)
+                                                .Include(p => p.TicketStatus)
+                                                .Include(p => p.TicketType)
+                                                .Include(p => p.DeveloperUser)
+                                                .Include(p => p.OwnerUser)
+                                                .Include(p => p.Comments)
+                                                .Include(p => p.Attachments)
+                                                .Include(p => p.Notifications)
+                                                .Include(p => p.History)
+                                                .FirstOrDefaultAsync(p => p.Id == ticketId);
+
+                return ticket;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public Task<BTUser> GetTicketDeveloperAsync(int ticketId)
@@ -108,9 +152,17 @@ namespace Titan_BugTracker.Services
         }
 
         // CRUD: Update
-        public Task UpdateTicketAsync(Ticket ticket)
+        public async Task UpdateTicketAsync(Ticket ticket)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.Update(ticket);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }
