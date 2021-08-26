@@ -245,6 +245,7 @@ namespace Titan_BugTracker.Services
             {
                 Project project = await _context.Projects
                                                 .Include(p => p.Tickets)
+                                                 .ThenInclude(t => t.TicketPriority)
                                                 .Include(p => p.Members)
                                                 .Include(p => p.ProjectPriority)
                                                 .FirstOrDefaultAsync(p => p.Id == projectId && p.CompanyId == companyId);
