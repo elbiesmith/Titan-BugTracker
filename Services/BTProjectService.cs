@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Titan_BugTracker.Data;
 using Titan_BugTracker.Models;
+using Titan_BugTracker.Models.Enums;
 using Titan_BugTracker.Services.Interfaces;
 
 namespace Titan_BugTracker.Services
@@ -95,9 +96,13 @@ namespace Titan_BugTracker.Services
         {
             try
             {
-                List<BTUser> developers = await GetProjectMembersByRoleAsync(projectId, "");
-                List<BTUser> submitters = await GetProjectMembersByRoleAsync(projectId, "");
-                List<BTUser> admins = await GetProjectMembersByRoleAsync(projectId, "");
+                List<BTUser> developers = await GetProjectMembersByRoleAsync(projectId, Roles.Developer.ToString());
+                List<BTUser> submitters = await GetProjectMembersByRoleAsync(projectId, Roles.Submitter.ToString());
+                List<BTUser> admins = await GetProjectMembersByRoleAsync(projectId, Roles.Admin.ToString());
+
+                List<BTUser> members = developers.Concat(submitters).Concat(admins).ToList();
+
+                return members;
             }
             catch (Exception)
             {
