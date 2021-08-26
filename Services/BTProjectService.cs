@@ -290,8 +290,21 @@ namespace Titan_BugTracker.Services
         {
             try
             {
-                List<BTUser> users = await GetProjectMembersByRoleAsync(projectId, role);
+                List<BTUser> members = await GetProjectMembersByRoleAsync(projectId, role);
                 Project project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
+
+                foreach (BTUser user in members)
+                {
+                    try
+                    {
+                        project.Members.Remove(user);
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                }
+                await UpdateProjectAsync(project);
             }
             catch (Exception)
             {
