@@ -44,6 +44,7 @@ namespace Titan_BugTracker
             // Custom Services
             services.AddScoped<IBTRolesService, BTRolesService>();
             services.AddScoped<IBTCompanyInfoService, BTCompanyInfoService>();
+            services.AddScoped<IBTProjectService, BTProjectService>();
 
             // End Custom Services
 
