@@ -134,13 +134,13 @@ namespace Titan_BugTracker.Services
         public async Task<List<Project>> GetAllProjectsByPriority(int companyId, string priorityName)
         {
             List<Project> projects = new();
-            List<Project> result = new();
+
             try
             {
                 projects = await GetAllProjectsByCompany(companyId);
-                result = projects.Where(p => p.ProjectPriority.Name == priorityName).ToList();
+                int priorityId = await LookupProjectPriorityId(priorityName);
 
-                return result;
+                return projects.Where(p => p.Id == priorityId).ToList();
             }
             catch (Exception)
             {
@@ -300,9 +300,18 @@ namespace Titan_BugTracker.Services
             }
         }
 
-        public Task<int> LookupProjectPriorityId(string priorityName)
+        public async Task<int> LookupProjectPriorityId(string priorityName)
         {
-            throw new NotImplementedException();
+            try
+            {
+                int priorityId = (await _context.ProjectPriorities.FirstOrDefaultAsync(p => p.Name == priorityName)).Id;
+
+                return priorityId;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public Task RemoveProjectManagerAsync(int projectId)
