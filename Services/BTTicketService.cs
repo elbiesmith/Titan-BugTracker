@@ -190,7 +190,7 @@ namespace Titan_BugTracker.Services
             throw new NotImplementedException();
         }
 
-        public async Task<int> LookupTicketPriorityIdAsync(string priorityName)
+        public async Task<int?> LookupTicketPriorityIdAsync(string priorityName)
         {
             try
             {
@@ -204,7 +204,7 @@ namespace Titan_BugTracker.Services
             }
         }
 
-        public async Task<int> LookupTicketStatusIdAsync(string statusName)
+        public async Task<int?> LookupTicketStatusIdAsync(string statusName)
         {
             try
             {
@@ -218,9 +218,18 @@ namespace Titan_BugTracker.Services
             }
         }
 
-        public Task<int?> LookupTicketTypeIdAsync(string typeName)
+        public async Task<int?> LookupTicketTypeIdAsync(string typeName)
         {
-            throw new NotImplementedException();
+            try
+            {
+                int typeId = (await _context.TicketTypes.FirstOrDefaultAsync(p => p.Name == typeName)).Id;
+
+                return typeId;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         // CRUD: Update
