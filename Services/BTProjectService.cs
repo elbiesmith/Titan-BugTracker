@@ -91,9 +91,18 @@ namespace Titan_BugTracker.Services
             }
         }
 
-        public Task<List<BTUser>> GetAllProjectMembersExceptPMAsync(int projectId)
+        public async Task<List<BTUser>> GetAllProjectMembersExceptPMAsync(int projectId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<BTUser> developers = await GetProjectMembersByRoleAsync(projectId, "");
+                List<BTUser> submitters = await GetProjectMembersByRoleAsync(projectId, "");
+                List<BTUser> admins = await GetProjectMembersByRoleAsync(projectId, "");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<List<Project>> GetAllProjectsByCompany(int companyId)
