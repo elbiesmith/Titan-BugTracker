@@ -225,6 +225,7 @@ namespace Titan_BugTracker.Services
             }
         }
 
+        [Obsolete]
         public async Task<List<BTUser>> GetDevelopersOnProjectAsync(int projectId)
         {
             try
@@ -299,6 +300,7 @@ namespace Titan_BugTracker.Services
             }
         }
 
+        [Obsolete]
         public async Task<List<BTUser>> GetSubmittersOnProjectAsync(int projectId)
         {
             return await GetProjectMembersByRoleAsync(projectId, Roles.Submitter.ToString());
