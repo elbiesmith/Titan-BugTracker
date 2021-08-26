@@ -336,9 +336,31 @@ namespace Titan_BugTracker.Services
             }
         }
 
-        public Task RemoveProjectManagerAsync(int projectId)
+        public async Task RemoveProjectManagerAsync(int projectId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Project project = await _context.Projects.Include(p => p.Members).FirstOrDefaultAsync(p => p.Id == projectId);
+
+                try
+                {
+                    foreach (BTUser member in project.Members)
+                    {
+                        if (await _roleService.IsUserInRoleAsync(member, Roles.ProjectManager.ToString()))
+                        {
+                            await RemoveUserFromProjectAsync(member.Id, projectId);
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task RemoveUserFromProjectAsync(string userId, int projectId)
