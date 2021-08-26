@@ -12,10 +12,14 @@ namespace Titan_BugTracker.Services
     public class BTTicketService : IBTTicketService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IBTRolesService _rolesService;
+        private readonly IBTProjectService _projectService;
 
-        public BTTicketService(ApplicationDbContext context)
+        public BTTicketService(ApplicationDbContext context, IBTRolesService rolesService, IBTProjectService projectService)
         {
             _context = context;
+            _rolesService = rolesService;
+            _projectService = projectService;
         }
 
         //CRUD : Create
@@ -51,9 +55,28 @@ namespace Titan_BugTracker.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<Ticket>> GetAllTicketsByCompanyAsync(int companyId)
+        public async Task<List<Ticket>> GetAllTicketsByCompanyAsync(int companyId)
         {
-            throw new NotImplementedException();
+            List<Ticket> tickets = new();
+            try
+            {
+                tickets = await _context.Tickets.Where(p => p.Project.CompanyId == companyId && p.Archived == false)
+                                                .Include(t => t.Comments)
+                                                .Include(t => t.Attachments)
+                                                .Include(t => t.History)
+                                                .Include(t => t.Notifications)
+                                                .Include(t => t.DeveloperUser)
+                                                .Include(t => t.OwnerUser)
+                                                .Include(t => t.TicketStatus)
+                                                .Include(t => t.TicketPriority)
+                                                .Include(t => t.TicketType)
+                                                .ToListAsync();
+                return tickets;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public Task<List<Ticket>> GetAllTicketsByPriorityAsync(int companyId, string priorityName)
@@ -102,15 +125,15 @@ namespace Titan_BugTracker.Services
             try
             {
                 Ticket ticket = await _context.Tickets
-                                                .Include(p => p.TicketPriority)
-                                                .Include(p => p.TicketStatus)
-                                                .Include(p => p.TicketType)
-                                                .Include(p => p.DeveloperUser)
-                                                .Include(p => p.OwnerUser)
-                                                .Include(p => p.Comments)
-                                                .Include(p => p.Attachments)
-                                                .Include(p => p.Notifications)
-                                                .Include(p => p.History)
+                                                .Include(t => t.Comments)
+                                                .Include(t => t.Attachments)
+                                                .Include(t => t.History)
+                                                .Include(t => t.Notifications)
+                                                .Include(t => t.DeveloperUser)
+                                                .Include(t => t.OwnerUser)
+                                                .Include(t => t.TicketStatus)
+                                                .Include(t => t.TicketPriority)
+                                                .Include(t => t.TicketType)
                                                 .FirstOrDefaultAsync(p => p.Id == ticketId);
 
                 return ticket;
