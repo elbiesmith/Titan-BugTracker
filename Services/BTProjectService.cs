@@ -209,9 +209,25 @@ namespace Titan_BugTracker.Services
             }
         }
 
-        public Task<List<BTUser>> GetDevelopersOnProjectAsync(int projectId)
+        public async Task<List<BTUser>> GetDevelopersOnProjectAsync(int projectId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Project project = await _context.Projects.Include(p => p.Members).FirstOrDefaultAsync(p => p.Id == projectId);
+                List<BTUser> developers = new();
+                foreach (BTUser member in project.Members)
+                {
+                    if (await _roleService.IsUserInRoleAsync(member, Roles.Developer.ToString()))
+                    {
+                        developers.Add(member);
+                    }
+                }
+                return developers;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         // Crud : Read
