@@ -61,9 +61,15 @@ namespace Titan_BugTracker.Services
                             throw;
                         }
                     }
+                    else
+                    {
+                        return false;
+                    }
                 }
-
-                return false;
+                else
+                {
+                    return false;
+                }
             }
             catch (Exception)
             {
