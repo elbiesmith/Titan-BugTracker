@@ -43,7 +43,23 @@ namespace Titan_BugTracker.Services
 
                 if (currentPM != null)
                 {
-                    await RemoveProjectManagerAsync(projectId);
+                    try
+                    {
+                        await RemoveProjectManagerAsync(projectId);
+                    }
+                    catch (Exception)
+                    {
+                        return false;
+                    }
+                }
+                try
+                {
+                    await AddProjectManagerAsync(userId, projectId);
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
                 }
             }
             catch (Exception)
