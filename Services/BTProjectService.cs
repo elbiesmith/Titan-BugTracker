@@ -98,12 +98,32 @@ namespace Titan_BugTracker.Services
 
         public async Task<List<Project>> GetAllProjectsByCompany(int companyId)
         {
-            List<Project> result = new();
+            List<Project> projects = new();
             try
             {
-                result = await _context.Projects.Where(p => p.CompanyId == companyId)
-                                                .Include(p => p.ProjectPriority).ToListAsync();
-                return result;
+                projects = await _context.Projects.Where(p => p.CompanyId == companyId && p.Archived == false)
+                                                .Include(p => p.Members)
+                                                .Include(p => p.Tickets)
+                                                    .ThenInclude(t => t.Comments)
+                                                .Include(p => p.Tickets)
+                                                    .ThenInclude(t => t.Attachments)
+                                                .Include(p => p.Tickets)
+                                                    .ThenInclude(t => t.History)
+                                                .Include(p => p.Tickets)
+                                                    .ThenInclude(t => t.Notifications)
+                                                .Include(p => p.Tickets)
+                                                    .ThenInclude(t => t.DeveloperUser)
+                                                .Include(p => p.Tickets)
+                                                    .ThenInclude(t => t.OwnerUser)
+                                                .Include(p => p.Tickets)
+                                                    .ThenInclude(t => t.TicketStatus)
+                                                .Include(p => p.Tickets)
+                                                    .ThenInclude(t => t.TicketPriority)
+                                                .Include(p => p.Tickets)
+                                                    .ThenInclude(t => t.TicketType)
+                                                .Include(p => p.ProjectPriority)
+                                                .ToListAsync();
+                return projects;
             }
             catch (Exception)
             {
