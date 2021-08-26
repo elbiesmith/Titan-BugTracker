@@ -165,11 +165,22 @@ namespace Titan_BugTracker.Services
 
             try
             {
-                //probably need a null check in this method
-                tickets = await GetAllTicketsByCompanyAsync(companyId);
-                int priorityId = (int)await LookupTicketPriorityIdAsync(priorityName);
+                Project project = await _projectService.GetProjectByIdAsync(projectId, companyId);
 
-                return tickets.Where(p => p.Id == priorityId && p.ProjectId == projectId).ToList();
+                foreach (Ticket ticket in project.Tickets)
+                {
+                    if (ticket.TicketPriority.Name == priorityName)
+                    {
+                        tickets.Add(ticket);
+                    }
+                }
+
+                return tickets;
+                ////probably need a null check in this method
+                //tickets = await GetAllTicketsByCompanyAsync(companyId);
+                //int priorityId = (int)await LookupTicketPriorityIdAsync(priorityName);
+
+                //return tickets.Where(p => p.Id == priorityId && p.ProjectId == projectId).ToList();
             }
             catch (Exception)
             {
