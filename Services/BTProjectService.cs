@@ -26,7 +26,7 @@ namespace Titan_BugTracker.Services
             try
             {
                 await _context.AddAsync(project);
-                await _context.SaveChangesAsync();
+                await UpdateProjectAsync(project);
             }
             catch (Exception)
             {
@@ -43,7 +43,27 @@ namespace Titan_BugTracker.Services
         {
             try
             {
-                Project project = await _context.Projects.Include(p => p.Members).FirstOrDefaultAsync(p => p.Id == projectId);
+                Project project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
+                BTUser user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+                if (user != null)
+                {
+                    if (!await IsUserOnProject(userId, projectId))
+                    {
+                        try
+                        {
+                            project.Members.Add(user);
+                            await UpdateProjectAsync(project);
+                            return true;
+                        }
+                        catch (Exception)
+                        {
+                            throw;
+                        }
+                    }
+                }
+
+                return false;
             }
             catch (Exception)
             {
