@@ -89,7 +89,7 @@ namespace Titan_BugTracker.Services
             {
                 //probably need a null check in this method
                 tickets = await GetAllTicketsByCompanyAsync(companyId);
-                int priorityId = await LookupTicketPriorityIdAsync(priorityName);
+                int priorityId = (await LookupTicketPriorityIdAsync(priorityName)).Value;
 
                 return tickets.Where(p => p.Id == priorityId).ToList();
             }
@@ -107,7 +107,7 @@ namespace Titan_BugTracker.Services
             {
                 //probably need a null check in this method
                 tickets = await GetAllTicketsByCompanyAsync(companyId);
-                int statusId = await LookupTicketPriorityIdAsync(statusName);
+                int statusId = (await LookupTicketPriorityIdAsync(statusName)).Value;
 
                 return tickets.Where(p => p.Id == statusId).ToList();
             }
@@ -125,7 +125,7 @@ namespace Titan_BugTracker.Services
             {
                 //probably need a null check in this method
                 tickets = await GetAllTicketsByCompanyAsync(companyId);
-                int typeId = await LookupTicketPriorityIdAsync(typeName);
+                int typeId = (await LookupTicketPriorityIdAsync(typeName)).Value;
 
                 return tickets.Where(p => p.Id == typeId).ToList();
             }
@@ -270,7 +270,7 @@ namespace Titan_BugTracker.Services
         }
 
         //next three returned nullable ints
-        public async Task<int> LookupTicketPriorityIdAsync(string priorityName)
+        public async Task<int?> LookupTicketPriorityIdAsync(string priorityName)
         {
             try
             {
@@ -284,7 +284,7 @@ namespace Titan_BugTracker.Services
             }
         }
 
-        public async Task<int> LookupTicketStatusIdAsync(string statusName)
+        public async Task<int?> LookupTicketStatusIdAsync(string statusName)
         {
             try
             {
@@ -298,7 +298,7 @@ namespace Titan_BugTracker.Services
             }
         }
 
-        public async Task<int> LookupTicketTypeIdAsync(string typeName)
+        public async Task<int?> LookupTicketTypeIdAsync(string typeName)
         {
             try
             {
