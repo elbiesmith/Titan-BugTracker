@@ -35,9 +35,21 @@ namespace Titan_BugTracker.Services
             }
         }
 
-        public Task<bool> AddProjectManagerAsync(string userId, int projectId)
+        public async Task<bool> AddProjectManagerAsync(string userId, int projectId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                BTUser currentPM = await GetProjectManagerAsync(projectId);
+
+                if (currentPM != null)
+                {
+                    await RemoveProjectManagerAsync(projectId);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<bool> AddUserToProjectAsync(string userId, int projectId)
@@ -221,9 +233,25 @@ namespace Titan_BugTracker.Services
             }
         }
 
-        public Task<BTUser> GetProjectManagerAsync(int projectId)
+        public async Task<BTUser> GetProjectManagerAsync(int projectId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Project project = await _context.Projects.Include(p => p.Members).FirstOrDefaultAsync(p => p.Id == projectId);
+
+                foreach (BTUser member in project.Members)
+                {
+                    if (await _roleService.IsUserInRoleAsync(member, Roles.ProjectManager.ToString()))
+                    {
+                        return member;
+                    }
+                }
+                return null;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<List<BTUser>> GetProjectMembersByRoleAsync(int projectId, string role)
