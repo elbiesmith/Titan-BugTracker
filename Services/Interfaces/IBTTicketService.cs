@@ -17,6 +17,8 @@ namespace Titan_BugTracker.Services.Interfaces
 
         public Task ArchiveTicketAsync(Ticket ticket);
 
+        // end CRUD
+
         public Task AssignTicketAsync(int ticketId, string userId);
 
         public Task<List<Ticket>> GetArchivedTicketsAsync(int companyId);
