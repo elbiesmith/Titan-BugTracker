@@ -20,6 +20,7 @@ namespace Titan_BugTracker.Services
             _roleService = roleService;
         }
 
+        // Crud : Create
         public async Task AddNewProjectAsync(Project project)
         {
             try
@@ -38,11 +39,19 @@ namespace Titan_BugTracker.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> AddUserToProjectAsync(string userId, int projectId)
+        public async Task<bool> AddUserToProjectAsync(string userId, int projectId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Project project = await _context.Projects.Include(p => p.Members).FirstOrDefaultAsync(p => p.Id == projectId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
+        // Crud : Delete
         public async Task ArchiveProjectAsync(Project project)
         {
             try
@@ -104,6 +113,7 @@ namespace Titan_BugTracker.Services
             throw new NotImplementedException();
         }
 
+        // Crud : Read
         public async Task<Project> GetProjectByIdAsync(int projectId, int companyId)
         {
             try
@@ -147,9 +157,24 @@ namespace Titan_BugTracker.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> IsUserOnProject(string userId, int projectId)
+        public async Task<bool> IsUserOnProject(string userId, int projectId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Project project = await _context.Projects.Include(p => p.Members).FirstOrDefaultAsync(p => p.Id == projectId);
+                bool result = false;
+
+                if (project != null)
+                {
+                    result = project.Members.Any(m => m.Id == userId);
+                }
+
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public Task<int> LookupProjectPriorityId(string priorityName)
@@ -172,6 +197,7 @@ namespace Titan_BugTracker.Services
             throw new NotImplementedException();
         }
 
+        // Crud : Update
         public async Task UpdateProjectAsync(Project project)
         {
             try
