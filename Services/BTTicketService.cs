@@ -86,7 +86,7 @@ namespace Titan_BugTracker.Services
             try
             {
                 tickets = await GetAllTicketsByCompanyAsync(companyId);
-                int priorityId = await LookupTicketPriorityIdAsync(priorityName);
+                int priorityId = (int)await LookupTicketPriorityIdAsync(priorityName);
 
                 return tickets.Where(p => p.Id == priorityId).ToList();
             }
