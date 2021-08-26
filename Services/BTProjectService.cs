@@ -275,9 +275,17 @@ namespace Titan_BugTracker.Services
             }
         }
 
-        public Task<List<BTUser>> GetUsersNotOnProjectAsync(int projectId, int companyId)
+        public async Task<List<BTUser>> GetUsersNotOnProjectAsync(int projectId, int companyId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<BTUser> users = await _context.Users.Where(u => u.Projects.All(p => p.Id != projectId)).ToListAsync();
+                return users.Where(u => u.CompanyId == companyId).ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<bool> IsUserOnProject(string userId, int projectId)
