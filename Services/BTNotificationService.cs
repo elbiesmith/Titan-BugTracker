@@ -53,13 +53,18 @@ namespace Titan_BugTracker.Services
             List<Notification> notifications = new();
             try
             {
-                notifications = await _context.Notifications.Where(n => n.SenderId == userId).ToListAsync();
+                notifications = await _context.Notifications.Where(n => n.SenderId == userId)
+                                                            .Include(n => n.Recipient)
+                                                            .Include(n => n.Sender)
+                                                            .Include(n => n.Ticket)
+                                                             .ThenInclude(t => t.Project)
+                                                            .ToListAsync();
+                return notifications;
             }
             catch (Exception)
             {
                 throw;
             }
-            return notifications;
         }
 
         public Task<bool> SendEmailNotificationAsync(Notification notification, string emailSubject)
