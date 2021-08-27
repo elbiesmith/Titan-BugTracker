@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,14 +27,32 @@ namespace Titan_BugTracker.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<Notification>> GetReceivedNotificationsAsync(string userId)
+        public async Task<List<Notification>> GetReceivedNotificationsAsync(string userId)
         {
-            throw new NotImplementedException();
+            List<Notification> notifications = new();
+            try
+            {
+                notifications = await _context.Notifications.Where(n => n.RecipientId == userId).ToListAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return notifications;
         }
 
-        public Task<List<Notification>> GetSentNotificationsAsync(string userId)
+        public async Task<List<Notification>> GetSentNotificationsAsync(string userId)
         {
-            throw new NotImplementedException();
+            List<Notification> notifications = new();
+            try
+            {
+                notifications = await _context.Notifications.Where(n => n.SenderId == userId).ToListAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return notifications;
         }
 
         public Task<bool> SendEmailNotificationAsync(Notification notification, string emailSubject)
