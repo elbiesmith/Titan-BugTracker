@@ -104,11 +104,9 @@ namespace Titan_BugTracker.Services
 
             try
             {
-                //probably need a null check in this method
-                tickets = await GetAllTicketsByCompanyAsync(companyId);
                 int priorityId = (await LookupTicketPriorityIdAsync(priorityName)).Value;
-
-                return tickets.Where(p => p.TicketPriorityId == priorityId).ToList();
+                tickets = (await GetAllTicketsByCompanyAsync(companyId)).Where(p => p.TicketPriorityId == priorityId).ToList();
+                return tickets;
             }
             catch (Exception)
             {
@@ -122,11 +120,9 @@ namespace Titan_BugTracker.Services
 
             try
             {
-                //probably need a null check in this method
-                tickets = await GetAllTicketsByCompanyAsync(companyId);
-                int statusId = (await LookupTicketPriorityIdAsync(statusName)).Value;
-
-                return tickets.Where(p => p.TicketStatusId == statusId).ToList();
+                int statusId = (await LookupTicketStatusIdAsync(statusName)).Value;
+                tickets = (await GetAllTicketsByCompanyAsync(companyId)).Where(p => p.TicketStatusId == statusId).ToList();
+                return tickets;
             }
             catch (Exception)
             {
@@ -140,11 +136,9 @@ namespace Titan_BugTracker.Services
 
             try
             {
-                //probably need a null check in this method
-                tickets = await GetAllTicketsByCompanyAsync(companyId);
-                int typeId = (await LookupTicketPriorityIdAsync(typeName)).Value;
-
-                return tickets.Where(p => p.TicketTypeId == typeId).ToList();
+                int ticketType = (await LookupTicketPriorityIdAsync(typeName)).Value;
+                tickets = (await GetAllTicketsByCompanyAsync(companyId)).Where(p => p.TicketTypeId == ticketType).ToList();
+                return tickets;
             }
             catch (Exception)
             {
