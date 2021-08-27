@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,9 +28,19 @@ namespace Titan_BugTracker.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<TicketHistory>> GetProjectTicketsHistoriesAsync(int projectId, int companyId)
+        public async Task<List<TicketHistory>> GetProjectTicketsHistoriesAsync(int projectId, int companyId)
         {
-            throw new NotImplementedException();
+            List<TicketHistory> histories = new();
+            try
+            {
+                Project project = await _context.Projects.Include(t => t.Tickets).ThenInclude(t => t.History).FirstOrDefaultAsync(p => p.CompanyId == companyId);
+                histories = project.Tickets.SelectMany(h => h.History).ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return histories;
         }
     }
 }
