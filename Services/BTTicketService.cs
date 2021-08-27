@@ -60,19 +60,35 @@ namespace Titan_BugTracker.Services
             List<Ticket> tickets = new();
             try
             {
-                tickets = await _context.Tickets.Where(p => p.Project.CompanyId == companyId && p.Archived == false)
-                                                .Include(t => t.Comments)
-                                                .Include(t => t.Attachments)
-                                                .Include(t => t.History)
-                                                .Include(t => t.Notifications)
-                                                .Include(t => t.DeveloperUser)
-                                                .Include(t => t.OwnerUser)
-                                                .Include(t => t.TicketStatus)
-                                                .Include(t => t.TicketPriority)
-                                                .Include(t => t.TicketType)
-                                                .Include(p => p.Project)
-                                                .Include(p => p.ProjectId)
-                                                .ToListAsync();
+                //tickets = await _context.Tickets.Where(p => p.Project.CompanyId == companyId && p.Archived == false)
+                //                                .Include(t => t.Comments)
+                //                                .Include(t => t.Attachments)
+                //                                .Include(t => t.History)
+                //                                .Include(t => t.Notifications)
+                //                                .Include(t => t.DeveloperUser)
+                //                                .Include(t => t.OwnerUser)
+                //                                .Include(t => t.TicketStatus)
+                //                                .Include(t => t.TicketPriority)
+                //                                .Include(t => t.TicketType)
+                //                                .Include(p => p.Project)
+                //                                .Include(p => p.ProjectId)
+                //                                .ToListAsync();
+
+                tickets = await _context.Projects.Where(p => p.CompanyId == companyId)
+                                                 .SelectMany(t => t.Tickets)
+                                                  .Where(t => t.Archived == false)
+                                                  .Include(t => t.Comments)
+                                                  .Include(t => t.Attachments)
+                                                  .Include(t => t.History)
+                                                  .Include(t => t.Notifications)
+                                                  .Include(t => t.DeveloperUser)
+                                                  .Include(t => t.OwnerUser)
+                                                  .Include(t => t.TicketStatus)
+                                                  .Include(t => t.TicketPriority)
+                                                  .Include(t => t.TicketType)
+                                                  .Include(p => p.Project)
+                                                  .ToListAsync();
+
                 return tickets;
             }
             catch (Exception)
@@ -140,17 +156,33 @@ namespace Titan_BugTracker.Services
             List<Ticket> tickets = new();
             try
             {
-                tickets = await _context.Tickets.Where(p => p.Project.CompanyId == companyId && p.Archived == true)
-                                                .Include(t => t.Comments)
-                                                .Include(t => t.Attachments)
-                                                .Include(t => t.History)
-                                                .Include(t => t.Notifications)
-                                                .Include(t => t.DeveloperUser)
-                                                .Include(t => t.OwnerUser)
-                                                .Include(t => t.TicketStatus)
-                                                .Include(t => t.TicketPriority)
-                                                .Include(t => t.TicketType)
-                                                .ToListAsync();
+                //tickets = await _context.Tickets.Where(p => p.Project.CompanyId == companyId && p.Archived == true)
+                //                                .Include(t => t.Comments)
+                //                                .Include(t => t.Attachments)
+                //                                .Include(t => t.History)
+                //                                .Include(t => t.Notifications)
+                //                                .Include(t => t.DeveloperUser)
+                //                                .Include(t => t.OwnerUser)
+                //                                .Include(t => t.TicketStatus)
+                //                                .Include(t => t.TicketPriority)
+                //                                .Include(t => t.TicketType)
+                //                                .ToListAsync();
+
+                tickets = await _context.Projects.Where(p => p.CompanyId == companyId)
+                                                 .SelectMany(t => t.Tickets)
+                                                  .Where(t => t.Archived == true)
+                                                  .Include(t => t.Comments)
+                                                  .Include(t => t.Attachments)
+                                                  .Include(t => t.History)
+                                                  .Include(t => t.Notifications)
+                                                  .Include(t => t.DeveloperUser)
+                                                  .Include(t => t.OwnerUser)
+                                                  .Include(t => t.TicketStatus)
+                                                  .Include(t => t.TicketPriority)
+                                                  .Include(t => t.TicketType)
+                                                  .Include(p => p.Project)
+                                                  .ToListAsync();
+
                 return tickets;
             }
             catch (Exception)
@@ -234,17 +266,7 @@ namespace Titan_BugTracker.Services
         {
             try
             {
-                Ticket ticket = await _context.Tickets
-                                                .Include(t => t.Comments)
-                                                .Include(t => t.Attachments)
-                                                .Include(t => t.History)
-                                                .Include(t => t.Notifications)
-                                                .Include(t => t.DeveloperUser)
-                                                .Include(t => t.OwnerUser)
-                                                .Include(t => t.TicketStatus)
-                                                .Include(t => t.TicketPriority)
-                                                .Include(t => t.TicketType)
-                                                .FirstOrDefaultAsync(p => p.Id == ticketId);
+                Ticket ticket = await _context.Tickets.FirstOrDefaultAsync(p => p.Id == ticketId);
 
                 return ticket;
             }
@@ -269,7 +291,6 @@ namespace Titan_BugTracker.Services
             throw new NotImplementedException();
         }
 
-        //next three returned nullable ints
         public async Task<int?> LookupTicketPriorityIdAsync(string priorityName)
         {
             try
