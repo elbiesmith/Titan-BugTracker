@@ -27,9 +27,18 @@ namespace Titan_BugTracker.Services
             await _context.SaveChangesAsync();
         }
 
-        public Task<bool> AnyInviteAsync(Guid token, string email, int companyId)
+        public async Task<bool> AnyInviteAsync(Guid token, string email, int companyId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                bool result = await _context.Invites.Where(i => i.CompanyId == companyId)
+                                                    .AnyAsync(i => i.CompanyToken == token && i.InviteeEmail == email);
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public Task<Invite> GetInviteAsync(int inviteId, int companyId)
