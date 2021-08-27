@@ -16,31 +16,27 @@ namespace Titan_BugTracker.Services
         private readonly IEmailSender _emailSender;
         private readonly IBTProjectService _projectService;
 
-        public Task<bool> AcceptInviteAsync(Guid? token, string userId)
+        public Task<bool> AcceptInviteAsync(Guid? token, string userId, int companyId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> AnyInviteAsync(Guid token, string email)
+        public Task AddNewInviteAsync(Invite invite)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Invite> GetInviteAsync(int id)
+        public Task<bool> AnyInviteAsync(Guid token, string email, int companyId)
         {
-            Invite invite = new();
-            try
-            {
-                invite = await _context.Invites.FirstOrDefaultAsync(i => i.Id == id);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return invite;
+            throw new NotImplementedException();
         }
 
-        public Task<Invite> GetInviteAsync(Guid token, string email)
+        public Task<Invite> GetInviteAsync(int inviteId, int companyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Invite> GetInviteAsync(Guid token, string email, int companyId)
         {
             throw new NotImplementedException();
         }
