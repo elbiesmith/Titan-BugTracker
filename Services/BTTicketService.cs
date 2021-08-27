@@ -192,22 +192,9 @@ namespace Titan_BugTracker.Services
 
             try
             {
-                Project project = await _projectService.GetProjectByIdAsync(projectId, companyId);
-
-                foreach (Ticket ticket in project.Tickets)
-                {
-                    if (ticket.TicketPriority.Name == priorityName)
-                    {
-                        tickets.Add(ticket);
-                    }
-                }
+                tickets = (await GetAllTicketsByPriorityAsync(companyId, priorityName)).Where(p => p.ProjectId == projectId).ToList();
 
                 return tickets;
-                ////probably need a null check in this method
-                //tickets = await GetAllTicketsByCompanyAsync(companyId);
-                //int priorityId = (int)await LookupTicketPriorityIdAsync(priorityName);
-
-                //return tickets.Where(p => p.ProjectId == projectId && p.ProjectId == projectId).ToList();
             }
             catch (Exception)
             {
@@ -226,10 +213,8 @@ namespace Titan_BugTracker.Services
 
             try
             {
-                tickets = await GetAllTicketsByCompanyAsync(companyId);
-                int statusId = (int)await LookupTicketPriorityIdAsync(statusName);
-
-                return tickets.Where(p => p.Id == statusId && p.ProjectId == projectId).ToList();
+                tickets = (await GetAllTicketsByStatusAsync(companyId, statusName)).Where(p => p.ProjectId == projectId).ToList();
+                return tickets;
             }
             catch (Exception)
             {
@@ -243,10 +228,8 @@ namespace Titan_BugTracker.Services
 
             try
             {
-                tickets = await GetAllTicketsByCompanyAsync(companyId);
-                int typeId = (int)await LookupTicketPriorityIdAsync(typeName);
-
-                return tickets.Where(p => p.Id == typeId && p.ProjectId == projectId).ToList();
+                tickets = (await GetAllTicketsByTypeAsync(companyId, typeName)).Where(p => p.ProjectId == projectId).ToList();
+                return tickets;
             }
             catch (Exception)
             {
@@ -331,7 +314,7 @@ namespace Titan_BugTracker.Services
                 {
                     tickets = (await _projectService.GetAllProjectsByCompany(companyId)).SelectMany(p => p.Tickets).ToList();
                 }
-                else if (await _rolesService.IsUserInRoleAsync(btUser, Roles.Developer.ToString())
+                else if (await _rolesService.IsUserInRoleAsync(btUser, Roles.Developer.ToString()))
                 {
                     List<Ticket> devTickets = (await _projectService.GetAllProjectsByCompany(companyId))
                         .SelectMany(p => p.Tickets).Where(t => t.DeveloperUserId == userId).ToList();
