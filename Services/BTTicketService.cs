@@ -62,7 +62,7 @@ namespace Titan_BugTracker.Services
                     try
                     {
                         ticket.DeveloperUserId = userId;
-                        ticket.TicketStatusId = (await LookupTicketStatusIdAsync("Development")).Value;
+                        ticket.TicketStatusId = (await LookupTicketStatusIdAsync(BTTicketStatus.Development.ToString())).Value;
                         await UpdateTicketAsync(ticket);
                     }
                     catch (Exception)
