@@ -3,17 +3,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Titan_BugTracker.Models;
 
 namespace Titan_BugTracker.Services.Interfaces
 {
     public interface IBTInviteService
     {
-        public Task<byte[]> ConvertFileToByteArrayAsync(IFormFile file);
+        public Task<bool> AcceptInviteAsync(Guid? token, string userId);
 
-        public string ConvertByteArrayToFile(byte[] fileData, string extension);
+        public Task<bool> AnyInviteAsync(Guid token, string email);
 
-        public string GetFileIcon(string file);
+        public Task<Invite> GetInviteAsync(int id);
 
-        public string FormatFileSize(long bytes);
+        public Task<Invite> GetInviteAsync(Guid token, string email);
+
+        public Task<bool> ValidateInviteCodeAsync(Guid? token);
     }
 }
