@@ -31,7 +31,7 @@ namespace Titan_BugTracker.Services.Interfaces
 
         public Task<List<Ticket>> GetAllTicketsByTypeAsync(int companyId, string typeName);
 
-        public Task<BTUser> GetTicketDeveloperAsync(int ticketId);
+        public Task<BTUser> GetTicketDeveloperAsync(int ticketId, int companyId);
 
         public Task<List<Ticket>> GetTicketsByRoleAsync(string role, string userId, int companyId);
 

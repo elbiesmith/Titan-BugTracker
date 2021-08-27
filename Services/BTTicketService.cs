@@ -266,7 +266,8 @@ namespace Titan_BugTracker.Services
         {
             try
             {
-                Ticket ticket = await _context.Tickets.FirstOrDefaultAsync(p => p.Id == ticketId);
+                Ticket ticket = await _context.Tickets.Include(t => t.DeveloperUser)
+                    .FirstOrDefaultAsync(p => p.Id == ticketId);
 
                 return ticket;
             }
@@ -276,9 +277,18 @@ namespace Titan_BugTracker.Services
             }
         }
 
-        public Task<BTUser> GetTicketDeveloperAsync(int ticketId)
+        public async Task<BTUser> GetTicketDeveloperAsync(int ticketId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Ticket ticket = await GetTicketByIdAsync(ticketId);
+
+                return ticket.DeveloperUser;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public Task<List<Ticket>> GetTicketsByRoleAsync(string role, string userId, int companyId)
