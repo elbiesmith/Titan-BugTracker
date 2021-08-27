@@ -354,6 +354,10 @@ namespace Titan_BugTracker.Services
                     tickets = (await _projectService.GetAllProjectsByCompany(companyId))
                         .SelectMany(t => t.Tickets).Where(t => t.OwnerUserId == userId).ToList();
                 }
+                else if (await _rolesService.IsUserInRoleAsync(btUser, Roles.ProjectManager.ToString()))
+                {
+                    tickets = (await _projectService.GetUserProjectsAsync(userId)).SelectMany(t => t.Tickets).ToList();
+                }
 
                 return tickets;
             }
