@@ -8,10 +8,16 @@ namespace Titan_BugTracker.Services.Interfaces
 {
     public interface IBTNotificationService
     {
-        Task AddHistoryAsync(Ticket oldTicket, Ticket newTicket, string userId);
+        public Task AddNotificationAsync(Notification notification);
 
-        Task<List<TicketHistory>> GetProjectTicketsHistoriesAsync(int projectId, int companyId);
+        public Task<List<Notification>> GetReceivedNotificationsAsync(string userId);
 
-        Task<List<TicketHistory>> GetCompanyTicketsHistoriesAsync(int companyId);
+        public Task<List<Notification>> GetSentNotificationsAsync(string userId);
+
+        public Task SendEmailNotificationsByRoleAsync(Notification notification, int companyId, string role);
+
+        public Task SendMembersEmailNotificationsAsync(Notification notification, List<BTUser> members);
+
+        public Task<bool> SendEmailNotificationAsync(Notification notification, string emailSubject);
     }
 }
