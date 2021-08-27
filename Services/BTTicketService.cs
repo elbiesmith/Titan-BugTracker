@@ -315,6 +315,10 @@ namespace Titan_BugTracker.Services
                 {
                     tickets = (await GetAllTicketsByCompanyAsync(companyId)).Where(t => t.OwnerUserId == userId).ToList();
                 }
+                else if (role == Roles.ProjectManager.ToString())
+                {
+                    tickets = await GetTicketsByUserIdAsync(userId, companyId);
+                }
 
                 return tickets;
             }
