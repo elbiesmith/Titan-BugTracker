@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,9 +26,18 @@ namespace Titan_BugTracker.Services
             throw new NotImplementedException();
         }
 
-        public Task<Invite> GetInviteAsync(int id)
+        public async Task<Invite> GetInviteAsync(int id)
         {
-            throw new NotImplementedException();
+            Invite invite = new();
+            try
+            {
+                invite = await _context.Invites.FirstOrDefaultAsync(i => i.Id == id);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return invite;
         }
 
         public Task<Invite> GetInviteAsync(Guid token, string email)
