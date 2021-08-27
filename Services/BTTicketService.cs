@@ -278,11 +278,18 @@ namespace Titan_BugTracker.Services
 
         public async Task<BTUser> GetTicketDeveloperAsync(int ticketId, int companyId)
         {
+            BTUser developer = new();
+
             try
             {
-                Ticket ticket = await _context
+                Ticket ticket = (await GetAllTicketsByCompanyAsync(companyId)).FirstOrDefault(t => t.Id == ticketId);
 
-                return ticket.DeveloperUser;
+                if (ticket.DeveloperUserId != null)
+                {
+                    developer = ticket.DeveloperUser;
+                }
+
+                return developer;
             }
             catch (Exception)
             {
