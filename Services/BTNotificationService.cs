@@ -22,9 +22,10 @@ namespace Titan_BugTracker.Services
             _rolesService = rolesService;
         }
 
-        public Task AddNotificationAsync(Notification notification)
+        public async Task AddNotificationAsync(Notification notification)
         {
-            throw new NotImplementedException();
+            await _context.AddAsync(notification);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<Notification>> GetReceivedNotificationsAsync(string userId)
