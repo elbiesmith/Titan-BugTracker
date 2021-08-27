@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Titan_BugTracker.Data;
 using Titan_BugTracker.Models;
+using Titan_BugTracker.Models.Enums;
 using Titan_BugTracker.Services.Interfaces;
 
 namespace Titan_BugTracker.Services
@@ -302,7 +303,20 @@ namespace Titan_BugTracker.Services
             List<Ticket> tickets = new();
             try
             {
-                if ()
+                if (role == Roles.Admin.ToString())
+                {
+                    tickets = await GetAllTicketsByCompanyAsync(companyId);
+                }
+                else if (role == Roles.Developer.ToString())
+                {
+                    tickets = (await GetAllTicketsByCompanyAsync(companyId)).Where(t => t.DeveloperUserId == userId).ToList();
+                }
+                else if (role == Roles.Submitter.ToString())
+                {
+                    tickets = (await GetAllTicketsByCompanyAsync(companyId)).Where(t => t.OwnerUserId == userId).ToList();
+                }
+
+                return tickets;
             }
             catch (Exception)
             {
