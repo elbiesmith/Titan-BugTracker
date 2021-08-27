@@ -266,8 +266,7 @@ namespace Titan_BugTracker.Services
         {
             try
             {
-                Ticket ticket = await _context.Tickets.Include(t => t.DeveloperUser)
-                    .FirstOrDefaultAsync(p => p.Id == ticketId);
+                Ticket ticket = await _context.Tickets.FirstOrDefaultAsync(p => p.Id == ticketId);
 
                 return ticket;
             }
@@ -277,11 +276,11 @@ namespace Titan_BugTracker.Services
             }
         }
 
-        public async Task<BTUser> GetTicketDeveloperAsync(int ticketId)
+        public async Task<BTUser> GetTicketDeveloperAsync(int ticketId, int companyId)
         {
             try
             {
-                Ticket ticket = await GetTicketByIdAsync(ticketId);
+                Ticket ticket = await _context
 
                 return ticket.DeveloperUser;
             }
