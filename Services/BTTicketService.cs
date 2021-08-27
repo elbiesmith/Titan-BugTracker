@@ -297,9 +297,17 @@ namespace Titan_BugTracker.Services
             }
         }
 
-        public Task<List<Ticket>> GetTicketsByRoleAsync(string role, string userId, int companyId)
+        public async Task<List<Ticket>> GetTicketsByRoleAsync(string role, string userId, int companyId)
         {
-            throw new NotImplementedException();
+            List<Ticket> tickets = new();
+            try
+            {
+                if ()
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public Task<List<Ticket>> GetTicketsByUserIdAsync(string userId, int companyId)
@@ -325,9 +333,9 @@ namespace Titan_BugTracker.Services
         {
             try
             {
-                int statusId = (await _context.TicketStatuses.FirstOrDefaultAsync(p => p.Name == statusName)).Id;
+                TicketStatus statusId = await _context.TicketStatuses.FirstOrDefaultAsync(p => p.Name == statusName);
 
-                return statusId;
+                return statusId.Id;
             }
             catch (Exception)
             {
@@ -339,9 +347,9 @@ namespace Titan_BugTracker.Services
         {
             try
             {
-                int typeId = (await _context.TicketTypes.FirstOrDefaultAsync(p => p.Name == typeName)).Id;
+                TicketType typeId = await _context.TicketTypes.FirstOrDefaultAsync(p => p.Name == typeName);
 
-                return typeId;
+                return typeId.Id;
             }
             catch (Exception)
             {
