@@ -328,9 +328,39 @@ namespace Titan_BugTracker.Services
             }
         }
 
-        public Task<List<Ticket>> GetTicketsByUserIdAsync(string userId, int companyId)
+        public async Task<List<Ticket>> GetTicketsByUserIdAsync(string userId, int companyId)
         {
-            throw new NotImplementedException();
+            List<Ticket> tickets = new();
+            try
+            {
+                BTUser btUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+                if (await _rolesService.IsUserInRoleAsync(btUser, Roles.Admin.ToString()))
+                {
+                    tickets = (await _projectService.GetAllProjectsByCompany(companyId)).SelectMany(p => p.Tickets).ToList();
+                }
+                else if (await _rolesService.IsUserInRoleAsync(btUser, Roles.Developer.ToString())
+                {
+                    List<Ticket> devTickets = (await _projectService.GetAllProjectsByCompany(companyId))
+                        .SelectMany(p => p.Tickets).Where(t => t.DeveloperUserId == userId).ToList();
+
+                    List<Ticket> subTicket = (await _projectService.GetAllProjectsByCompany(companyId))
+                        .SelectMany(p => p.Tickets).Where(t => t.OwnerUserId == userId).ToList();
+
+                    tickets = devTickets.Concat(subTicket).ToList();
+                }
+                else if (await _rolesService.IsUserInRoleAsync(btUser, Roles.Submitter.ToString()))
+                {
+                    tickets = (await _projectService.GetAllProjectsByCompany(companyId))
+                        .SelectMany(t => t.Tickets).Where(t => t.OwnerUserId == userId).ToList();
+                }
+
+                return tickets;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<int?> LookupTicketPriorityIdAsync(string priorityName)
