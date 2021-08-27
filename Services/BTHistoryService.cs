@@ -20,7 +20,13 @@ namespace Titan_BugTracker.Services
 
         public Task AddHistoryAsync(Ticket oldTicket, Ticket newTicket, string userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public Task<List<TicketHistory>> GetCompanyTicketsHistoriesAsync(int companyId)
