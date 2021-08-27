@@ -34,12 +34,13 @@ namespace Titan_BugTracker.Services
             try
             {
                 notifications = await _context.Notifications.Where(n => n.RecipientId == userId).ToListAsync();
+
+                return notifications;
             }
             catch (Exception)
             {
                 throw;
             }
-            return notifications;
         }
 
         public async Task<List<Notification>> GetSentNotificationsAsync(string userId)
