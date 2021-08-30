@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using Titan_BugTracker.Data;
 using Titan_BugTracker.Models;
 using Titan_BugTracker.Services;
+using Titan_BugTracker.Services.Factories;
 using Titan_BugTracker.Services.Interfaces;
 
 namespace Titan_BugTracker
@@ -39,6 +40,7 @@ namespace Titan_BugTracker
 
             services.AddIdentity<BTUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddClaimsPrincipalFactory<BTUserClaimsPrincipalFactory>()
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
 
