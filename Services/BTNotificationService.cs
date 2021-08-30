@@ -68,9 +68,30 @@ namespace Titan_BugTracker.Services
             }
         }
 
-        public Task<bool> SendEmailNotificationAsync(Notification notification, string emailSubject)
+        public async Task<bool> SendEmailNotificationAsync(Notification notification, string emailSubject)
         {
-            throw new NotImplementedException();
+            try
+            {
+                BTUser btUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == notification.RecipientId);
+
+                string btUserEmail = btUser.Email;
+                string message = notification.Message;
+
+                //send Email
+                try
+                {
+                    await _emailSender.SendEmailAsync(btUserEmail, emailSubject, message);
+                    return true;
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public Task SendEmailNotificationsByRoleAsync(Notification notification, int companyId, string role)
