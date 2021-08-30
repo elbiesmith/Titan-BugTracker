@@ -9,7 +9,7 @@ namespace Titan_BugTracker.Models.Enums
     {
         Low,
         Medium,
-        Hight,
+        High,
         Urgent
     }
 }
