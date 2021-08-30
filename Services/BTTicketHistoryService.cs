@@ -9,11 +9,11 @@ using Titan_BugTracker.Services.Interfaces;
 
 namespace Titan_BugTracker.Services
 {
-    public class BTHistoryService : IBTTicketHistoryService
+    public class BTTicketHistoryService : IBTTicketHistoryService
     {
         private readonly ApplicationDbContext _context;
 
-        public BTHistoryService(ApplicationDbContext context)
+        public BTTicketHistoryService(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -23,9 +23,22 @@ namespace Titan_BugTracker.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<TicketHistory>> GetCompanyTicketsHistoriesAsync(int companyId)
+        public async Task<List<TicketHistory>> GetCompanyTicketsHistoriesAsync(int companyId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<Project> projects = (await _context.Companies
+                                                        .Include(c => c.Projects)
+                                                          .ThenInclude(p => p.Tickets)
+                                                            .ThenInclude(t => t.History)
+                                                              .ThenInclude(h => h.User)
+                                                        .FirstOrDefaultAsync(c => c.Id == companyId))
+                                                        .Projects.ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<List<TicketHistory>> GetProjectTicketsHistoriesAsync(int projectId, int companyId)
