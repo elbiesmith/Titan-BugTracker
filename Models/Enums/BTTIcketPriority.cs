@@ -7,5 +7,9 @@ namespace Titan_BugTracker.Models.Enums
 {
     public enum BTTIcketPriority
     {
+        Low,
+        Medium,
+        High,
+        Urgent
     }
 }
