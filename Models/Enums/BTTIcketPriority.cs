@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Titan_BugTracker.Models.Enums
 {
-    public enum BTTIcketPriority
+    public enum BTTicketPriority
     {
         Low,
         Medium,
