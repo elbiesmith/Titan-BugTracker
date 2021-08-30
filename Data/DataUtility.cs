@@ -65,16 +65,16 @@ namespace Titan_BugTracker.Data
             await dbContextSvc.Database.MigrateAsync();
 
             //Custom  Bug Tracker Seed Methods
-            await SeedRolesAsync();
-            await SeedDefaultCompaniesAsync();
-            await SeedDefaultUsersAsync();
-            await SeedDemoUsersAsync();
-            await SeedDefaultTicketTypeAsync();
-            await SeedDefaultTicketStatusAsync();
-            await SeedDefaultTicketPriorityAsync();
-            await SeedDefaultProjectPriorityAsync();
-            await SeedDefautProjectsAsync();
-            await SeedDefautTicketsAsync();
+            await SeedRolesAsync(roleManagerSvc);
+            await SeedDefaultCompaniesAsync(dbContextSvc);
+            await SeedDefaultUsersAsync(userManagerSvc);
+            await SeedDemoUsersAsync(userManagerSvc);
+            await SeedDefaultTicketTypeAsync(dbContextSvc);
+            await SeedDefaultTicketStatusAsync(dbContextSvc);
+            await SeedDefaultTicketPriorityAsync(dbContextSvc);
+            await SeedDefaultProjectPriorityAsync(dbContextSvc);
+            await SeedDefautProjectsAsync(dbContextSvc);
+            await SeedDefautTicketsAsync(dbContextSvc);
         }
 
         public static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
