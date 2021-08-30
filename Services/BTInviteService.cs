@@ -14,8 +14,11 @@ namespace Titan_BugTracker.Services
     public class BTInviteService : IBTInviteService
     {
         private readonly ApplicationDbContext _context;
-        private readonly IEmailSender _emailSender;
-        private readonly IBTProjectService _projectService;
+
+        public BTInviteService(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
         public Task<bool> AcceptInviteAsync(Guid? token, string userId, int companyId)
         {
