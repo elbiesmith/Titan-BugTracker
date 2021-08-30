@@ -20,9 +20,35 @@ namespace Titan_BugTracker.Services
             _context = context;
         }
 
-        public Task<bool> AcceptInviteAsync(Guid? token, string userId, int companyId)
+        public async Task<bool> AcceptInviteAsync(Guid? token, string userId, int companyId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Invite invite = await _context.Invites.FirstOrDefaultAsync(i => i.CompanyToken == token);
+
+                if (invite != null)
+                {
+                    try
+                    {
+                        invite.IsValid = false;
+                        invite.InviteeId = userId;
+                        await _context.SaveChangesAsync();
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task AddNewInviteAsync(Invite invite)
