@@ -9,7 +9,7 @@ using Titan_BugTracker.Services.Interfaces;
 
 namespace Titan_BugTracker.Services
 {
-    public class BTHistoryService : IBTHistoryService
+    public class BTHistoryService : IBTTicketHistoryService
     {
         private readonly ApplicationDbContext _context;
 

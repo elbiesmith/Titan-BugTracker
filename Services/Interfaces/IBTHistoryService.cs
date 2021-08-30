@@ -6,7 +6,7 @@ using Titan_BugTracker.Models;
 
 namespace Titan_BugTracker.Services.Interfaces
 {
-    public interface IBTHistoryService
+    public interface IBTTicketHistoryService
     {
         Task AddHistoryAsync(Ticket oldTicket, Ticket newTicket, string userId);
 
