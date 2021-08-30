@@ -107,9 +107,39 @@ namespace Titan_BugTracker.Services
             }
         }
 
-        public Task<bool> ValidateInviteCodeAsync(Guid? token)
+        public async Task<bool> ValidateInviteCodeAsync(Guid? token)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (token == null)
+                {
+                    return false;
+                }
+
+                bool result = false;
+                Invite invite = await _context.Invites.FirstOrDefaultAsync(i => i.CompanyToken == token);
+
+                if (invite != null)
+                {
+                    // Determine Invite Date
+                    DateTime inviteDate = invite.InviteDate.DateTime;
+
+                    // Custom Validation of invite based on the date it was issued.
+                    // in this case, invites are valid for 7 days.
+                    bool validDate = (DateTime.Now - inviteDate).TotalDays <= 7;
+
+                    if (validDate)
+                    {
+                        result = invite.IsValid;
+                    }
+                }
+
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }
