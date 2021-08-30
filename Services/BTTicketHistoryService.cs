@@ -34,6 +34,11 @@ namespace Titan_BugTracker.Services
                                                               .ThenInclude(h => h.User)
                                                         .FirstOrDefaultAsync(c => c.Id == companyId))
                                                         .Projects.ToList();
+
+                List<Ticket> tickets = projects.SelectMany(p => p.Tickets).ToList();
+                List<TicketHistory> ticketHistories = tickets.SelectMany(t => t.History).ToList();
+
+                return ticketHistories;
             }
             catch (Exception)
             {
@@ -43,17 +48,22 @@ namespace Titan_BugTracker.Services
 
         public async Task<List<TicketHistory>> GetProjectTicketsHistoriesAsync(int projectId, int companyId)
         {
-            List<TicketHistory> histories = new();
             try
             {
-                Project project = await _context.Projects.Include(t => t.Tickets).ThenInclude(t => t.History).FirstOrDefaultAsync(p => p.CompanyId == companyId);
-                histories = project.Tickets.SelectMany(h => h.History).ToList();
+                Project project = await _context.Projects
+                                                .Include(p => p.Tickets)
+                                                    .ThenInclude(t => t.History)
+                                                        .ThenInclude(h => h.User)
+                                                .FirstOrDefaultAsync(p => p.Id == projectId && p.CompanyId == companyId);
+
+                List<TicketHistory> ticketHistory = project.Tickets.SelectMany(t => t.History).ToList();
+
+                return ticketHistory;
             }
             catch (Exception)
             {
                 throw;
             }
-            return histories;
         }
     }
 }
