@@ -7,16 +7,24 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Titan_BugTracker.Data;
 using Titan_BugTracker.Models;
+using Titan_BugTracker.Services.Interfaces;
 
 namespace Titan_BugTracker.Controllers
 {
     public class ProjectsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IBTCompanyInfoService _companyInfoService;
+        private readonly IBTProjectService _projectService;
+        private readonly IBTRolesService _rolesService;
 
-        public ProjectsController(ApplicationDbContext context)
+        public ProjectsController(ApplicationDbContext context, IBTCompanyInfoService companyInfoService,
+                                                                IBTProjectService projectService, IBTRolesService rolesService)
         {
             _context = context;
+            _companyInfoService = companyInfoService;
+            _projectService = projectService;
+            _rolesService = rolesService;
         }
 
         // GET: Projects
