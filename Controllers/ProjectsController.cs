@@ -34,6 +34,19 @@ namespace Titan_BugTracker.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        [HttpGet]
+        public async Task<IActionResult> AssignMembers()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignMembers()
+        {
+            return View();
+        }
+
         // GET: Projects/Details/5
         public async Task<IActionResult> Details(int? id)
         {
