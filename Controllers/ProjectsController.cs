@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Titan_BugTracker.Data;
 using Titan_BugTracker.Models;
+using Titan_BugTracker.Models.ViewModels;
 using Titan_BugTracker.Services.Interfaces;
 
 namespace Titan_BugTracker.Controllers
@@ -42,7 +43,7 @@ namespace Titan_BugTracker.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AssignMembers()
+        public async Task<IActionResult> AssignMembers(ProjectMembersViewModel model)
         {
             return View();
         }
