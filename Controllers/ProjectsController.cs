@@ -63,6 +63,24 @@ namespace Titan_BugTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignMembers(ProjectMembersViewModel model)
         {
+            if (ModelState.IsValid)
+            {
+                if (model.SelectedUsers != null)
+                {
+                    List<string> memberIds = (await _projectService.GetAllProjectMembersExceptPMAsync(model.Project.Id)).Select(u => u.Id).ToList();
+
+                    foreach (string item in memberIds)
+                    {
+                        await _projectService.RemoveUserFromProjectAsync(item, model.Project.Id);
+                    }
+
+                    foreach (string item in model.SelectedUsers)
+                    {
+                        await _projectService.AddUserToProjectAsync(item, model.Project.Id);
+                    }
+                }
+            }
+
             return View();
         }
 
