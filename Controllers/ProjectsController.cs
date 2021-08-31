@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Titan_BugTracker.Data;
+using Titan_BugTracker.Extensions;
 using Titan_BugTracker.Models;
+using Titan_BugTracker.Models.Enums;
 using Titan_BugTracker.Models.ViewModels;
 using Titan_BugTracker.Services.Interfaces;
 
@@ -36,9 +38,25 @@ namespace Titan_BugTracker.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AssignMembers()
+        public async Task<IActionResult> AssignMembers(int id)
         {
-            return View();
+            ProjectMembersViewModel model = new();
+            int companyId = User.Identity.GetCompanyId().Value;
+
+            // All company projects
+            List<Project> projects = await _companyInfoService.GetAllProjectsAsync(companyId);
+            Project project = projects.FirstOrDefault(p => p.Id == id);
+
+            model.Project = project;
+            List<BTUser> developers = await _rolesService.GetUsersInRoleAsync(Roles.Developer.ToString(), companyId);
+            List<BTUser> submitters = await _rolesService.GetUsersInRoleAsync(Roles.Submitter.ToString(), companyId);
+
+            List<BTUser> users = developers.Concat(submitters).ToList();
+
+            List<string> members = project.Members.Select(m => m.Id).ToList();
+            model.Users = new MultiSelectList(users, "Id", "FullName", members);
+
+            return View(model);
         }
 
         [HttpPost]
