@@ -54,9 +54,24 @@ namespace Titan_BugTracker.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ManageUserRoles(ManageUserRolesViewModel member)
         {
-            return View();
+            BTUser user = (await _companyInfoService.GetAllMembersAsync(_companyId)).FirstOrDefault(u => u.Id == member.BTUser.Id);
+
+            IEnumerable<string> roles = await _roleService.GetUserRolesAsync(user);
+
+            await _roleService.RemoveUserFromRolesAsync(user, roles);
+
+            string userRole = member.SelectedRoles.FirstOrDefault();
+
+            if (!string.IsNullOrEmpty(userRole))
+            {
+                //Sweet alert possible here
+                await _roleService.AddUserToRoleAsync(user, userRole);
+            }
+
+            return RedirectToAction("ManageUserRoles");
         }
     }
 }
