@@ -78,10 +78,12 @@ namespace Titan_BugTracker.Controllers
                     {
                         await _projectService.AddUserToProjectAsync(item, model.Project.Id);
                     }
+
+                    //return RedirectToAction("Details", "Projects", new { id = model.Project.Id })
                 }
             }
 
-            return View();
+            return RedirectToAction("AssignMembers", new { id = model.Project.Id });
         }
 
         // GET: Projects/Details/5
