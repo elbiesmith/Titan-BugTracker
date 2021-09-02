@@ -29,7 +29,7 @@ namespace Titan_BugTracker.Services
             try
             {
                 await _context.AddAsync(ticket);
-                await UpdateTicketAsync(ticket);
+                await _context.SaveChangesAsync();
             }
             catch (Exception)
             {
