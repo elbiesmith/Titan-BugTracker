@@ -72,7 +72,6 @@ namespace Titan_BugTracker.Services
         {
             try
             {
-                Project project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
                 BTUser user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
                 if (user != null)
@@ -81,6 +80,7 @@ namespace Titan_BugTracker.Services
                     {
                         try
                         {
+                            Project project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
                             project.Members.Add(user);
                             await UpdateProjectAsync(project);
                             return true;
@@ -138,7 +138,7 @@ namespace Titan_BugTracker.Services
             }
         }
 
-        public async Task<List<Project>> GetAllProjectsByCompany(int companyId)
+        public async Task<List<Project>> GetAllProjectsByCompanyAsync(int companyId)
         {
             List<Project> projects = new();
             try
@@ -179,7 +179,7 @@ namespace Titan_BugTracker.Services
 
             try
             {
-                projects = await GetAllProjectsByCompany(companyId);
+                projects = await GetAllProjectsByCompanyAsync(companyId);
                 int priorityId = await LookupProjectPriorityId(priorityName);
 
                 return projects.Where(p => p.Id == priorityId).ToList();

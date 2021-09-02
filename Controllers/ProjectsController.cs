@@ -44,7 +44,7 @@ namespace Titan_BugTracker.Controllers
             int companyId = User.Identity.GetCompanyId().Value;
 
             // All company projects
-            List<Project> projects = await _companyInfoService.GetAllProjectsAsync(companyId);
+            List<Project> projects = await _projectService.GetAllProjectsByCompanyAsync(companyId);
             Project project = projects.FirstOrDefault(p => p.Id == id);
 
             model.Project = project;
@@ -85,6 +85,8 @@ namespace Titan_BugTracker.Controllers
 
             return RedirectToAction("AssignMembers", new { id = model.Project.Id });
         }
+
+
 
         // GET: Projects/Details/5
         public async Task<IActionResult> Details(int? id)

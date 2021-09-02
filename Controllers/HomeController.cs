@@ -36,7 +36,7 @@ namespace Titan_BugTracker.Controllers
         {
             List<Project> model = new();
             int companyId = User.Identity.GetCompanyId().Value;
-            model = await _projectService.GetAllProjectsByCompany(companyId);
+            model = await _projectService.GetAllProjectsByCompanyAsync(companyId);
             return View(model);
         }
 
