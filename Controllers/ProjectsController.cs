@@ -143,15 +143,23 @@ namespace Titan_BugTracker.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> AssignPM()
-        {
-            return View();
-        }
+        //public async Task<IActionResult> AssignPM()
+        //{
+        //    return View();
+        //}
 
-        [HttpPost]
-        public async Task<IActionResult> AssignPM(AddProjectManagerViewModel model)
+        //[HttpPost]
+        //public async Task<IActionResult> AssignPM(AddProjectManagerViewModel model)
+        //{
+        //    return View();
+        //}
+
+        public async Task<IActionResult> AssignPMIndex()
         {
-            return View();
+            int companyId = User.Identity.GetCompanyId().Value;
+            List<Project> projects = await _projectService.GetUnassignedProjectsAsync(companyId);
+
+            return View(projects);
         }
 
         // POST: Projects/Create

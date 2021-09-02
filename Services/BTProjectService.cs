@@ -367,7 +367,7 @@ namespace Titan_BugTracker.Services
 
                 foreach (Project proj in projects)
                 {
-                    if (await GetProjectMembersByRoleAsync(proj.Id, Roles.ProjectManager.ToString()) == null)
+                    if ((await GetProjectMembersByRoleAsync(proj.Id, Roles.ProjectManager.ToString())).Count == 0)
                     {
                         result.Add(proj);
                     }
