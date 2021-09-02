@@ -32,6 +32,10 @@ namespace Titan_BugTracker.Controllers
             return View();
         }
 
+        public async Task UnArchiveAll()
+        {
+        }
+
         public async Task<IActionResult> Dashboard()
         {
             List<Project> model = new();

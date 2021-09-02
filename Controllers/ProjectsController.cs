@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,21 +22,42 @@ namespace Titan_BugTracker.Controllers
         private readonly IBTCompanyInfoService _companyInfoService;
         private readonly IBTProjectService _projectService;
         private readonly IBTRolesService _rolesService;
+        private readonly IBTFileService _fileService;
+        private readonly UserManager<BTUser> _userManager;
 
         public ProjectsController(ApplicationDbContext context, IBTCompanyInfoService companyInfoService,
-                                                                IBTProjectService projectService, IBTRolesService rolesService)
+                                                                IBTProjectService projectService, IBTRolesService rolesService,
+                                                                IBTFileService fileService, Microsoft.AspNetCore.Identity.UserManager<BTUser> userManager)
         {
             _context = context;
             _companyInfoService = companyInfoService;
             _projectService = projectService;
             _rolesService = rolesService;
+            _fileService = fileService;
+            _userManager = userManager;
         }
 
         // GET: Projects
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Projects.Include(p => p.Company).Include(p => p.ProjectPriority);
-            return View(await applicationDbContext.ToListAsync());
+            int companyId = User.Identity.GetCompanyId().Value;
+            List<Project> allProjects = await _projectService.GetAllProjectsByCompanyAsync(companyId);
+            return View(allProjects);
+        }
+
+        public async Task<IActionResult> AllProjects()
+        {
+            int companyId = User.Identity.GetCompanyId().Value;
+            List<Project> allProjects = await _projectService.GetAllProjectsByCompanyAsync(companyId);
+            return View(allProjects);
+        }
+
+        public async Task<IActionResult> MyProjects()
+        {
+            string userId = _userManager.GetUserId(User);
+
+            List<Project> myProjects = await _projectService.GetUserProjectsAsync(userId);
+            return View(myProjects);
         }
 
         [HttpGet]
@@ -107,6 +130,7 @@ namespace Titan_BugTracker.Controllers
         }
 
         // GET: Projects/Create
+        [Authorize(Roles = "Admin, ProjectManager")]
         public async Task<IActionResult> Create()
         {
             int companyId = User.Identity.GetCompanyId().Value;
@@ -119,22 +143,52 @@ namespace Titan_BugTracker.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> AssignPM()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AssignPM(AddProjectManagerViewModel model)
+        {
+            return View();
+        }
+
         // POST: Projects/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,EndDate,FileName,FileData,FileContentType,Archived,CompanyId,ProjectPriorityId")] Project project)
+        public async Task<IActionResult> Create(AddProjectWithPMViewModel model)
         {
-            if (ModelState.IsValid)
+            if (model != null)
             {
-                _context.Add(project);
-                await _context.SaveChangesAsync();
+                try
+                {
+                    if (model.Project.FormFile != null)
+                    {
+                        model.Project.FileData = await _fileService.ConvertFileToByteArrayAsync(model.Project.FormFile);
+                        model.Project.FileName = model.Project.FormFile.FileName;
+                        model.Project.FileContentType = model.Project.FormFile.ContentType;
+                    }
+
+                    model.Project.CompanyId = User.Identity.GetCompanyId().Value;
+
+                    await _projectService.AddNewProjectAsync(model.Project);
+
+                    //Add PM
+                    if (!string.IsNullOrEmpty(model.PmId))
+                    {
+                        await _projectService.AddProjectManagerAsync(model.PmId, model.Project.Id);
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Description", project.CompanyId);
-            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id", project.ProjectPriorityId);
-            return View(project);
+            return RedirectToAction("Create");
         }
 
         // GET: Projects/Edit/5

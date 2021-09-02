@@ -36,6 +36,8 @@ namespace Titan_BugTracker.Services.Interfaces
 
         public Task<List<BTUser>> GetUsersNotOnProjectAsync(int projectId, int companyId);
 
+        public Task<List<Project>> GetUnassignedProjectsAsync(int companyId);
+
         public Task<List<Project>> GetUserProjectsAsync(string userId);
 
         public Task<bool> IsUserOnProject(string userId, int projectId);

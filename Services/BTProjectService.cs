@@ -27,7 +27,7 @@ namespace Titan_BugTracker.Services
             try
             {
                 await _context.AddAsync(project);
-                await UpdateProjectAsync(project);
+                await _context.SaveChangesAsync();
             }
             catch (Exception)
             {
@@ -355,6 +355,29 @@ namespace Titan_BugTracker.Services
             {
                 throw;
             }
+        }
+
+        public async Task<List<Project>> GetUnassignedProjectsAsync(int companyId)
+        {
+            List<Project> projects = new();
+            List<Project> result = new();
+            try
+            {
+                projects = await _context.Projects.Where(p => p.CompanyId == companyId).ToListAsync();
+
+                foreach (Project proj in projects)
+                {
+                    if (await GetProjectMembersByRoleAsync(proj.Id, Roles.ProjectManager.ToString()) == null)
+                    {
+                        result.Add(proj);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return result;
         }
 
         public async Task<bool> IsUserOnProject(string userId, int projectId)

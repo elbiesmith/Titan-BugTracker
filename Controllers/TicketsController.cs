@@ -33,8 +33,25 @@ namespace Titan_BugTracker.Controllers
         // GET: Tickets
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Tickets.Include(t => t.DeveloperUser).Include(t => t.OwnerUser).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
-            return View(await applicationDbContext.ToListAsync());
+            int companyId = User.Identity.GetCompanyId().Value;
+            List<Ticket> allTickets = await _ticketService.GetAllTicketsByCompanyAsync(companyId);
+            return View(allTickets);
+        }
+
+        public async Task<IActionResult> AllTickets()
+        {
+            int companyId = User.Identity.GetCompanyId().Value;
+            List<Ticket> allTickets = await _ticketService.GetAllTicketsByCompanyAsync(companyId);
+            return View(allTickets);
+        }
+
+        public async Task<IActionResult> MyTickets()
+        {
+            int companyId = User.Identity.GetCompanyId().Value;
+            string userId = _userManager.GetUserId(User);
+
+            List<Ticket> myTickets = await _ticketService.GetTicketsByUserIdAsync(userId, companyId);
+            return View(myTickets);
         }
 
         // GET: Tickets/Details/5
