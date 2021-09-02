@@ -8,7 +8,7 @@ namespace Titan_BugTracker.Models.ViewModels
 {
     public class AddProjectWithPMViewModel
     {
-        public Project project { get; set; } = new();
+        public Project Project { get; set; } = new();
         public SelectList PMList { get; set; }
         public string PmId { get; set; }
         public SelectList PriorityList { get; set; }

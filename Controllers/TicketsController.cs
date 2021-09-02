@@ -144,7 +144,7 @@ namespace Titan_BugTracker.Controllers
                 {
                     ticket.Updated = DateTimeOffset.Now;
 
-                    _context.Tickets.Update(ticket);
+                    //_context.Tickets.Update(ticket);
                     await _ticketService.UpdateTicketAsync(ticket);
                 }
                 catch (DbUpdateConcurrencyException)

@@ -86,8 +86,6 @@ namespace Titan_BugTracker.Controllers
             return RedirectToAction("AssignMembers", new { id = model.Project.Id });
         }
 
-
-
         // GET: Projects/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -109,11 +107,16 @@ namespace Titan_BugTracker.Controllers
         }
 
         // GET: Projects/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Description");
-            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id");
-            return View();
+            int companyId = User.Identity.GetCompanyId().Value;
+            AddProjectWithPMViewModel model = new();
+
+            model.PMList = new SelectList(await _rolesService.GetUsersInRoleAsync(Roles.ProjectManager.ToString(), companyId), "Id", "FullName");
+
+            model.PriorityList = new SelectList(_context.ProjectPriorities, "Id", "Name");
+
+            return View(model);
         }
 
         // POST: Projects/Create
