@@ -64,9 +64,6 @@ namespace Titan_BugTracker.Controllers
             BTUser user = await _userManager.GetUserAsync(User);
             int companyId = User.Identity.GetCompanyId().Value;
 
-            //ViewData["DeveloperUserId"] = new SelectList(_context.Users, "Id", "Id");
-            //ViewData["OwnerUserId"] = new SelectList(_context.Users, "Id", "Id");
-
             if (User.IsInRole(Roles.Admin.ToString()))
             {
                 ViewData["ProjectId"] = new SelectList(await _projectService.GetAllProjectsByCompanyAsync(companyId), "Id", "Name");
@@ -77,7 +74,6 @@ namespace Titan_BugTracker.Controllers
             }
 
             ViewData["TicketPriorityId"] = new SelectList(_context.TicketPriorities, "Id", "Name");
-            //ViewData["TicketStatusId"] = new SelectList(_context.TicketStatuses, "Id", "Id");
             ViewData["TicketTypeId"] = new SelectList(_context.TicketTypes, "Id", "Name");
             return View();
         }
