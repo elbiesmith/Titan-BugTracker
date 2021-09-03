@@ -61,6 +61,7 @@ namespace Titan_BugTracker.Services
                 {
                     try
                     {
+                        ticket.Updated = DateTimeOffset.Now;
                         ticket.DeveloperUserId = userId;
                         ticket.TicketStatusId = (await LookupTicketStatusIdAsync(BTTicketStatus.Development.ToString())).Value;
                         await UpdateTicketAsync(ticket);

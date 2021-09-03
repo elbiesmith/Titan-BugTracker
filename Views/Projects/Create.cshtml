@@ -1,62 +1,240 @@
 ﻿@model Titan_BugTracker.Models.ViewModels.AddProjectWithPMViewModel
 
-@{
-    ViewData["Title"] = "Create";
-}
-<div class="page-content-tab">
-    <h1>Create</h1>
+    <link href="~/assets/plugins/select/selectr.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/plugins/huebee/huebee.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/plugins/datepicker/datepicker.min.css" rel="stylesheet" type="text/css" />
 
-    <h4>Project</h4>
-    <hr />
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Create" enctype="multipart/form-data">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Project.Name" class="control-label"></label>
-                    <input asp-for="Project.Name" class="form-control" />
-                    <span asp-validation-for="Project.Name" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Project.Description" class="control-label"></label>
-                    <input asp-for="Project.Description" class="form-control" />
-                    <span asp-validation-for="Project.Description" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Project.StartDate" class="control-label"></label>
-                    <input asp-for="Project.StartDate" class="form-control" />
-                    <span asp-validation-for="Project.StartDate" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Project.EndDate" class="control-label"></label>
-                    <input asp-for="Project.EndDate" class="form-control" />
-                    <span asp-validation-for="Project.EndDate" class="text-danger"></span>
-                </div>
 
-                <div class="form-group">
-                    <label asp-for="Project.FormFile" class="control-label"></label>
-                    <input type="file" accept=".png,.jpg,.jpeg.gif" asp-for="Project.FormFile" class="form-control-file" />
-                    <span asp-validation-for="Project.FormFile" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label class="control-label">Project Manager</label>
-                    <select asp-for="PmId" class="form-control" asp-items="@Model.PMList"></select>
-                </div>
-                <div class="form-group">
-                    <label asp-for="ProjectPriority" class="control-label"></label>
-                    <select asp-for="ProjectPriority" class="form-control" asp-items="@Model.PriorityList"></select>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
-                </div>
-            </form>
-        </div>
+
+    @{
+        ViewData["Title"] = "Create";
+    }
+
+    <div class="page-content-tab">
+
+        <div class="container-fluid">
+            <!-- Page-Title -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="page-title-box">
+                        <div class="float-end">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="#">Metrica</a>
+                                </li><!--end nav-item-->
+                                <li class="breadcrumb-item">
+                                    <a href="#">Projects</a>
+                                </li><!--end nav-item-->
+                                <li class="breadcrumb-item active">Create</li>
+                            </ol>
+                        </div>
+                        <h4 class="page-title">Create Project</h4>
+                    </div><!--end page-title-box-->
+                </div><!--end col-->
+            </div>
+            <!-- end page title end breadcrumb -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <form method="post" asp-action="Create" asp-controller="Projects" enctype="multipart/form-data">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Project Name :</label>
+                                                    <input type="text" class="form-control" asp-for="Project.Name" aria-describedby="emailHelp" placeholder="Enter project name">
+                                                    <span asp-validation-for="Project.Name" class="text-danger"></span>
+                                                </div><!--end form-group-->
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col-lg-3 col-6 mb-2 mb-lg-0">
+                                                            <label class="form-label mt-2">Project Start Date</label>
+                                                            <input type="date" class="form-control datepicker-input" asp-for="Project.StartDate" value="@DateTime.Now.ToString("yyyy-MM-dd")" placeholder="Enter start date">
+                                                            <span asp-validation-for="Project.StartDate" class="text-danger"></span>
+                                                        </div><!--end col-->
+                                                        <div class="col-lg-3 col-6 mb-2 mb-lg-0">
+                                                            <label class="form-label mt-2">Project End Date</label>
+                                                            <input type="date" class="form-control mb-3 datepicker-input in-edit" asp-for="Project.EndDate" value="@DateTime.Now.ToString("yyyy-MM-dd")" placeholder="Enter end date">
+                                                            <span asp-validation-for="Project.EndDate" class="text-danger"></span>
+                                                        </div><!--end col-->
+                                                    </div><!--end row-->
+
+
+
+                                                    
+
+
+
+
+
+                                                </div><!--end form-group-->
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col-lg-6 mb-2 mb-lg-0">
+                                                            <label class="form-label mt-2">Project Manager</label>
+                                                            <select asp-for="PmId" class="form-control" asp-items="@Model.PMList"></select>
+                                                        </div><!--end col-->
+
+                                                        <div class="col-lg-3 col-6">
+                                                            <label class="form-label mt-2" for="pro-end-date">Priority</label>
+                                                            <select asp-for="ProjectPriority" class="form-control" asp-items="@Model.PriorityList"></select>
+                                                        </div><!--end col-->
+                                                    </div><!--end row-->
+                                                </div><!--end form-group-->
+                                                <div class="form-group mb-3">
+                                                    <label class="form-label mt-2">Description</label>
+                                                    <textarea class="form-control" rows="5" asp-for="Project.Description" placeholder="Description here.."></textarea>
+                                                    <span asp-validation-for="Project.Description" class="text-danger"></span>
+                                                </div><!--end form-group-->
+
+                                                <button type="submit" class="btn btn-de-primary btn-sm">Create project</button>
+                                                <button type="button" class="btn btn-de-danger btn-sm">Cancel</button>
+                                                <!--end form-->
+                                            </div>
+                                            <div class="col ms-auto align-self-center">
+
+                                                <div class="form-group mt-0">
+                                                    <label for="pro-avatar">Project Avatar</label>
+
+                                                    @if (Model.Project.FileData != null)
+
+                                                    {
+                                                        <img src="data:image/*;base64, @(Convert.ToBase64String(Model.Project.FileData))" id="imageFileData" alt="" class="thumb-lg rounded mx-3">
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="~/assets/images/small/project-3.jpg" id="imageFileData" alt="" class="thumb-lg rounded mx-3">
+                                                    }
+                                                    <label class="btn btn-de-primary btn-sm text-light">
+                                                        Change Avatar <input type="file" accept=".png,.jpg,.jpeg.gif" asp-for="Project.FormFile"
+                                                                             onchange="document.getElementById('imageFileData').src= window.URL.createObjectURL(this.files[0])" hidden>
+                                                    </label>
+                                                </div><!--end form-group-->
+                                                @* Add Team Members here*@
+                                                @{
+                                                    //TODO: Add team member form
+                                                }
+                                                <h5 class="fw-normal my-5">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised.</h5>
+                                                <div class="form-group">
+                                                    <label class="form-label" for="team-leader">Project team members</label>
+                                                    <ul class="list-inline">
+                                                        <li class="list-inline-item">
+                                                            <img src="~/assets/images/users/user-10.jpg" alt="user" class="rounded-circle thumb-xs">
+                                                        </li>
+                                                        <li class="list-inline-item">
+                                                            <img src="~/assets/images/users/user-9.jpg" alt="user" class="rounded-circle thumb-xs">
+                                                        </li>
+                                                        <li class="list-inline-item">
+                                                            <img src="~/assets/images/users/user-8.jpg" alt="user" class="rounded-circle thumb-xs">
+                                                        </li>
+                                                        <li class="list-inline-item">
+                                                            <img src="~/assets/images/users/user-5.jpg" alt="user" class="rounded-circle thumb-xs">
+                                                        </li>
+                                                        <li class="list-inline-item">
+                                                            <img src="~/assets/images/users/user-4.jpg" alt="user" class="rounded-circle thumb-xs">
+                                                        </li>
+                                                        <li class="list-inline-item">
+                                                            <a href="#" class="user-avatar">
+                                                                <span class="thumb-xs justify-content-center d-flex align-items-center bg-soft-info rounded-circle fw-semibold">+6</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                    <input id="add-member" type="file" name="files[]" multiple style='display: none;'>
+                                                </div><!--end form-group-->
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </div><!--end card-body-->
+                </div><!--end card-->
+            </div><!--end col-->
+        </div><!--end row-->
+    </div><!-- container -->
+    <!--Start Rightbar-->
+    <!--end Rightbar-->
+    <!--Start Footer-->
+    <!-- Footer Start -->
+    <footer class="footer text-center text-sm-start">
+        &copy;
+        <script>
+            document.write(new Date().getFullYear())
+        </script> Metrica
+        <span class="text-muted d-none d-sm-inline-block float-end">
+            Crafted with <i class="mdi mdi-heart text-danger"></i> by Mannatthemes
+        </span>
+    </footer>
+    <!-- end Footer -->
+    <!--end footer-->
     </div>
 
-    <div>
-        <a asp-action="Index">Back to List</a>
-    </div>
-</div>
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @*<div class="">
+
+            <h1>Create</h1>
+
+            <h4>Project</h4>
+            <hr />
+            <div class="row">
+                <div class="col-md-4">
+                    <form asp-action="Create" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Project.Name" class="control-label"></label>
+                            <input asp-for="Project.Name" class="form-control" />
+                            <span asp-validation-for="Project.Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Project.Description" class="control-label"></label>
+                            <input asp-for="Project.Description" class="form-control" />
+                            <span asp-validation-for="Project.Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Project.StartDate" class="control-label"></label>
+                            <input asp-for="Project.StartDate" class="form-control" />
+                            <span asp-validation-for="Project.StartDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Project.EndDate" class="control-label"></label>
+                            <input asp-for="Project.EndDate" class="form-control" />
+                            <span asp-validation-for="Project.EndDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Project.FormFile" class="control-label"></label>
+                            <input type="file" accept=".png,.jpg,.jpeg.gif" asp-for="Project.FormFile" class="form-control-file" />
+                            <span asp-validation-for="Project.FormFile" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Project Manager</label>
+                            <select asp-for="PmId" class="form-control" asp-items="@Model.PMList"></select>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ProjectPriority" class="control-label"></label>
+                            <select asp-for="ProjectPriority" class="form-control" asp-items="@Model.PriorityList"></select>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Create" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div>
+                <a asp-action="Index">Back to List</a>
+            </div>
+        </div>*@
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+        <script src="~/assets/plugins/huebee/huebee.pkgd.min.js"></script>
+        <script src="~/assets/plugins/datepicker/datepicker-full.min.js"></script>
+        <script src="~/assets/plugins/moment/moment.js"></script>
+        <script src="~/assets/plugins/imask/imask.js"></script>
+
+
+
+
+    }
