@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using Titan_BugTracker.Models.Enums
 @inject UserManager<BTUser> UserManager
 
 @{
@@ -32,6 +33,7 @@
     <link href="~/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <link href="~/assets/css/app.min.css" rel="stylesheet" type="text/css" />
     <script src="~/lib/jquery/dist/jquery.js"></script>
+    <link href="~/css/site.css" rel="stylesheet" />
 </head>
 
 <body id="body" class="menuitem-active enlarge-menu">
@@ -64,12 +66,16 @@
                             </a>
                         </li><!--end nav-item-->
                         <li class="nav-item">
-                            <a class="nav-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button"
+
+                            <a class="nav-link" href="#"><i class="mdi mdi-email-alert"></i>Notifications</a>
+                        </li><!--end nav-item-->
+                        <li class="nav-item">
+                            <a class="nav-link" href="#sidebarProject" data-bs-toggle="collapse" role="button"
                                aria-expanded="false" aria-controls="sidebarAnalytics">
-                                <i class="ti ti-home menu-icon"></i>
-                                <span>Project Items</span>
+                                <i class="mdi mdi-briefcase-edit-outline"></i>
+                                <span>Projects</span>
                             </a>
-                            <div class="collapse " id="sidebarDashboards">
+                            <div class="collapse " id="sidebarProject">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
                                         <a class="nav-link" asp-action="AllProjects" asp-controller="Projects">All Projects</a>
@@ -77,99 +83,85 @@
                                     <li class="nav-item">
                                         <a class="nav-link" asp-action="MyProjects" asp-controller="Projects">My Projects</a>
                                     </li><!--end nav-item-->
+                                    @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-action="Create" asp-controller="Projects">Add Project</a>
+                                        </li><!--end nav-item-->
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-action="ManageProjects" asp-controller="Projects">Manage Projects</a>
+                                        </li><!--end nav-item-->
+                                    }
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-action="ArchivedProjects" asp-controller="Projects">Project Archive</a>
+                                    </li>
+                                </ul><!--end nav-->
+                            </div><!--end sidebarDashboards-->
+                        </li><!--end nav-item-->
+                        <li class="nav-item">
+                            <a class="nav-link" href="#sidebarTicket" data-bs-toggle="collapse" role="button"
+                               aria-expanded="false" aria-controls="sidebarAnalytics">
+                                <i class="mdi mdi-ticket"></i>
+                                <span>Tickets</span>
+                            </a>
+                            <div class="collapse " id="sidebarTicket">
+                                <ul class="nav flex-column">
                                     <li class="nav-item">
                                         <a class="nav-link" asp-action="AllTickets" asp-controller="Tickets">All Tickets</a>
                                     </li><!--end nav-item-->
                                     <li class="nav-item">
                                         <a class="nav-link" asp-action="MyTickets" asp-controller="Tickets">My Tickets</a>
                                     </li><!--end nav-item-->
+                                    @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-action="AllTickets" asp-controller="Tickets">Assign Tickets</a>
+                                        </li><!--end nav-item-->
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-action="MyTickets" asp-controller="Tickets">Add Ticket</a>
+                                        </li><!--end nav-item-->
+                                    }
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-action="AssignPMIndex" asp-controller="Projects">Assign PM</a>
+                                        <a class="nav-link" asp-action="AssignPMIndex" asp-controller="Projects">Ticket Archive</a>
                                     </li>
                                 </ul><!--end nav-->
                             </div><!--end sidebarDashboards-->
                         </li><!--end nav-item-->
-                        <li class="menu-label mt-0">A<span>pps</span></li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#sidebarCRM" data-bs-toggle="collapse" role="button"
-                               aria-expanded="false" aria-controls="sidebarCRM">
-                                <i class="ti ti-ball-football menu-icon"></i>
-                                <span>CRM</span>
-                            </a>
-                            <div class="collapse " id="sidebarCRM">
-                                <ul class="nav flex-column">
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="crm-contacts.html">Contacts</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="crm-opportunities.html">Opportunities</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="crm-leads.html">Leads</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="crm-customers.html">Customers</a>
-                                    </li><!--end nav-item-->
-                                </ul><!--end nav-->
-                            </div><!--end sidebarCRM-->
-                        </li><!--end nav-item-->
+                        @if (User.IsInRole(Roles.Admin.ToString()))
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="#sidebarProjects" data-bs-toggle="collapse" role="button"
-                               aria-expanded="false" aria-controls="sidebarProjects">
-                                <i class="ti ti-brand-asana menu-icon"></i>
-                                <span>Projects</span>
-                            </a>
-                            <div class="collapse " id="sidebarProjects">
-                                <ul class="nav flex-column">
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="projects-clients.html">Clients</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="projects-team.html">Team</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="projects-project.html">Project</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="projects-task.html">Task</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="projects-kanban-board.html">Kanban Board</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="projects-chat.html">Chat</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="projects-users.html">Users</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="projects-create.html">Project Create</a>
-                                    </li><!--end nav-item-->
-                                </ul><!--end nav-->
-                            </div><!--end sidebarProjects-->
-                        </li><!--end nav-item-->
+                        {
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="#sidebarHelpdesk" data-bs-toggle="collapse" role="button"
-                               aria-expanded="false" aria-controls="sidebarHelpdesk">
-                                <i class="ti ti-headset menu-icon"></i>
-                                <span>Helpdesk</span>
-                            </a>
-                            <div class="collapse " id="sidebarHelpdesk">
-                                <ul class="nav flex-column">
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="helpdesk-teckets.html">Tickets</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="helpdesk-reports.html">Reports</a>
-                                    </li><!--end nav-item-->
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="helpdesk-agents.html">Agents</a>
-                                    </li><!--end nav-item-->
-                                </ul><!--end nav-->
-                            </div><!--end sidebarHelpdesk-->
-                        </li><!--end nav-item-->
+                            <li class="nav-item">
+                                <a class="nav-link" href="#sidebarAdmin" data-bs-toggle="collapse" role="button"
+                                   aria-expanded="false" aria-controls="sidebarAnalytics">
+                                    <i class="mdi mdi-sword-cross"></i>
+                                    <span>Admin</span>
+                                </a>
+                                <div class="collapse " id="sidebarAdmin">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-action="AllProjects" asp-controller="Projects">Company Invite</a>
+                                        </li><!--end nav-item-->
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-action="MyProjects" asp-controller="Projects">Manage Roles</a>
+                                        </li><!--end nav-item-->
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-action="AllTickets" asp-controller="Tickets">Assign Project Manager</a>
+                                        </li><!--end nav-item-->
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-action="MyTickets" asp-controller="Tickets">Manage Projects</a>
+                                        </li><!--end nav-item-->
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-action="AssignPMIndex" asp-controller="Projects">Assign Tickets</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-action="AssignPMIndex" asp-controller="Projects">Member Profiles</a>
+                                        </li>
+                                    </ul><!--end nav-->
+                                </div><!--end sidebarDashboards-->
+                            </li><!--end nav-item-->
+
+                        }
                     </ul><!--end navbar-nav--->
                 </div><!--end sidebarCollapse-->
             </div>
@@ -289,7 +281,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-end">
                         <a class="dropdown-item" href="#"><i class="ti ti-user font-16 me-1 align-text-bottom"></i> Profile</a>
-                        <a class="dropdown-item" href="#"><i class="ti ti-settings font-16 me-1 align-text-bottom"></i> Settings</a>
+                        <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><i class="ti ti-settings font-16 me-1 align-text-bottom"></i> Settings</a>
                         <div class="dropdown-divider mb-0"></div>
                         <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit();"><i class="ti ti-power font-16 me-1 align-text-bottom"></i> Logout</a>
                     </div>

@@ -29,13 +29,20 @@ namespace Titan_BugTracker.Services
         {
             try
             {
-                MemoryStream memoryStream = new();
-                await file.CopyToAsync(memoryStream);
-                byte[] byteFile = memoryStream.ToArray();
-                memoryStream.Close();
-                memoryStream.Dispose();
+                if (file != null)
+                {
+                    MemoryStream memoryStream = new();
+                    await file.CopyToAsync(memoryStream);
+                    byte[] byteFile = memoryStream.ToArray();
+                    memoryStream.Close();
+                    memoryStream.Dispose();
 
-                return byteFile;
+                    return byteFile;
+                }
+                else
+                {
+                    return null;
+                }
             }
             catch (Exception)
             {

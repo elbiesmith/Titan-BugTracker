@@ -3,13 +3,95 @@
 @{
     ViewData["Title"] = "Index";
 }
+<link href="~/assets/css/datatables.min.css" rel="stylesheet" />
 <div class="page-content-tab">
-    <h1>Index</h1>
+    <h1>All Company Projects</h1>
 
     <p>
         <a asp-action="Create">Create New</a>
     </p>
-    <table class="table">
+
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-3">
+            <div class="card report-card">
+                <div class="card-body">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col">
+                            <p class="text-dark mb-1 fw-semibold">Company Projects</p>
+                            <h4 class="my-1">@Model.ToList().Count</h4>
+                            @*<p class="mb-0 text-truncate text-muted"><span class="text-success"><i class="mdi mdi-checkbox-marked-circle-outline me-1"></i></span>26 Project Complete</p>*@
+                        </div>
+                        <div class="col-auto align-self-center">
+                            <div class="bg-light-alt d-flex justify-content-center align-items-center thumb-md  rounded-circle">
+                                <i data-feather="layers" class="align-self-center text-muted icon-sm"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--end card-body-->
+            </div><!--end card-->
+        </div> <!--end col-->
+        <div class="col-md-6 col-lg-3">
+            <div class="card report-card">
+                <div class="card-body">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col">
+                            <p class="text-dark mb-1 fw-semibold">Company Tickets</p>
+                            <h4 class="my-1">@ViewData["ticketCount"]</h4>
+                            @*<p class="mb-0 text-truncate text-muted"><span class="badge badge-soft-success">Active</span> Weekly Avg.Sessions</p>*@
+                        </div>
+                        <div class="col-auto align-self-center">
+                            <div class="bg-light-alt d-flex justify-content-center align-items-center thumb-md  rounded-circle">
+                                <i data-feather="check-square" class="align-self-center text-muted icon-sm"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--end card-body-->
+            </div><!--end card-->
+        </div> <!--end col-->
+        <div class="col-md-6 col-lg-3">
+            <div class="card report-card">
+                <div class="card-body">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col">
+                            <p class="text-dark mb-1 fw-semibold">Unassigned Tickets</p>
+                            <h4 class="my-1">@ViewData["unassignedTickets"]</h4>
+                            @*<p class="mb-0 text-truncate text-muted">
+                                    <span class="text-muted">01:33</span> /
+                                    <span class="text-muted">9:30</span>  Duration
+                                </p>*@
+                        </div>
+                        <div class="col-auto align-self-center">
+                            <div class="bg-light-alt d-flex justify-content-center align-items-center thumb-md  rounded-circle">
+                                <i data-feather="clock" class="align-self-center text-muted icon-sm"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--end card-body-->
+            </div><!--end card-->
+        </div> <!--end col-->
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card report-card">
+                <div class="card-body">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col">
+                            <p class="text-dark mb-1 fw-semibold">Analytics</p>
+                            <h4 class="my-1">0</h4>
+                            @*<p class="mb-0 text-truncate text-muted"><span class="text-dark">$14k</span> Total used budgets</p>*@
+                        </div>
+                        <div class="col-auto align-self-center">
+                            <div class="bg-light-alt d-flex justify-content-center align-items-center thumb-md  rounded-circle">
+                                <i data-feather="dollar-sign" class="align-self-center text-muted icon-sm"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--end card-body-->
+            </div><!--end card-->
+        </div> <!--end col-->
+    </div><!--end row-->
+
+
+    <table class="table" id="myTable">
         <thead>
             <tr>
                 <th>
@@ -27,10 +109,11 @@
                 @*
                     <th>
                         @Html.DisplayNameFor(model => model.FileName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FileData)
-                    </th>
+                    </th>*@
+                <th>
+                    Image
+                </th>
+                @*
                     <th>
                         @Html.DisplayNameFor(model => model.FileContentType)
                     </th>*@
@@ -63,11 +146,19 @@
                     @*
                         <td>
                             @Html.DisplayFor(modelItem => item.FileName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.FileData)
-                        </td>
-                        <td>
+                        </td>*@
+                    <td>
+
+                        @if (item.FileData != null)
+                        {
+                            <img src="data:image/*;base64, @(Convert.ToBase64String(item.FileData))" alt="" class="thumb-lg rounded mx-3">
+                        }
+                        else
+                        {
+                            <img src="~/img/no-image.png" class="thumb-lg rounded mx-3" />
+                        }
+                    </td>
+                    @*<td>
                             @Html.DisplayFor(modelItem => item.FileContentType)
                         </td>*@
                     <td>
@@ -89,3 +180,12 @@
         </tbody>
     </table>
 </div>
+
+@section scripts {
+    <script src="~/assets/js/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable();
+        });
+    </script>
+}

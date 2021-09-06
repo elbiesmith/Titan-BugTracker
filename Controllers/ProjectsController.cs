@@ -52,12 +52,26 @@ namespace Titan_BugTracker.Controllers
             return View(allProjects);
         }
 
+        public async Task<IActionResult> ManageProjects()
+        {
+            int companyId = User.Identity.GetCompanyId().Value;
+            List<Project> allProjects = await _projectService.GetAllProjectsByCompanyAsync(companyId);
+            return View(allProjects);
+        }
+
         public async Task<IActionResult> MyProjects()
         {
             string userId = _userManager.GetUserId(User);
 
             List<Project> myProjects = await _projectService.GetUserProjectsAsync(userId);
             return View(myProjects);
+        }
+
+        public async Task<IActionResult> ArchivedProjects()
+        {
+            int companyId = User.Identity.GetCompanyId().Value;
+            List<Project> allProjects = await _projectService.GetArchivedProjectsByCompany(companyId);
+            return View(allProjects);
         }
 
         [HttpGet]
@@ -213,7 +227,7 @@ namespace Titan_BugTracker.Controllers
                 return NotFound();
             }
             ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Description", project.CompanyId);
-            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id", project.ProjectPriorityId);
+            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Name", project.ProjectPriorityId);
             return View(project);
         }
 
@@ -222,7 +236,7 @@ namespace Titan_BugTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,StartDate,EndDate,FileName,FileData,FileContentType,Archived,CompanyId,ProjectPriorityId")] Project project)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,StartDate,EndDate,FormFile, FileData, FileName, FileContentType,Archived,CompanyId,ProjectPriorityId")] Project project)
         {
             if (id != project.Id)
             {
@@ -233,6 +247,15 @@ namespace Titan_BugTracker.Controllers
             {
                 try
                 {
+                    byte[] newImageData = await _fileService.ConvertFileToByteArrayAsync(project.FormFile);
+
+                    if (project.FileData != newImageData && newImageData != null)
+                    {
+                        project.FileData = newImageData;
+                        project.FileName = project.FormFile.FileName;
+                        project.FileContentType = project.FormFile.ContentType;
+                    }
+
                     _context.Update(project);
                     await _context.SaveChangesAsync();
                 }
@@ -247,7 +270,7 @@ namespace Titan_BugTracker.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("AllProjects");
             }
             ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Description", project.CompanyId);
             ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id", project.ProjectPriorityId);

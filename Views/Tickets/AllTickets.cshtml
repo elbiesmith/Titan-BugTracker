@@ -4,13 +4,14 @@
 @{
     ViewData["Title"] = "Index";
 }
+<link href="~/assets/css/datatables.min.css" rel="stylesheet" />
 <div class="page-content-tab">
     <h1>Index</h1>
 
     <p>
         <a asp-action="Create">Create New</a>
     </p>
-    <table class="table">
+    <table class="table" id="myTable">
         <thead>
             <tr>
                 <th>
@@ -92,12 +93,21 @@
                         <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
                         @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
                         {
-                            <a asp-action="AssignDeveloper"asp-controller="Tickets"  asp-route-id="@item.Id">Assign Developer</a>
+                            <a asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-id="@item.Id">Assign Developer</a>
 
-}
+                        }
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+
+@section scripts {
+    <script src="~/assets/js/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable();
+        });
+    </script>
+}

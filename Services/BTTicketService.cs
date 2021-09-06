@@ -99,7 +99,7 @@ namespace Titan_BugTracker.Services
 
                 tickets = await _context.Projects.Where(p => p.CompanyId == companyId)
                                                  .SelectMany(t => t.Tickets)
-                                                  .Where(t => t.Archived == null)
+                                                  .Where(t => t.Archived == false)
                                                   .Include(t => t.Comments)
                                                   .Include(t => t.Attachments)
                                                   .Include(t => t.History)

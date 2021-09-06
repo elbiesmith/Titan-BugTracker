@@ -3,13 +3,14 @@
 @{
     ViewData["Title"] = "Index";
 }
+<link href="~/assets/css/datatables.min.css" rel="stylesheet" />
 <div class="page-content-tab">
     <h1>Index</h1>
 
     <p>
         <a asp-action="Create">Create New</a>
     </p>
-    <table class="table">
+    <table class="table" id="myTable">
         <thead>
             <tr>
                 <th>
@@ -24,21 +25,21 @@
                 <th>
                     @Html.DisplayNameFor(model => model.EndDate)
                 </th>
-                <th>
+                @*<th>
                     @Html.DisplayNameFor(model => model.FileName)
-                </th>
+                </th>*@
                 <th>
-                    @Html.DisplayNameFor(model => model.FileData)
+                    Image
                 </th>
-                <th>
+                @*<th>
                     @Html.DisplayNameFor(model => model.FileContentType)
-                </th>
+                </th>*@
                 <th>
                     @Html.DisplayNameFor(model => model.Archived)
                 </th>
-                <th>
+                @*<th>
                     @Html.DisplayNameFor(model => model.Company)
-                </th>
+                </th>*@
                 <th>
                     @Html.DisplayNameFor(model => model.ProjectPriority)
                 </th>
@@ -61,21 +62,28 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.EndDate)
                     </td>
-                    <td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.FileName)
-                    </td>
+                    </td>*@
                     <td>
-                        @Html.DisplayFor(modelItem => item.FileData)
+                        @if (item.FileData != null)
+                        {
+                            <img src="data:image/*;base64, @(Convert.ToBase64String(item.FileData))" alt="" class="thumb-lg rounded mx-3">
+                        }
+                        else
+                        {
+                            <img src="~/img/no-image.png" class="thumb-lg rounded mx-3" />
+                        }
                     </td>
-                    <td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.FileContentType)
-                    </td>
+                    </td>*@
                     <td>
                         @Html.DisplayFor(modelItem => item.Archived)
                     </td>
-                    <td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.Company.Description)
-                    </td>
+                    </td>*@
                     <td>
                         @Html.DisplayFor(modelItem => item.ProjectPriority.Id)
                     </td>
@@ -90,4 +98,12 @@
             }
         </tbody>
     </table>
-    </div>
+</div>
+@section scripts {
+    <script src="~/assets/js/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable();
+        });
+    </script>
+}

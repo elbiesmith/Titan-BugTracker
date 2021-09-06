@@ -41,6 +41,23 @@ namespace Titan_BugTracker.Controllers
             List<Project> model = new();
             int companyId = User.Identity.GetCompanyId().Value;
             model = await _projectService.GetAllProjectsByCompanyAsync(companyId);
+
+
+            int ticketCount = model.SelectMany(p => p.Tickets).ToList().Count;
+            int uaTicketCount = 0;
+            foreach(var item in model.SelectMany(p => p.Tickets).ToList())
+            {
+                if (string.IsNullOrEmpty(item.DeveloperUserId))
+                {
+                    uaTicketCount++;
+                }
+            }
+
+
+
+            ViewData["ticketCount"] = ticketCount;
+            ViewData["unassignedTickets"] = uaTicketCount;
+
             return View(model);
         }
 
