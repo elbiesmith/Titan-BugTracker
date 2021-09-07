@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -21,14 +23,18 @@ namespace Titan_BugTracker.Controllers
         private readonly IBTProjectService _projectService;
         private readonly UserManager<BTUser> _userManager;
         private readonly IBTTicketService _ticketService;
+        private readonly IBTTicketHistoryService _historyService;
+        private readonly IBTNotificationService _notificationService;
 
         public TicketsController(ApplicationDbContext context, IBTProjectService projectService, UserManager<BTUser> userManager,
-            IBTTicketService ticketService)
+            IBTTicketService ticketService, IBTTicketHistoryService historyService, IBTNotificationService notificationService)
         {
             _context = context;
             _projectService = projectService;
             _userManager = userManager;
             _ticketService = ticketService;
+            _historyService = historyService;
+            _notificationService = notificationService;
         }
 
         // GET: Tickets
@@ -63,14 +69,7 @@ namespace Titan_BugTracker.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets
-                .Include(t => t.DeveloperUser)
-                .Include(t => t.OwnerUser)
-                .Include(t => t.Project)
-                .Include(t => t.TicketPriority)
-                .Include(t => t.TicketStatus)
-                .Include(t => t.TicketType)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var ticket = await _ticketService.GetTicketByIdAsync((int)id);
             if (ticket == null)
             {
                 return NotFound();
@@ -104,6 +103,7 @@ namespace Titan_BugTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create([Bind("Id,Title,Description,ProjectId,TicketTypeId,TicketPriorityId")] Ticket ticket)
         {
             if (ModelState.IsValid)
@@ -116,8 +116,37 @@ namespace Titan_BugTracker.Controllers
                 ticket.TicketStatusId = (await _ticketService.LookupTicketStatusIdAsync(BTTicketStatus.New.ToString())).Value;
 
                 await _ticketService.AddNewTicketAsync(ticket);
+
                 //TODO: Add to History
+
+                Ticket newTicket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id);
+                await _historyService.AddHistoryAsync(null, newTicket, btUser.Id);
+
                 //TODO: Send Notification
+                BTUser projectManager = await _projectService.GetProjectManagerAsync(ticket.ProjectId);
+
+                int companyId = User.Identity.GetCompanyId().Value;
+
+                Notification notification = new()
+                {
+                    TicketId = ticket.Id,
+                    Title = "New Ticket Created",
+                    Message = $"New Ticket: {ticket.Title}, was created by {btUser.FullName}.",
+                    Created = DateTimeOffset.Now,
+                    SenderId = btUser.Id,
+                    RecipientId = projectManager?.Id
+                };
+
+                if (projectManager != null)
+                {
+                    await _notificationService.AddNotificationAsync(notification);
+                    await _notificationService.SendEmailNotificationAsync(notification, "New Ticket Added");
+                }
+                else
+                {
+                    await _notificationService.AddNotificationAsync(notification);
+                    await _notificationService.SendEmailNotificationsByRoleAsync(notification, companyId, Roles.Admin.ToString());
+                }
 
                 return RedirectToAction("Details", "Projects", new { id = ticket.ProjectId });
             }
@@ -158,11 +187,11 @@ namespace Titan_BugTracker.Controllers
 
             if (ModelState.IsValid)
             {
+                BTUser btUser = await _userManager.GetUserAsync(User);
+                Ticket oldTicket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id);
                 try
                 {
                     ticket.Updated = DateTimeOffset.Now;
-
-                    //_context.Tickets.Update(ticket);
                     await _ticketService.UpdateTicketAsync(ticket);
                 }
                 catch (DbUpdateConcurrencyException)
@@ -178,9 +207,12 @@ namespace Titan_BugTracker.Controllers
                 }
 
                 //TODO: Add to History
+                Ticket newTicket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id);
+                await _historyService.AddHistoryAsync(oldTicket, newTicket, btUser.Id);
+
                 //TODO: Send Notification
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Tickets", new { id = ticket.Id });
             }
             //ViewData["DeveloperUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.DeveloperUserId);
             //ViewData["OwnerUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.OwnerUserId);
@@ -206,11 +238,23 @@ namespace Titan_BugTracker.Controllers
         public async Task<IActionResult> AssignDeveloper(AssignDeveloperViewModel model)
         {
             //TODO: Add to history && send notifications
+            //old ticket and user
 
             if (model.DeveloperId != null)
             {
-                await _ticketService.AssignTicketAsync(model.Ticket.Id, model.DeveloperId);
+                try
+                {
+                    await _ticketService.AssignTicketAsync(model.Ticket.Id, model.DeveloperId);
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
             }
+            // new ticket
+            //addhistory
+
+            //notification
 
             return RedirectToAction("AllTickets");
         }
@@ -256,6 +300,17 @@ namespace Titan_BugTracker.Controllers
             return (await _ticketService.GetAllTicketsByCompanyAsync(companyId)).Any(t => t.Id == id);
 
             return _context.Tickets.Any(e => e.Id == id);
+        }
+
+        public IActionResult ShowFile(int id)
+        {
+            TicketAttachment ticketAttachment = _context.TicketAttachments.Find(id);
+            string fileName = ticketAttachment.FileName;
+            byte[] fileData = ticketAttachment.FileData;
+            string ext = Path.GetExtension(fileName).Replace(".", "");
+
+            Response.Headers.Add("Content-Disposition", $"inline; filename={fileName}");
+            return File(fileData, $"application/{ext}");
         }
     }
 }

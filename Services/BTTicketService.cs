@@ -273,7 +273,16 @@ namespace Titan_BugTracker.Services
         {
             try
             {
-                Ticket ticket = await _context.Tickets.FirstOrDefaultAsync(p => p.Id == ticketId);
+                Ticket ticket = await _context.Tickets.Include(t => t.DeveloperUser)
+                                                        .Include(t => t.OwnerUser)
+                                                        .Include(t => t.Project)
+                                                        .Include(t => t.TicketPriority)
+                                                        .Include(t => t.TicketStatus)
+                                                        .Include(t => t.TicketType)
+                                                        .Include(t => t.Comments).ThenInclude(t => t.User)
+                                                        .Include(t => t.Attachments).ThenInclude(t => t.User)
+                                                        .Include(t => t.History).ThenInclude(t => t.User)
+                                                        .FirstOrDefaultAsync(p => p.Id == ticketId);
 
                 return ticket;
             }
@@ -422,6 +431,30 @@ namespace Titan_BugTracker.Services
             {
                 _context.Update(ticket);
                 await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<Ticket> GetTicketAsNoTrackingAsync(int ticketId)
+        {
+            try
+            {
+                Ticket ticket = await _context.Tickets.Include(t => t.DeveloperUser)
+                                                        .Include(t => t.OwnerUser)
+                                                        .Include(t => t.DeveloperUser)
+                                                        .Include(t => t.Project)
+                                                        .Include(t => t.TicketPriority)
+                                                        .Include(t => t.TicketStatus)
+                                                        .Include(t => t.TicketType)
+                                                        .Include(t => t.Comments).ThenInclude(t => t.User)
+                                                        .Include(t => t.Attachments).ThenInclude(t => t.User)
+                                                        .Include(t => t.History).ThenInclude(t => t.User)
+                                                        .AsNoTracking().FirstOrDefaultAsync(p => p.Id == ticketId);
+
+                return ticket;
             }
             catch (Exception)
             {

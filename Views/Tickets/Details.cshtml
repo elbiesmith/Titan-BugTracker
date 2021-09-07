@@ -1,84 +1,301 @@
-﻿@model Titan_BugTracker.Models.Ticket
-
+﻿@using Titan_BugTracker.Services.Interfaces
+@model Titan_BugTracker.Models.Ticket
+@inject IBTFileService BTFileService
 @{
     ViewData["Title"] = "Details";
 }
+<div class="page-content-tab">
+    <div class="row mt-3">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="task-box">
+                        <div class="task-priority-icon"><i class="fas fa-circle text-success"></i></div>
+                        <p class="text-muted float-right">
+                            @*<span class="text-muted">01:33</span> /*@
+                            <span class="text-muted">Created: </span>
+                            <span class="mx-1">·</span>
+                            <span><i class="far fa-fw fa-clock"></i> @Model.Created.ToString("MMM dd")</span>
+                        </p>
+                        <h5 class="mt-0">@Model.Title</h5>
+                        <p class="text-muted mb-1">
+                            @Model.Description
+                        </p>
+                        <p class="text-muted text-end mb-1">15% Complete</p>
+                        <div class="progress mb-4" style="height: 4px;">
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: 15%;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <div class="img-group">
+                                @if (Model.DeveloperUser != null)
+                                {
+                                    if (Model.DeveloperUser.AvatarFileData != null)
+                                    {
+                                        <a class="user-avatar user-avatar-group" href="#">
+                                            <img src="data:image/*;base64, @(Convert.ToBase64String(Model.DeveloperUser.AvatarFileData))" alt="user" class="rounded-circle thumb-xs">
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <img src="/img/noImage.jpg" alt="user" class="rounded-circle thumb-xs">
 
-<h1>Details</h1>
+                                    }
+                                }
+                                else
+                                {
+                                    <span>Developer: None | </span>
+                                }
+                                @if (Model.OwnerUser != null)
+                                {
+                                    if (Model.OwnerUser.AvatarFileData != null)
+                                    {
+                                        <a class="user-avatar user-avatar-group" href="#">
+                                            <img src="data:image/*;base64, @(Convert.ToBase64String(Model.OwnerUser.AvatarFileData))" alt="user" class="rounded-circle thumb-xs">
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <img src="/img/noImage.jpg" alt="user" class="rounded-circle thumb-xs">
 
-<div>
-    <h4>Ticket</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Updated)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Updated)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Archived)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Archived)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Project)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Project.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TicketType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TicketType.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TicketStatus)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TicketStatus.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TicketPriority)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TicketPriority.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.OwnerUser)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.OwnerUser.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DeveloperUser)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DeveloperUser.Id)
-        </dd>
-    </dl>
+                                    }
+                                }
+
+                                @*<a class="user-avatar user-avatar-group" href="#">
+                            </a>
+                            <a class="user-avatar user-avatar-group" href="#">
+                                <img src="assets/images/users/user-1.jpg" alt="user" class="rounded-circle thumb-xs">
+                            </a>*@
+                            </div><!--end img-group-->
+                            @*<ul class="list-inline mb-0 align-self-center">
+                            <li class="list-item d-inline-block me-2">
+                                <a class="" href="#">
+                                    <i class="mdi mdi-format-list-bulleted text-success font-15"></i>
+                                    <span class="text-muted fw-bold">15/100</span>
+                                </a>
+                            </li>
+                            <li class="list-item d-inline-block">
+                                <a class="" href="#">
+                                    <i class="mdi mdi-comment-outline text-primary font-15"></i>
+                                    <span class="text-muted fw-bold">3</span>
+                                </a>
+                            </li>
+                            <li class="list-item d-inline-block">
+                                <a class="ms-2" href="#">
+                                    <i class="mdi mdi-pencil-outline text-muted font-18"></i>
+                                </a>
+                            </li>
+                            <li class="list-item d-inline-block">
+                                <a class="" href="#">
+                                    <i class="mdi mdi-trash-can-outline text-muted font-18"></i>
+                                </a>
+                            </li>
+                        </ul>*@
+                        </div>
+                    </div><!--end task-box-->
+                </div><!--end card-body-->
+            </div><!--end card-->
+
+            <div class="card">
+                <div class="card-body">
+                    <dl class="row">
+
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Created)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Created)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Updated)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Updated)
+                        </dd>
+
+                        <dt class="col-sm-2">
+                            Project Deadline
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Project.EndDate)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.TicketType)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.TicketType.Name)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.TicketStatus)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.TicketStatus.Name)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.TicketPriority)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.TicketPriority.Name)
+                        </dd>
+                    </dl>
+                </div>
+            </div> <!-- end Card -->
+
+            <div class="card">
+                <div class="card-body">
+                    <div>
+                        <form asp-action="Create" asp-controller="TicketAttachments" enctype="multipart/form-data" method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="@Model.Id" name="TicketId">
+
+                            <div class="media-body ml-3">
+                                <label class="form-label d-block mb-2">Add Attachment</label>
+                                <label>
+                                    Description
+                                    <input asp-for="@Model.Attachments.FirstOrDefault().Description" type="text" class="form-control mb-2" />
+                                </label><br />
+                                <label class="btn btn-outline-primary btn-sm">
+                                    <input asp-for="@Model.Attachments.FirstOrDefault().FormFile" type="file" />
+                                </label>
+                                <button type="submit" class="btn btn-outline-secondary btn-sm md-btn-flat">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                    <hr />
+                    <div class=" row card-footer scrollX mt-2">
+                        @foreach (TicketAttachment item in Model.Attachments)
+                        {
+                            <div class="col-sm-2 ">
+                                <div class="card">
+                                    <div class="file">
+                                        <a asp-action="ShowFile" asp-controller="Tickets" asp-route-Id="@item.Id">
+
+                                            <div class="icon">
+                                                <img src="@BTFileService.GetFileIcon(item.FileName)" style="height:60px;width:60px" />
+                                            </div>
+                                            <div class="file-name">
+                                                <p class="m-b-5 text-muted">@System.IO.Path.GetFileNameWithoutExtension(item.FileName)</p>
+                                                <small>Size: @BTFileService.FormatFileSize(item.FileData.Length) <span class="date text-muted">@item.Created.ToString("MMM dd, yyyy")</span></small>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Ticket History</h4>
+                </div><!--end card-header-->
+                <div class="card-body scroll">
+                    <div class="slimscroll activity-scroll">
+                        <div class="activity">
+                            @foreach (TicketHistory history in Model.History.OrderByDescending(h => h.Created))
+                            {
+                                <div class="activity-info">
+                                    <div class="icon-info-activity">
+                                        <i class="las la-user-clock bg-soft-primary"></i>
+                                    </div>
+                                    <div class="activity-info-text">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h6 class="m-0  w-75">@history.Property updated</h6>
+                                            <span class="text-muted">@history.Created.ToString("MM dd, yyyy")</span>
+                                        </div>
+                                        <p class="text-muted mt-3">
+                                            @history.Description
+                                            <!--<a href="#" class="text-info">-->@*[more info]*@<!--</a>-->
+                                        </p>
+                                        @*<span class="badge badge-soft-secondary">Design</span>
+                                    <span class="badge badge-soft-secondary">HTML</span>*@
+                                    </div>
+                                </div>
+
+                            }
+                        </div><!--end activity-->
+                    </div><!--end activity-scroll-->
+                </div>  <!--end card-body-->
+            </div><!--end card-->
+
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Comments</h4>
+                    @*<p class="text-muted mb-0">
+                            Bootstrap-wysihtml5 is a javascript
+                            plugin that makes it easy to create simple, beautiful wysiwyg editors
+                            with the help of wysihtml5 and Twitter Bootstrap.
+                        </p>*@
+                </div><!--end card-header-->
+                <div class="card-body">
+                    <form method="post" asp-action="Create" asp-controller="TicketComments">
+                        <input type="hidden" name="TicketId" id="TicketId" value="@Model.Id" />
+
+                        <textarea id="basic-conf" name="Comment"></textarea>
+                        <button type="submit" class="btn btn-info mt-2">Submit</button>
+                    </form>
+                </div><!--end card-body-->
+            </div><!--end card-->
+
+            <div class="card">
+                <div class="card-body pb-0">
+                    <div class="row">
+                        <div class="col">
+                            <p class="text-dark fw-semibold mb-0">Comments (@Model.Comments.Count)</p>
+                        </div><!--end col-->
+                    </div><!--end row-->
+                </div><!--end card-body-->
+                <div class="card-body border-bottom-dashed scroll">
+                    <ul class="list-unstyled mb-0">
+                        @foreach (TicketComment comment in Model.Comments.OrderByDescending(d => d.Created))
+                        {
+                            <li class="mb-3">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        @if (comment.User.AvatarFileData != null)
+                                        {
+                                            <a class="user-avatar user-avatar-group" href="#">
+                                                <img src="data:image/*;base64, @(Convert.ToBase64String(comment.User.AvatarFileData))" alt="user" class="rounded-circle thumb-md">
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <img src="/img/noImage.jpg" alt="user" class="rounded-circle thumb-md">
+
+                                        }
+                                        @*<img src="~/assets/images/users/user-2.jpg" alt="" class="thumb-md rounded-circle">*@
+                                    </div><!--end col-->
+                                    <div class="col">
+                                        <div class="comment-body ms-n2 bg-light-alt p-3">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <p class="text-dark fw-semibold mb-2">@comment.User.FullName</p>
+                                                </div><!--end col-->
+                                                <div class="col-auto">
+                                                    <span class="text-muted"><i class="far fa-clock me-1"></i>@comment.Created.ToString("MM-dd-yyyy")</span>
+                                                </div><!--end col-->
+                                            </div><!--end row-->
+                                            <p>
+                                                @Html.Raw(comment.Comment)
+                                            </p>
+                                            @*<a href="#" class="text-primary"><i class="fas fa-reply me-1"></i>Replay</a>*@
+                                        </div>
+                                    </div><!--end col-->
+                                </div><!--end row-->
+                            </li>
+                        }
+                    </ul>
+                </div><!--end card-body-->
+            </div> <!--end card-->
+            
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+@section scripts {
+    <script src="/assets/plugins/tinymce/tinymce.min.js"></script>
+    <script src="/assets/pages/form-editor.init.js"></script>
+
+}

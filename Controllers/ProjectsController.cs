@@ -171,9 +171,11 @@ namespace Titan_BugTracker.Controllers
         public async Task<IActionResult> AssignPMIndex()
         {
             int companyId = User.Identity.GetCompanyId().Value;
-            List<Project> projects = await _projectService.GetUnassignedProjectsAsync(companyId);
+            PMIndexViewModel model = new();
+            model.Projects = await _projectService.GetUnassignedProjectsAsync(companyId);
+            model.PMList = new SelectList(await _rolesService.GetUsersInRoleAsync(Roles.ProjectManager.ToString(), companyId), "Id", "FullName");
 
-            return View(projects);
+            return View(model);
         }
 
         // POST: Projects/Create
