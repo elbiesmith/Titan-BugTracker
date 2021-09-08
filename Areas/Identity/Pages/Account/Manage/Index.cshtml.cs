@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Titan_BugTracker.Models;
+using Titan_BugTracker.Services.Interfaces;
 
 namespace Titan_BugTracker.Areas.Identity.Pages.Account.Manage
 {
@@ -14,16 +16,23 @@ namespace Titan_BugTracker.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<BTUser> _userManager;
         private readonly SignInManager<BTUser> _signInManager;
+        private readonly IBTFileService _fileService;
 
         public IndexModel(
             UserManager<BTUser> userManager,
-            SignInManager<BTUser> signInManager)
+            SignInManager<BTUser> signInManager, IBTFileService fileService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _fileService = fileService;
         }
 
         public string Username { get; set; }
+
+        //public IFormFile AvatarFormFile { get; set; }
+        public byte[] ImageData { get; set; }
+
+        public string ImageType { get; set; }
 
         [TempData]
         public string StatusMessage { get; set; }
@@ -36,6 +45,8 @@ namespace Titan_BugTracker.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            public IFormFile AvatarFormFile { get; set; }
         }
 
         private async Task LoadAsync(BTUser user)
@@ -66,6 +77,14 @@ namespace Titan_BugTracker.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userManager.GetUserAsync(User);
+
+            if (Input.AvatarFormFile != null)
+            {
+                user.AvatarFileData = await _fileService.ConvertFileToByteArrayAsync(Input.AvatarFormFile);
+                user.AvatarFileName = Input.AvatarFormFile.FileName;
+                user.AvatarContentType = Input.AvatarFormFile.ContentType;
+            }
+
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");

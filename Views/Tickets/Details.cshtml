@@ -66,8 +66,8 @@
                                 <img src="assets/images/users/user-1.jpg" alt="user" class="rounded-circle thumb-xs">
                             </a>*@
                             </div><!--end img-group-->
-                            @*<ul class="list-inline mb-0 align-self-center">
-                            <li class="list-item d-inline-block me-2">
+                            <ul class="list-inline mb-0 align-self-center">
+                            @*<li class="list-item d-inline-block me-2">
                                 <a class="" href="#">
                                     <i class="mdi mdi-format-list-bulleted text-success font-15"></i>
                                     <span class="text-muted fw-bold">15/100</span>
@@ -78,18 +78,18 @@
                                     <i class="mdi mdi-comment-outline text-primary font-15"></i>
                                     <span class="text-muted fw-bold">3</span>
                                 </a>
-                            </li>
+                            </li>*@
                             <li class="list-item d-inline-block">
-                                <a class="ms-2" href="#">
-                                    <i class="mdi mdi-pencil-outline text-muted font-18"></i>
+                                <a class="ms-2" asp-action="Edit" asp-controller="Tickets" asp-route-id="@Model.Id">
+                                    <i class="mdi mdi-pencil-outline text-primary font-18"></i>
                                 </a>
                             </li>
                             <li class="list-item d-inline-block">
                                 <a class="" href="#">
-                                    <i class="mdi mdi-trash-can-outline text-muted font-18"></i>
+                                    <i class="mdi mdi-trash-can-outline text-danger font-18"></i>
                                 </a>
                             </li>
-                        </ul>*@
+                        </ul>
                         </div>
                     </div><!--end task-box-->
                 </div><!--end card-body-->
@@ -167,7 +167,7 @@
                             <div class="col-sm-2 ">
                                 <div class="card">
                                     <div class="file">
-                                        <a asp-action="ShowFile" asp-controller="Tickets" asp-route-Id="@item.Id">
+                                        <a asp-action="ShowFile" asp-controller="Tickets" asp-route-Id="@item.Id" data-bs-toggle="tooltip" data-bs-placement="top" title="@item.Description">
 
                                             <div class="icon">
                                                 <img src="@BTFileService.GetFileIcon(item.FileName)" style="height:60px;width:60px" />
@@ -192,7 +192,7 @@
                 <div class="card-body scroll">
                     <div class="slimscroll activity-scroll">
                         <div class="activity">
-                            @foreach (TicketHistory history in Model.History.OrderByDescending(h => h.Created))
+                            @foreach (TicketHistory history in Model.History)
                             {
                                 <div class="activity-info">
                                     <div class="icon-info-activity">

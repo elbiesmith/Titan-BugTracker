@@ -7,7 +7,7 @@
 }
 
 <div class="col-md-5 col-xl-3 col-lg-4">
-    <div class="card mb-0 border-0">
+    <div class="card mb-0 border-0 ms-0">
         <div class="card-body p-0">
             <div class="text-center p-3">
                 <a asp-action="Landing" asp-controller="Home" class="logo logo-admin">
@@ -63,15 +63,23 @@
                 <h6 class="card-bg px-3 my-4 d-inline-block">Or Login With</h6>
             </div>
             <div class="d-flex justify-content-center mb-1">
-                <a href="#" class="d-flex justify-content-center align-items-center thumb-sm bg-soft-primary rounded-circle me-2">
-                    <i class="fab fa-facebook align-self-center"></i>
-                </a>
-                <a href="#" class="d-flex justify-content-center align-items-center thumb-sm bg-soft-info rounded-circle me-2">
-                    <i class="fab fa-twitter align-self-center"></i>
-                </a>
-                <a href="#" class="d-flex justify-content-center align-items-center thumb-sm bg-soft-danger rounded-circle">
-                    <i class="fab fa-google align-self-center"></i>
-                </a>
+                <div class="col-md-6 col-md-offset-2">
+                    <section>
+                     
+                        <form class="" id="account" method="post">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-12 btn-block">
+                                        <button type="submit" style="width:inherit;height:min-content" class="btn ripple btn-outline-primary p-10 m-2" name="demoEmail" value="DemoAdminEmail">Demo Admin</button>
+                                        <button type="submit" style="width:inherit;height:min-content" class="btn ripple btn-outline-primary p-10 m-2" name="demoEmail" value="DemoPMEmail">Demo PM</button>
+                                        <button type="submit" style="width:inherit;height:min-content" class="btn ripple btn-outline-primary p-10 m-2" name="demoEmail" value="DemoDevEmail">Demo Developer</button>
+                                        <button type="submit" style="width:inherit;height:min-content" class="btn ripple btn-outline-primary p-10 m-2" name="demoEmail" value="DemoSubEmail">Demo Submitter</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </section>
+                </div>
             </div>
         </div><!--end card-body-->
     </div><!--end card-->

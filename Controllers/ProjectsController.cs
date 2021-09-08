@@ -130,11 +130,9 @@ namespace Titan_BugTracker.Controllers
             {
                 return NotFound();
             }
-
-            var project = await _context.Projects
-                .Include(p => p.Company)
-                .Include(p => p.ProjectPriority)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            int companyId = User.Identity.GetCompanyId().Value;
+            var project = await _projectService.GetProjectByIdAsync((int)id, companyId);
+            
             if (project == null)
             {
                 return NotFound();
@@ -142,6 +140,37 @@ namespace Titan_BugTracker.Controllers
 
             return View(project);
         }
+
+        public async Task<IActionResult> AssignPMIndex()
+        {
+            int companyId = User.Identity.GetCompanyId().Value;
+            PMIndexViewModel model = new();
+            model.Projects = await _projectService.GetUnassignedProjectsAsync(companyId);
+            model.PMList = new SelectList(await _rolesService.GetUsersInRoleAsync(Roles.ProjectManager.ToString(), companyId), "Id", "FullName");
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignPMIndex(PMIndexViewModel model, int projectId)
+        {
+            int companyId = User.Identity.GetCompanyId().Value;
+            if (ModelState.IsValid)
+            {
+                if (ModelState.IsValid)
+                {
+                    if (model.PmId != null)
+                    {
+                        await _projectService.AddProjectManagerAsync(model.PmId, projectId); 
+                    }
+                }
+            }
+
+            return RedirectToAction("ManageProjects", "Projects");
+        }
+
+
 
         // GET: Projects/Create
         [Authorize(Roles = "Admin, ProjectManager")]
@@ -168,15 +197,7 @@ namespace Titan_BugTracker.Controllers
         //    return View();
         //}
 
-        public async Task<IActionResult> AssignPMIndex()
-        {
-            int companyId = User.Identity.GetCompanyId().Value;
-            PMIndexViewModel model = new();
-            model.Projects = await _projectService.GetUnassignedProjectsAsync(companyId);
-            model.PMList = new SelectList(await _rolesService.GetUsersInRoleAsync(Roles.ProjectManager.ToString(), companyId), "Id", "FullName");
-
-            return View(model);
-        }
+       
 
         // POST: Projects/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -210,7 +231,7 @@ namespace Titan_BugTracker.Controllers
                 {
                     throw;
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("ManageProjects");
             }
             return RedirectToAction("Create");
         }

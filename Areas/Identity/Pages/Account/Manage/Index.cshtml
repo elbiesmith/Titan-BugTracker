@@ -1,30 +1,264 @@
 ﻿@page
 @model IndexModel
+@using Microsoft.AspNetCore.Identity
+@using Titan_BugTracker.Models.Enums
+@inject UserManager<BTUser> UserManager
+
 @{
     ViewData["Title"] = "Profile";
     ViewData["ActivePage"] = ManageNavPages.Index;
+    BTUser user = await UserManager.GetUserAsync(User);
 }
 
-<h4>@ViewData["Title"]</h4>
-<partial name="_StatusMessage" model="Model.StatusMessage" />
-<div class="row">
-    <div class="col-md-6">
-        <form id="profile-form" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Username"></label>
-                <input asp-for="Username" class="form-control" disabled />
+<div class="container-fluid ms-0">
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="float-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Bug Avenger</a></li>
+                        <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                        <li class="breadcrumb-item active">Profile</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Profile</h4>
             </div>
-            <div class="form-group">
-                <label asp-for="Input.PhoneNumber"></label>
-                <input asp-for="Input.PhoneNumber" class="form-control" />
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-            </div>
-            <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
-        </form>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
     </div>
-</div>
+    <!-- end page title end breadcrumb -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="met-profile">
+                        <div class="row">
+                            <div class="col-lg-4 align-self-center mb-3 mb-lg-0">
+                                <div class="met-profile-main">
 
+                                    <div class="met-profile-main-pic">
+
+                                        @if (user.AvatarFileData != null)
+
+                                        {
+                                            <img src="data:image/*;base64, @(Convert.ToBase64String(user.AvatarFileData))" id="imageFileData" alt="" height="110" class="rounded-circle">
+                                        }
+                                        else
+                                        {
+                                            <img src="~/img/noImage.jpg" id="imageFileData" height="110" class="rounded-circle">
+                                        }
+                                        <span class="met-profile_main-pic-change">
+                                            <label class="fas fa-camera text-light">
+                                                <input type="file" accept=".png,.jpg,.jpeg.gif" name="AvatarFormFile"
+                                                       onchange="document.getElementById('imageFileData').src = window.URL.createObjectURL(this.files[0])" hidden>
+                                            </label>
+                                        </span>
+                                    </div>
+                                    <div class="met-profile_user-detail">
+                                        <h5 class="met-user-name">@user.FullName</h5>
+                                        <p class="mb-0 met-user-name-post">Admin</p>
+                                    </div>
+                                </div>
+                            </div><!--end col-->
+
+                            <div class="col-lg-4 ms-auto align-self-center">
+                                <ul class="list-unstyled personal-detail mb-0">
+                                    <li class=""><i class="las la-phone mr-2 text-secondary font-22 align-middle"></i> <b> phone </b> : @user.PhoneNumber</li>
+                                    <li class="mt-2"><i class="las la-envelope text-secondary font-22 align-middle mr-2"></i> <b> Email </b> : @user.Email</li>
+                                    @*<li class="mt-2">
+                                            <i class="las la-globe text-secondary font-22 align-middle mr-2"></i> <b> Website </b> :
+                                            <a href="https://mannatthemes.com/" class="font-14 text-primary">https://mannatthemes.com/</a>
+                                        </li>*@
+                                </ul>
+                            </div><!--end col-->
+                            <!--<div class="col-lg-4 align-self-center">
+                                <div class="row">
+                                    <div class="col-auto text-end border-end">
+                                        <button type="button" class="btn btn-soft-primary btn-icon-circle btn-icon-circle-sm mb-2">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </button>
+                                        <p class="mb-0 fw-semibold">Facebook</p>
+                                        <h4 class="m-0 fw-bold">25k <span class="text-muted font-12 fw-normal">Followers</span></h4>
+                                    </div>-->
+                            <!--end col-->
+                            <!--<div class="col-auto">
+                                <button type="button" class="btn btn-soft-info btn-icon-circle btn-icon-circle-sm mb-2">
+                                    <i class="fab fa-twitter"></i>
+                                </button>
+                                <p class="mb-0 fw-semibold">Twitter</p>
+                                <h4 class="m-0 fw-bold">58k <span class="text-muted font-12 fw-normal">Followers</span></h4>
+                            </div>-->
+                            <!--end col-->
+                            <!--</div>--><!--end row-->
+                            <!--</div>--><!--end col-->
+                        </div><!--end row-->
+                    </div><!--end f_profile-->
+                </div><!--end card-body-->
+                <div class="card-body p-0">
+                    <!-- Tab panes -->
+                    <div>
+
+                        <div class=" p-3" active id="Settings">
+                            <div class="row">
+                                <div class="col-lg-6 col-xl-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="row align-items-center">
+                                                <div class="col">
+                                                    <h4 class="card-title">Personal Information</h4>
+                                                </div><!--end col-->
+                                            </div>  <!--end row-->
+                                        </div><!--end card-header-->
+                                        <div class="card-body">
+                                            <form id="profile-form" method="post" enctype="multipart/form-data">
+                                                @*<div class="form-group mb-3 row">
+                                                        <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">First Name</label>
+                                                        <div class="col-lg-9 col-xl-8">
+                                                            <input class="form-control" type="text" value="Rosa">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group mb-3 row">
+                                                        <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">Last Name</label>
+                                                        <div class="col-lg-9 col-xl-8">
+                                                            <input class="form-control" type="text" value="Dodson">
+                                                        </div>
+                                                    </div>*@
+                                                <div class="form-group mb-3 row">
+                                                    <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">Email Address</label>
+                                                    <div class="col-lg-9 col-xl-8">
+                                                        <div class="input-group">
+                                                            <span class="input-group-text"><i class="las la-at"></i></span>
+                                                            <input type="text" class="form-control" value="@user.UserName" placeholder="Email" aria-describedby="basic-addon1" disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group mb-3 row">
+                                                    <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">Company</label>
+                                                    <div class="col-lg-9 col-xl-8">
+                                                        <input class="form-control" type="text" disabled value="MannatThemes">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group mb-3 row">
+                                                    <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label" asp-for="Input.PhoneNumber">Contact Phone</label>
+                                                    <div class="col-lg-9 col-xl-8">
+                                                        <div class="input-group">
+                                                            <span class="input-group-text"><i class="las la-phone"></i></span>
+                                                            <input type="text" class="form-control" value="@user.PhoneNumber" asp-for="Input.PhoneNumber" placeholder="Phone" aria-describedby="basic-addon1">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group mb-3 row">
+                                                    <div class="col-lg-9 col-xl-8 offset-lg-3">
+                                                        <label class="btn btn-de-primary text-light">
+                                                            Change Avatar
+                                                            <input type="file" accept=".png,.jpg,.jpeg.gif" asp-for="Input.AvatarFormFile"
+                                                                   onchange="document.getElementById('imageFileData').src = window.URL.createObjectURL(this.files[0])" hidden>
+                                                        </label>
+                                                        <button type="submit" class="btn btn-de-primary">Submit</button>
+                                                        <button type="button" class="btn btn-de-danger">Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div> <!--end col-->
+                                <div class="col-lg-6 col-xl-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="card-title">Change Password</h4>
+                                        </div><!--end card-header-->
+                                        <div class="card-body">
+                                            <div class="form-group mb-3 row">
+                                                <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">Current Password</label>
+                                                <div class="col-lg-9 col-xl-8">
+                                                    <input class="form-control" type="password" placeholder="Password">
+                                                    @*<a href="#" class="text-primary font-12">Forgot password ?</a>*@
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-3 row">
+                                                <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">New Password</label>
+                                                <div class="col-lg-9 col-xl-8">
+                                                    <input class="form-control" type="password" placeholder="New Password">
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-3 row">
+                                                <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">Confirm Password</label>
+                                                <div class="col-lg-9 col-xl-8">
+                                                    <input class="form-control" type="password" placeholder="Re-Password">
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-3 row">
+                                                <div class="col-lg-9 col-xl-8 offset-lg-3">
+                                                    <button type="submit" class="btn btn-de-primary">Change Password</button>
+                                                    <button type="button" class="btn btn-de-danger">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </div><!--end card-body-->
+                                    </div><!--end card-->
+                                    <!--<div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-title">Other Settings</h4>
+                                    </div>-->
+                                    <!--end card-header-->
+                                    <!--<div class="card-body">
+
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="Email_Notifications" checked>
+                                            <label class="form-check-label" for="Email_Notifications">
+                                                Email Notifications
+                                            </label>
+                                            <span class="form-text text-muted font-12 mt-0">Do you need them?</span>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="API_Access">
+                                            <label class="form-check-label" for="API_Access">
+                                                API Access
+                                            </label>
+                                            <span class="form-text text-muted font-12 mt-0">Enable/Disable access</span>
+                                        </div>
+                                    </div>-->
+                                    <!--end card-body-->
+                                    <!--</div>--><!--end card-->
+                                </div> <!-- end col -->
+                            </div><!--end row-->
+                        </div>
+                    </div>
+                </div> <!--end card-body-->
+            </div><!--end card-->
+        </div><!--end col-->
+    </div><!--end row-->
+</div><!-- container -->
+<!--Start Footer-->
+<!-- Footer Start -->
+<!-- end page content -->
+@*
+
+    <h4>@ViewData["Title"]</h4>
+    <partial name="_StatusMessage" model="Model.StatusMessage" />
+    <div class="row">
+        <div class="col-md-6">
+            <form id="profile-form" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Username"></label>
+                    <input asp-for="Username" class="form-control" disabled />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.PhoneNumber"></label>
+                    <input asp-for="Input.PhoneNumber" class="form-control" />
+                    <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                </div>
+                <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
+            </form>
+        </div>
+    </div>
+*@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script></script>
+
 }
