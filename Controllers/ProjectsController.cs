@@ -132,7 +132,7 @@ namespace Titan_BugTracker.Controllers
             }
             int companyId = User.Identity.GetCompanyId().Value;
             var project = await _projectService.GetProjectByIdAsync((int)id, companyId);
-            
+
             if (project == null)
             {
                 return NotFound();
@@ -162,15 +162,13 @@ namespace Titan_BugTracker.Controllers
                 {
                     if (model.PmId != null)
                     {
-                        await _projectService.AddProjectManagerAsync(model.PmId, projectId); 
+                        await _projectService.AddProjectManagerAsync(model.PmId, projectId);
                     }
                 }
             }
 
             return RedirectToAction("ManageProjects", "Projects");
         }
-
-
 
         // GET: Projects/Create
         [Authorize(Roles = "Admin, ProjectManager")]
@@ -196,8 +194,6 @@ namespace Titan_BugTracker.Controllers
         //{
         //    return View();
         //}
-
-       
 
         // POST: Projects/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -259,7 +255,7 @@ namespace Titan_BugTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,StartDate,EndDate,FormFile, FileData, FileName, FileContentType,Archived,CompanyId,ProjectPriorityId")] Project project)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,StartDate,EndDate,FormFile, FileData, FileName, FileContentType,CompanyId,ProjectPriorityId")] Project project)
         {
             if (id != project.Id)
             {
