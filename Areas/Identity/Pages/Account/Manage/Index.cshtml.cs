@@ -47,12 +47,16 @@ namespace Titan_BugTracker.Areas.Identity.Pages.Account.Manage
             public string PhoneNumber { get; set; }
 
             public IFormFile AvatarFormFile { get; set; }
+
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
         }
 
         private async Task LoadAsync(BTUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            
 
             Username = userName;
 
@@ -83,6 +87,8 @@ namespace Titan_BugTracker.Areas.Identity.Pages.Account.Manage
                 user.AvatarFileData = await _fileService.ConvertFileToByteArrayAsync(Input.AvatarFormFile);
                 user.AvatarFileName = Input.AvatarFormFile.FileName;
                 user.AvatarContentType = Input.AvatarFormFile.ContentType;
+
+                await _userManager.UpdateAsync(user);
             }
 
             if (user == null)
@@ -105,6 +111,17 @@ namespace Titan_BugTracker.Areas.Identity.Pages.Account.Manage
                     StatusMessage = "Unexpected error when trying to set phone number.";
                     return RedirectToPage();
                 }
+            }
+
+            if(Input.FirstName != user.FirstName)
+            {
+                user.FirstName = Input.FirstName;
+                await _userManager.UpdateAsync(user);
+            }
+            if (Input.LastName != user.LastName)
+            {
+                user.LastName = Input.LastName;
+                await _userManager.UpdateAsync(user);
             }
 
             await _signInManager.RefreshSignInAsync(user);

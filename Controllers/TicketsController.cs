@@ -25,9 +25,10 @@ namespace Titan_BugTracker.Controllers
         private readonly IBTTicketService _ticketService;
         private readonly IBTTicketHistoryService _historyService;
         private readonly IBTNotificationService _notificationService;
+        private readonly IBTRolesService _rolesService;
 
         public TicketsController(ApplicationDbContext context, IBTProjectService projectService, UserManager<BTUser> userManager,
-            IBTTicketService ticketService, IBTTicketHistoryService historyService, IBTNotificationService notificationService)
+            IBTTicketService ticketService, IBTTicketHistoryService historyService, IBTNotificationService notificationService, IBTRolesService rolesService)
         {
             _context = context;
             _projectService = projectService;
@@ -35,6 +36,7 @@ namespace Titan_BugTracker.Controllers
             _ticketService = ticketService;
             _historyService = historyService;
             _notificationService = notificationService;
+            _rolesService = rolesService;
         }
 
         // GET: Tickets
@@ -124,8 +126,8 @@ namespace Titan_BugTracker.Controllers
 
                 //TODO: Send Notification
                 BTUser projectManager = await _projectService.GetProjectManagerAsync(ticket.ProjectId);
-
                 int companyId = User.Identity.GetCompanyId().Value;
+                BTUser admin = (await _rolesService.GetUsersInRoleAsync(Roles.Admin.ToString(), companyId)).FirstOrDefault();
 
                 Notification notification = new()
                 {
@@ -144,6 +146,7 @@ namespace Titan_BugTracker.Controllers
                 }
                 else
                 {
+                    notification.RecipientId = admin.Id;
                     await _notificationService.AddNotificationAsync(notification);
                     await _notificationService.SendEmailNotificationsByRoleAsync(notification, companyId, Roles.Admin.ToString());
                 }

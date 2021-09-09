@@ -112,17 +112,14 @@
                                     <li class="nav-item">
                                         <a class="nav-link" asp-action="MyTickets" asp-controller="Tickets">My Tickets</a>
                                     </li><!--end nav-item-->
-                                    @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
-                                    {
+                                    
+                                        
                                         <li class="nav-item">
-                                            <a class="nav-link" asp-action="AllTickets" asp-controller="Tickets">Assign Tickets</a>
+                                            <a class="nav-link" asp-action="Create" asp-controller="Tickets">Add Ticket</a>
                                         </li><!--end nav-item-->
-                                        <li class="nav-item">
-                                            <a class="nav-link" asp-action="MyTickets" asp-controller="Tickets">Add Ticket</a>
-                                        </li><!--end nav-item-->
-                                    }
+                                    
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-action="AssignPMIndex" asp-controller="Projects">Ticket Archive</a>
+                                        <a class="nav-link" href="#">Ticket Archive</a>
                                     </li>
                                 </ul><!--end nav-->
                             </div><!--end sidebarDashboards-->
@@ -263,7 +260,16 @@
                     <a class="nav-link dropdown-toggle nav-user" data-bs-toggle="dropdown" href="#" role="button"
                        aria-haspopup="false" aria-expanded="false">
                         <div class="d-flex align-items-center">
-                            <img src="~/assets/images/users/user-4.jpg" alt="profile-user" class="rounded-circle me-2 thumb-sm" />
+                            @if (btUser.AvatarFileData != null)
+
+                            {
+                                <img src="data:image/*;base64, @(Convert.ToBase64String(btUser.AvatarFileData))" alt="" height="110" class="rounded-circle me-2 thumb-sm">
+                            }
+                            else
+                            {
+                                <img src="~/img/noImage.jpg"  height="110" class="rounded-circle me-2 thumb-sm">
+                            }
+                            @*<img src="~/assets/images/users/user-4.jpg" alt="profile-user" class="rounded-circle me-2 thumb-sm" />*@
                             <div>
 
                                 @{

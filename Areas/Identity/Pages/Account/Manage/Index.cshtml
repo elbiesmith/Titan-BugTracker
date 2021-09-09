@@ -49,16 +49,23 @@
                                         {
                                             <img src="~/img/noImage.jpg" id="imageFileData" height="110" class="rounded-circle">
                                         }
-                                        <span class="met-profile_main-pic-change">
-                                            <label class="fas fa-camera text-light">
-                                                <input type="file" accept=".png,.jpg,.jpeg.gif" name="AvatarFormFile"
-                                                       onchange="document.getElementById('imageFileData').src = window.URL.createObjectURL(this.files[0])" hidden>
-                                            </label>
-                                        </span>
+                                        @*<span class="met-profile_main-pic-change">
+                                    <label class="fas fa-camera text-light">
+                                        <input type="file" accept=".png,.jpg,.jpeg.gif" name="AvatarFormFile"
+                                               onchange="document.getElementById('imageFileData').src = window.URL.createObjectURL(this.files[0])" hidden>
+                                    </label>
+                                </span>*@
                                     </div>
                                     <div class="met-profile_user-detail">
                                         <h5 class="met-user-name">@user.FullName</h5>
-                                        <p class="mb-0 met-user-name-post">Admin</p>
+                                        <p class="mb-0 met-user-name-post">
+                                            @{
+                                                @foreach (var role in await UserManager.GetRolesAsync(user))
+                                                {
+                                                    <span class="d-none d-md-block">@role</span>
+                                                }
+                                            }
+                                        </p>
                                     </div>
                                 </div>
                             </div><!--end col-->
@@ -68,34 +75,35 @@
                                     <li class=""><i class="las la-phone mr-2 text-secondary font-22 align-middle"></i> <b> phone </b> : @user.PhoneNumber</li>
                                     <li class="mt-2"><i class="las la-envelope text-secondary font-22 align-middle mr-2"></i> <b> Email </b> : @user.Email</li>
                                     @*<li class="mt-2">
-                                            <i class="las la-globe text-secondary font-22 align-middle mr-2"></i> <b> Website </b> :
-                                            <a href="https://mannatthemes.com/" class="font-14 text-primary">https://mannatthemes.com/</a>
-                                        </li>*@
+                                <i class="las la-globe text-secondary font-22 align-middle mr-2"></i> <b> Website </b> :
+                                <a href="https://mannatthemes.com/" class="font-14 text-primary">https://mannatthemes.com/</a>
+                            </li>*@
                                 </ul>
                             </div><!--end col-->
                             <!--<div class="col-lg-4 align-self-center">
-                                <div class="row">
-                                    <div class="col-auto text-end border-end">
-                                        <button type="button" class="btn btn-soft-primary btn-icon-circle btn-icon-circle-sm mb-2">
-                                            <i class="fab fa-facebook-f"></i>
-                                        </button>
-                                        <p class="mb-0 fw-semibold">Facebook</p>
-                                        <h4 class="m-0 fw-bold">25k <span class="text-muted font-12 fw-normal">Followers</span></h4>
-                                    </div>-->
+                    <div class="row">
+                        <div class="col-auto text-end border-end">
+                            <button type="button" class="btn btn-soft-primary btn-icon-circle btn-icon-circle-sm mb-2">
+                                <i class="fab fa-facebook-f"></i>
+                            </button>
+                            <p class="mb-0 fw-semibold">Facebook</p>
+                            <h4 class="m-0 fw-bold">25k <span class="text-muted font-12 fw-normal">Followers</span></h4>
+                        </div>-->
                             <!--end col-->
                             <!--<div class="col-auto">
-                                <button type="button" class="btn btn-soft-info btn-icon-circle btn-icon-circle-sm mb-2">
-                                    <i class="fab fa-twitter"></i>
-                                </button>
-                                <p class="mb-0 fw-semibold">Twitter</p>
-                                <h4 class="m-0 fw-bold">58k <span class="text-muted font-12 fw-normal">Followers</span></h4>
-                            </div>-->
+                    <button type="button" class="btn btn-soft-info btn-icon-circle btn-icon-circle-sm mb-2">
+                        <i class="fab fa-twitter"></i>
+                    </button>
+                    <p class="mb-0 fw-semibold">Twitter</p>
+                    <h4 class="m-0 fw-bold">58k <span class="text-muted font-12 fw-normal">Followers</span></h4>
+                </div>-->
                             <!--end col-->
                             <!--</div>--><!--end row-->
                             <!--</div>--><!--end col-->
                         </div><!--end row-->
                     </div><!--end f_profile-->
                 </div><!--end card-body-->
+                <partial name="_StatusMessage" for="StatusMessage" />
                 <div class="card-body p-0">
                     <!-- Tab panes -->
                     <div>
@@ -113,18 +121,6 @@
                                         </div><!--end card-header-->
                                         <div class="card-body">
                                             <form id="profile-form" method="post" enctype="multipart/form-data">
-                                                @*<div class="form-group mb-3 row">
-                                                        <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">First Name</label>
-                                                        <div class="col-lg-9 col-xl-8">
-                                                            <input class="form-control" type="text" value="Rosa">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group mb-3 row">
-                                                        <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">Last Name</label>
-                                                        <div class="col-lg-9 col-xl-8">
-                                                            <input class="form-control" type="text" value="Dodson">
-                                                        </div>
-                                                    </div>*@
                                                 <div class="form-group mb-3 row">
                                                     <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">Email Address</label>
                                                     <div class="col-lg-9 col-xl-8">
@@ -140,6 +136,18 @@
                                                         <input class="form-control" type="text" disabled value="MannatThemes">
                                                     </div>
                                                 </div>
+                                                <div class="form-group mb-3 row">
+                                                    <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">First Name</label>
+                                                    <div class="col-lg-9 col-xl-8">
+                                                        <input class="form-control" type="text" asp-for="Input.FirstName" value="@user.FirstName">
+                                                    </div>
+
+                                                    <label class="col-xl-3 col-lg-3 text-end mt-3 mb-lg-0 align-self-center form-label">Last Name</label>
+                                                    <div class="col-lg-9 col-xl-8">
+                                                        <input class="form-control mt-3" asp-for="Input.LastName" type="text" value="@user.LastName">
+                                                    </div>
+                                                </div>
+
 
                                                 <div class="form-group mb-3 row">
                                                     <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label" asp-for="Input.PhoneNumber">Contact Phone</label>
@@ -171,55 +179,58 @@
                                             <h4 class="card-title">Change Password</h4>
                                         </div><!--end card-header-->
                                         <div class="card-body">
-                                            <div class="form-group mb-3 row">
-                                                <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">Current Password</label>
-                                                <div class="col-lg-9 col-xl-8">
-                                                    <input class="form-control" type="password" placeholder="Password">
-                                                    @*<a href="#" class="text-primary font-12">Forgot password ?</a>*@
+
+                                            <form id="change-password-form" method="post" asp-area="Identity" asp-page="/Account/Manage/ChangePassword">
+                                                <div class="form-group mb-3 row">
+                                                    <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">Current Password</label>
+                                                    <div class="col-lg-9 col-xl-8">
+                                                        <input class="form-control" type="password" name="OldPassword" placeholder="Password">
+                                                        <a id="forgot-password" asp-area="Identity" asp-page="/Account/ForgotPassword" class="text-primary font-12">Forgot password ?</a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="form-group mb-3 row">
-                                                <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">New Password</label>
-                                                <div class="col-lg-9 col-xl-8">
-                                                    <input class="form-control" type="password" placeholder="New Password">
+                                                <div class="form-group mb-3 row">
+                                                    <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">New Password</label>
+                                                    <div class="col-lg-9 col-xl-8">
+                                                        <input class="form-control" type="password" name="NewPassword" placeholder="New Password">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="form-group mb-3 row">
-                                                <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">Confirm Password</label>
-                                                <div class="col-lg-9 col-xl-8">
-                                                    <input class="form-control" type="password" placeholder="Re-Password">
+                                                <div class="form-group mb-3 row">
+                                                    <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">Confirm Password</label>
+                                                    <div class="col-lg-9 col-xl-8">
+                                                        <input class="form-control" type="password" name="ConfirmPassword" placeholder="Re-Password">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="form-group mb-3 row">
-                                                <div class="col-lg-9 col-xl-8 offset-lg-3">
-                                                    <button type="submit" class="btn btn-de-primary">Change Password</button>
-                                                    <button type="button" class="btn btn-de-danger">Cancel</button>
+                                                <div class="form-group mb-3 row">
+                                                    <div class="col-lg-9 col-xl-8 offset-lg-3">
+                                                        <button type="submit" class="btn btn-de-primary">Change Password</button>
+                                                        @*<button type="button" class="btn btn-de-danger">Cancel</button>*@
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            </form>
                                         </div><!--end card-body-->
                                     </div><!--end card-->
                                     <!--<div class="card">
-                                    <div class="card-header">
-                                        <h4 class="card-title">Other Settings</h4>
-                                    </div>-->
+                        <div class="card-header">
+                            <h4 class="card-title">Other Settings</h4>
+                        </div>-->
                                     <!--end card-header-->
                                     <!--<div class="card-body">
 
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="Email_Notifications" checked>
-                                            <label class="form-check-label" for="Email_Notifications">
-                                                Email Notifications
-                                            </label>
-                                            <span class="form-text text-muted font-12 mt-0">Do you need them?</span>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="API_Access">
-                                            <label class="form-check-label" for="API_Access">
-                                                API Access
-                                            </label>
-                                            <span class="form-text text-muted font-12 mt-0">Enable/Disable access</span>
-                                        </div>
-                                    </div>-->
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="Email_Notifications" checked>
+                                <label class="form-check-label" for="Email_Notifications">
+                                    Email Notifications
+                                </label>
+                                <span class="form-text text-muted font-12 mt-0">Do you need them?</span>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="API_Access">
+                                <label class="form-check-label" for="API_Access">
+                                    API Access
+                                </label>
+                                <span class="form-text text-muted font-12 mt-0">Enable/Disable access</span>
+                            </div>
+                        </div>-->
                                     <!--end card-body-->
                                     <!--</div>--><!--end card-->
                                 </div> <!-- end col -->

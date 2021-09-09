@@ -88,14 +88,14 @@ namespace Titan_BugTracker.Areas.Identity.Pages.Account.Manage
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
-                return Page();
+                return RedirectToPage("./Index");
             }
 
             await _signInManager.RefreshSignInAsync(user);
             _logger.LogInformation("User changed their password successfully.");
             StatusMessage = "Your password has been changed.";
 
-            return RedirectToPage();
+            return RedirectToPage("./Index");
         }
     }
 }
