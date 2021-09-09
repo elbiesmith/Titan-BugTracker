@@ -86,8 +86,9 @@ namespace Titan_BugTracker.Controllers
                 Guid guid = Guid.NewGuid();
                 var token = _protector.Protect(guid.ToString());
                 var email = _protector.Protect(invite.InviteeEmail);
+                var company = _protector.Protect(companyId.ToString());
 
-                var callbackUrl = Url.Action("ProcessInvite", "Invites", new { token, email }, protocol: Request.Scheme);
+                var callbackUrl = Url.Action("ProcessInvite", "Invites", new { token, email, company }, protocol: Request.Scheme);
 
                 var body = invite.Message + Environment.NewLine + "Please join my company. " + Environment.NewLine + "Please click the following link to join <a href=\"" + callbackUrl + "\">COLLABORATE</a>";
                 var destination = invite.InviteeEmail;
@@ -105,11 +106,43 @@ namespace Titan_BugTracker.Controllers
 
                 return RedirectToAction("Dashboard", "Home");
             }
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", invite.CompanyId);
-            ViewData["InviteeId"] = new SelectList(_context.Users, "Id", "Id", invite.InviteeId);
-            ViewData["InvitorId"] = new SelectList(_context.Users, "Id", "Id", invite.InvitorId);
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Description", invite.ProjectId);
-            return View(invite);
+            return RedirectToAction("Create");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ProcessInvite(string token, string email, string company)
+        {
+            if (token == null)
+            {
+                return NotFound();
+            }
+
+            Guid companyToken = Guid.Parse(_protector.Unprotect(token));
+            string inviteeEmail = _protector.Unprotect(email);
+            int companyId = int.Parse(_protector.Unprotect(company));
+
+            Invite invite = await _inviteService.GetInviteAsync(companyToken, inviteeEmail, companyId);
+
+            try
+            {
+                if (invite != null)
+                {
+                    return View(invite);
+                }
+
+                return NotFound();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ProcessInvite(Invite invite)
+        {
+            return RedirectToAction("RegisterByInvite", new { invite });
         }
 
         // GET: Invites/Edit/5
