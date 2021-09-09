@@ -67,6 +67,20 @@ namespace Titan_BugTracker.Areas.Identity.Pages.Account
             [Display(Name = "Email")]
             public string Email { get; set; }
 
+            [Display(Name = "Avatar")]
+            public byte[] ImageData { get; set; }
+
+            [Display(Name = "Company")]
+            public string Company { get; set; }
+
+            [Required]
+            [Display(Name = "CompanyId")]
+            public int CompanyId { get; set; }
+
+            [Required]
+            [Display(Name = "ProjectId")]
+            public int ProjectId { get; set; }
+
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
