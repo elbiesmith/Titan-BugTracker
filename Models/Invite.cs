@@ -26,6 +26,8 @@ namespace Titan_BugTracker.Models
         [Required]
         public string InviteeEmail { get; set; }
 
+        public string Message { get; set; }
+
         [Required]
         [DisplayName("First Name")]
         public string FirstName { get; set; }

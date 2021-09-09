@@ -2,21 +2,36 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Titan_BugTracker.Data;
+using Titan_BugTracker.Extensions;
 using Titan_BugTracker.Models;
+using Titan_BugTracker.Services.Interfaces;
 
 namespace Titan_BugTracker.Controllers
 {
     public class InvitesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IBTProjectService _projectService;
+        private readonly IDataProtector _protector;
+        private readonly IEmailSender _emailSender;
+        private readonly IBTInviteService _inviteService;
+        private readonly UserManager<BTUser> _userManager;
 
-        public InvitesController(ApplicationDbContext context)
+        public InvitesController(ApplicationDbContext context, IBTProjectService projectService, IDataProtectionProvider dataProtectionProvider, IEmailSender emailService, IBTInviteService inviteService, UserManager<BTUser> userManager)
         {
             _context = context;
+            _projectService = projectService;
+            _protector = dataProtectionProvider.CreateProtector("CF.TitanTracker.21");
+            _emailSender = emailService;
+            _inviteService = inviteService;
+            _userManager = userManager;
         }
 
         // GET: Invites
@@ -49,12 +64,11 @@ namespace Titan_BugTracker.Controllers
         }
 
         // GET: Invites/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Description");
-            ViewData["InviteeId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["InvitorId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Description");
+            int companyId = User.Identity.GetCompanyId().Value;
+
+            ViewData["ProjectId"] = new SelectList(await _projectService.GetAllProjectsByCompanyAsync(companyId), "Id", "Name");
             return View();
         }
 
@@ -63,15 +77,35 @@ namespace Titan_BugTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,InviteDate,JoinDate,CompanyToken,InviteeEmail,FirstName,LastName,IsValid,CompanyId,ProjectId,InvitorId,InviteeId")] Invite invite)
+        public async Task<IActionResult> Create([Bind("Id,InviteeEmail,FirstName,LastName,ProjectId, Message")] Invite invite)
         {
             if (ModelState.IsValid)
             {
+                int companyId = User.Identity.GetCompanyId().Value;
+
+                Guid guid = Guid.NewGuid();
+                var token = _protector.Protect(guid.ToString());
+                var email = _protector.Protect(invite.InviteeEmail);
+
+                var callbackUrl = Url.Action("ProcessInvite", "Invites", new { token, email }, protocol: Request.Scheme);
+
+                var body = invite.Message + Environment.NewLine + "Please join my company. " + Environment.NewLine + "Please click the following link to join <a href=\"" + callbackUrl + "\">COLLABORATE</a>";
+                var destination = invite.InviteeEmail;
+                var subject = "Company Invite";
+
+                await _emailSender.SendEmailAsync(destination, subject, body);
+
+                invite.CompanyId = companyId;
+                invite.CompanyToken = guid;
+                invite.InviteDate = DateTimeOffset.Now;
+                invite.InvitorId = _userManager.GetUserId(User);
+                invite.IsValid = true;
+
                 _context.Add(invite);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Description", invite.CompanyId);
+            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", invite.CompanyId);
             ViewData["InviteeId"] = new SelectList(_context.Users, "Id", "Id", invite.InviteeId);
             ViewData["InvitorId"] = new SelectList(_context.Users, "Id", "Id", invite.InvitorId);
             ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Description", invite.ProjectId);
