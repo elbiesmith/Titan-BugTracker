@@ -101,9 +101,9 @@ namespace Titan_BugTracker.Controllers
                 invite.InvitorId = _userManager.GetUserId(User);
                 invite.IsValid = true;
 
-                _context.Add(invite);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                await _inviteService.AddNewInviteAsync(invite);
+
+                return RedirectToAction("Dashboard", "Home");
             }
             ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", invite.CompanyId);
             ViewData["InviteeId"] = new SelectList(_context.Users, "Id", "Id", invite.InviteeId);
