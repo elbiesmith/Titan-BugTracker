@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Titan_BugTracker.Extensions;
 using Titan_BugTracker.Models;
+using Titan_BugTracker.Models.Enums;
 using Titan_BugTracker.Models.ViewModels;
 using Titan_BugTracker.Services.Interfaces;
 
@@ -35,6 +37,7 @@ namespace Titan_BugTracker.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ManageUserRoles()
         {
             List<ManageUserRolesViewModel> model = new();
@@ -55,6 +58,7 @@ namespace Titan_BugTracker.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ManageUserRoles(ManageUserRolesViewModel member)
         {
             BTUser user = (await _companyInfoService.GetAllMembersAsync(_companyId)).FirstOrDefault(u => u.Id == member.BTUser.Id);

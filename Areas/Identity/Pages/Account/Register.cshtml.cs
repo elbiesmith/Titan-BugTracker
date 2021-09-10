@@ -14,7 +14,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Titan_BugTracker.Data;
 using Titan_BugTracker.Models;
+using Titan_BugTracker.Models.Enums;
 
 namespace Titan_BugTracker.Areas.Identity.Pages.Account
 {
@@ -25,17 +27,19 @@ namespace Titan_BugTracker.Areas.Identity.Pages.Account
         private readonly UserManager<BTUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _context;
 
         public RegisterModel(
             UserManager<BTUser> userManager,
             SignInManager<BTUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender, ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
         [BindProperty]
@@ -56,6 +60,14 @@ namespace Titan_BugTracker.Areas.Identity.Pages.Account
             [DisplayName("Last Name")]
             [StringLength(40, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
             public string LastName { get; set; }
+
+            [Required]
+            [Display(Name = "Company Name")]
+            public string CompanyName { get; set; }
+
+            [Required]
+            [Display(Name = "Company Description")]
+            public string CompanyDescription { get; set; }
 
             [Required]
             [EmailAddress]
@@ -98,6 +110,21 @@ namespace Titan_BugTracker.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    await _userManager.AddToRoleAsync(user, Roles.Admin.ToString());
+
+                    Company company = new()
+                    {
+                        Name = Input.CompanyName,
+                        Description = Input.CompanyDescription
+                    };
+
+                    _context.Add(company);
+                    await _context.SaveChangesAsync();
+
+                    user.CompanyId = company.Id;
+                    _context.Update(user);
+                    await _context.SaveChangesAsync();
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
