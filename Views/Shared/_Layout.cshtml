@@ -112,12 +112,11 @@
                                     <li class="nav-item">
                                         <a class="nav-link" asp-action="MyTickets" asp-controller="Tickets">My Tickets</a>
                                     </li><!--end nav-item-->
-                                    
-                                        
-                                        <li class="nav-item">
-                                            <a class="nav-link" asp-action="Create" asp-controller="Tickets">Add Ticket</a>
-                                        </li><!--end nav-item-->
-                                    
+
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-action="Create" asp-controller="Tickets">Add Ticket</a>
+                                    </li><!--end nav-item-->
+
                                     <li class="nav-item">
                                         <a class="nav-link" href="#">Ticket Archive</a>
                                     </li>
@@ -137,23 +136,20 @@
                                 <div class="collapse " id="sidebarAdmin">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
-                                            <a class="nav-link" asp-action="AllProjects" asp-controller="Projects">Company Invite</a>
+                                            <a class="nav-link" asp-action="Create" asp-controller="Invites">Company Invite</a>
                                         </li><!--end nav-item-->
                                         <li class="nav-item">
-                                            <a class="nav-link" asp-action="MyProjects" asp-controller="Projects">Manage Roles</a>
+                                            <a class="nav-link" asp-action="ManageUserRoles" asp-controller="UserRoles">Manage Roles</a>
                                         </li><!--end nav-item-->
                                         <li class="nav-item">
-                                            <a class="nav-link" asp-action="AllTickets" asp-controller="Tickets">Assign Project Manager</a>
+                                            <a class="nav-link" asp-action="AssignPMIndex" asp-controller="Projects">Assign Project Manager</a>
                                         </li><!--end nav-item-->
                                         <li class="nav-item">
-                                            <a class="nav-link" asp-action="MyTickets" asp-controller="Tickets">Manage Projects</a>
+                                            <a class="nav-link" asp-action="ManageProjects" asp-controller="Projects">Manage Projects</a>
                                         </li><!--end nav-item-->
-                                        <li class="nav-item">
-                                            <a class="nav-link" asp-action="AssignPMIndex" asp-controller="Projects">Assign Tickets</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" asp-action="AssignPMIndex" asp-controller="Projects">Member Profiles</a>
-                                        </li>
+                                        @*<li class="nav-item">
+                                                <a class="nav-link" asp-action="AssignPMIndex" asp-controller="Projects">Member Profiles</a>
+                                            </li>*@
                                     </ul><!--end nav-->
                                 </div><!--end sidebarDashboards-->
                             </li><!--end nav-item-->
@@ -267,7 +263,7 @@
                             }
                             else
                             {
-                                <img src="~/img/noImage.jpg"  height="110" class="rounded-circle me-2 thumb-sm">
+                                <img src="~/img/noImage.jpg" height="110" class="rounded-circle me-2 thumb-sm">
                             }
                             @*<img src="~/assets/images/users/user-4.jpg" alt="profile-user" class="rounded-circle me-2 thumb-sm" />*@
                             <div>

@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Titan_BugTracker.Models;
+using Titan_BugTracker.Models.Enums;
 using Titan_BugTracker.Services.Interfaces;
 
 namespace Titan_BugTracker.Areas.Identity.Pages.Account
@@ -44,7 +45,7 @@ namespace Titan_BugTracker.Areas.Identity.Pages.Account
         }
 
         [BindProperty]
-        public InputModel Input { get; set; }
+        public InputModel Input { get; set; } = new InputModel();
 
         public string ReturnUrl { get; set; }
 
@@ -93,10 +94,19 @@ namespace Titan_BugTracker.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task OnGetAsync(int id, int companyId, string returnUrl = null)
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            Invite invite = await _inviteService.GetInviteAsync(id, companyId);
+
+            Input.Email = invite.InviteeEmail;
+            Input.FirstName = invite.FirstName;
+            Input.LastName = invite.LastName;
+            Input.Company = invite.Company.Name;
+            Input.CompanyId = invite.CompanyId;
+            Input.ProjectId = invite.ProjectId;
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -110,12 +120,17 @@ namespace Titan_BugTracker.Areas.Identity.Pages.Account
                     UserName = Input.Email,
                     Email = Input.Email,
                     FirstName = Input.FirstName,
-                    LastName = Input.LastName
+                    LastName = Input.LastName,
+                    CompanyId = Input.CompanyId
                 };
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    await _projectService.AddUserToProjectAsync(user.Id, Input.ProjectId);
+
+                    await _userManager.AddToRoleAsync(user, Roles.Submitter.ToString());
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
