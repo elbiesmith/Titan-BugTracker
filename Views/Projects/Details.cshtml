@@ -47,20 +47,20 @@
                                 <small class="text-muted"></small>
                                 <ul class="list-unstyled list-inline my-1">
                                     @*<li class="list-inline-item me-0">
-                                        <i class="mdi mdi-star text-warning font-18"></i>
-                                    </li>
-                                    <li class="list-inline-item me-0">
-                                        <i class="mdi mdi-star text-warning font-18"></i>
-                                    </li>
-                                    <li class="list-inline-item me-0">
-                                        <i class="mdi mdi-star text-warning font-18"></i>
-                                    </li>
-                                    <li class="list-inline-item me-0">
-                                        <i class="mdi mdi-star text-warning font-18"></i>
-                                    </li>
-                                    <li class="list-inline-item me-0">
-                                        <i class="mdi mdi-star-half text-warning font-18"></i>
-                                    </li>*@
+                                            <i class="mdi mdi-star text-warning font-18"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="mdi mdi-star text-warning font-18"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="mdi mdi-star text-warning font-18"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="mdi mdi-star text-warning font-18"></i>
+                                        </li>
+                                        <li class="list-inline-item me-0">
+                                            <i class="mdi mdi-star-half text-warning font-18"></i>
+                                        </li>*@
                                 </ul>
                             </div>
                             <p class="text-muted px-3">
@@ -68,6 +68,12 @@
                             </p>
                             <div class="mb-3">
                                 <a href="#" class="me-3 text-warning">@Model.Tickets.Count Tickets</a>
+                                <a class="ms-2" asp-action="Edit" asp-controller="Projects" asp-route-id="@Model.Id">
+                                    <i class="mdi mdi-pencil-outline text-muted font-18"></i>
+                                </a>
+                                <a class="" asp-action="ArchiveProject" asp-controller="Projects" asp-route-id="@Model.Id">
+                                    <i class="mdi mdi-trash-can-outline text-danger font-18"></i>
+                                </a>
                                 @*<a href="#" class=" text-warning">295 Following</a>*@
                             </div>
                             @*<button type="button" class="btn btn-sm btn-soft-primary">More Detail</button>*@
@@ -206,12 +212,13 @@
             <div class="col-lg-6">
                 <h5 class="d-inline-block me-2">Project team members.</h5>
                 <div class="img-group d-inline-block">
-                    @foreach(BTUser member in Model.Members) { 
-                    <a class="user-avatar" href="#">
-                        <img src="~/assets/images/users/user-8.jpg" alt="user" class="thumb-xs rounded-circle">
-                    </a>
+                    @foreach (BTUser member in Model.Members)
+                    {
+                        <a class="user-avatar" href="#">
+                            <img src="~/assets/images/users/user-8.jpg" alt="user" class="thumb-xs rounded-circle">
+                        </a>
                     }
-                   
+
                     <a href="#" class="user-avatar">
                         <span class="thumb-xs justify-content-center d-flex align-items-center bg-soft-info rounded-circle fw-semibold">+6</span>
                     </a>
@@ -233,7 +240,7 @@
                                 <div class="task-priority-icon"><i class="fas fa-circle text-success"></i></div>
                                 <p class="text-muted float-right">
                                     @*<span class="text-muted">01:33</span> /
-                                    <span class="text-muted">9:30</span>*@
+                                        <span class="text-muted">9:30</span>*@
                                     @*<span class="mx-1">·</span>*@
                                     <span><i class="far fa-fw fa-clock"></i> @ticket.Created.ToString("MMM dd")</span>
                                 </p>
@@ -286,8 +293,6 @@
                         </div><!--end card-body-->
                     </div><!--end card-->
                 }
-
-
             </div><!--end row-->
         </div><!-- container -->
         <!--Start Rightbar-->

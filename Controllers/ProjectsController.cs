@@ -67,6 +67,23 @@ namespace Titan_BugTracker.Controllers
             return View(myProjects);
         }
 
+        public async Task<IActionResult> ArchiveProject(int id)
+        {
+            try
+            {
+                int companyId = User.Identity.GetCompanyId().Value;
+
+                Project project = await _projectService.GetProjectByIdAsync(id, companyId);
+                await _projectService.ArchiveProjectAsync(project);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return RedirectToAction("AllProjects");
+        }
+
         public async Task<IActionResult> ArchivedProjects()
         {
             int companyId = User.Identity.GetCompanyId().Value;
@@ -155,7 +172,7 @@ namespace Titan_BugTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignPMIndex(PMIndexViewModel model, int projectId)
         {
-            int companyId = User.Identity.GetCompanyId().Value;
+            //int companyId = User.Identity.GetCompanyId().Value;
             if (ModelState.IsValid)
             {
                 if (ModelState.IsValid)

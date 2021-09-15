@@ -83,19 +83,6 @@ namespace Titan_BugTracker.Services
             List<Ticket> tickets = new();
             try
             {
-                //tickets = await _context.Tickets.Where(p => p.Project.CompanyId == companyId && p.Archived == false)
-                //                                .Include(t => t.Comments)
-                //                                .Include(t => t.Attachments)
-                //                                .Include(t => t.History)
-                //                                .Include(t => t.Notifications)
-                //                                .Include(t => t.DeveloperUser)
-                //                                .Include(t => t.OwnerUser)
-                //                                .Include(t => t.TicketStatus)
-                //                                .Include(t => t.TicketPriority)
-                //                                .Include(t => t.TicketType)
-                //                                .Include(p => p.Project)
-                //                                .Include(p => p.ProjectId)
-                //                                .ToListAsync();
 
                 tickets = await _context.Projects.Where(p => p.CompanyId == companyId)
                                                  .SelectMany(t => t.Tickets)
@@ -151,6 +138,23 @@ namespace Titan_BugTracker.Services
                 throw;
             }
         }
+
+        public async Task<List<Ticket>> GetAllDeveloperTicketsByStatusAsync(int companyId, string statusName, string userId)
+        {
+            List<Ticket> tickets = new();
+
+            try
+            {
+                int statusId = (await LookupTicketStatusIdAsync(statusName)).Value;
+                tickets = (await GetAllTicketsByCompanyAsync(companyId)).Where(p => p.TicketStatusId == statusId).Where(p => p.DeveloperUserId == userId).ToList();
+                return tickets;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
 
         public async Task<List<Ticket>> GetAllTicketsByTypeAsync(int companyId, string typeName)
         {

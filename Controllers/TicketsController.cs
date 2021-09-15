@@ -80,6 +80,24 @@ namespace Titan_BugTracker.Controllers
             return View(ticket);
         }
 
+        public async Task<IActionResult> NotificationDetails(int? id, int notificationId)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            await _notificationService.MarkNotificationAsRead(notificationId);
+
+            var ticket = await _ticketService.GetTicketByIdAsync((int)id);
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction("Details", "Tickets", new { id = id.Value });
+        }
+
         // GET: Tickets/Create
         public async Task<IActionResult> Create()
         {
