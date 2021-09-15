@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
@@ -15,6 +17,12 @@ namespace Titan_BugTracker
         public async static Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
+
+            var dbContext = host.Services.CreateScope().ServiceProvider
+                                         .GetRequiredService<ApplicationDbContext>();
+
+            await dbContext.Database.MigrateAsync();
+
             await DataUtility.ManageDataAsync(host);
             host.Run();
         }

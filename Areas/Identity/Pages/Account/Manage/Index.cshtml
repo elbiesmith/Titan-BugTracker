@@ -13,7 +13,6 @@
     BTUser user = await UserManager.GetUserAsync(User);
     int companyId = User.Identity.GetCompanyId().Value;
     Company company = await companyService.GetCompanyInfoByIdAsync(companyId);
-
 }
 
 <div class="container-fluid ms-0">
