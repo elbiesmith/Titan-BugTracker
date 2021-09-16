@@ -232,7 +232,31 @@ namespace Titan_BugTracker.Controllers
                 await _historyService.AddHistoryAsync(oldTicket, newTicket, btUser.Id);
 
                 //TODO: Send Notification
+                BTUser projectManager = await _projectService.GetProjectManagerAsync(ticket.ProjectId);
+                int companyId = User.Identity.GetCompanyId().Value;
+                BTUser admin = (await _rolesService.GetUsersInRoleAsync(Roles.Admin.ToString(), companyId)).FirstOrDefault();
 
+                Notification notification = new()
+                {
+                    TicketId = ticket.Id,
+                    Title = "Ticket Updated",
+                    Message = $"Ticket: {ticket.Title}, was updated by {btUser.FullName}.",
+                    Created = DateTimeOffset.Now,
+                    SenderId = btUser.Id,
+                    RecipientId = projectManager?.Id
+                };
+
+                if (projectManager != null)
+                {
+                    await _notificationService.AddNotificationAsync(notification);
+                    await _notificationService.SendEmailNotificationAsync(notification, notification.Message);
+                }
+                else
+                {
+                    notification.RecipientId = admin.Id;
+                    await _notificationService.AddNotificationAsync(notification);
+                    await _notificationService.SendEmailNotificationsByRoleAsync(notification, companyId, Roles.Admin.ToString());
+                }
                 return RedirectToAction("Details", "Tickets", new { id = ticket.Id });
             }
             //ViewData["DeveloperUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.DeveloperUserId);
