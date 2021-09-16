@@ -1,0 +1,54 @@
+﻿@using Titan_BugTracker.Services.Interfaces
+@model IEnumerable<Titan_BugTracker.Models.BTUser>
+@inject IBTRolesService rolesService
+
+<link href="~/assets/css/datatables.min.css" rel="stylesheet" />
+
+<div class="page-content-tab">
+    <h2>Company Roster</h2>
+    <table class="table mt-3" id="rosterTable">
+        <thead>
+            <tr>
+                <th>
+                    Full Name
+                </th>
+                <th>
+                    Role
+                </th>
+                <th>
+                    Email
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullName)
+                    </td>
+                    <td>
+                        @foreach (var role in await rolesService.GetUserRolesAsync(item))
+                        {
+                            <span>@role</span>
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section scripts
+{
+    <script src="~/assets/js/datatables.min.js"></script>
+
+    <script>
+    $(document).ready(function () {
+            $('#rosterTable').DataTable();
+    });
+    </script>
+}

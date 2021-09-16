@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Titan_BugTracker.Data;
+using Titan_BugTracker.Extensions;
 using Titan_BugTracker.Models;
 using Titan_BugTracker.Services.Interfaces;
 
@@ -29,6 +30,12 @@ namespace Titan_BugTracker.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Companies.ToListAsync());
+        }
+
+        public async Task<IActionResult> MemberIndex()
+        {
+            int companyId = User.Identity.GetCompanyId().Value;
+            return View(await _companyInfoService.GetAllMembersAsync(companyId));
         }
 
         // GET: Companies/Details/5

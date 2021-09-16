@@ -155,6 +155,9 @@
                                         <li class="nav-item">
                                             <a class="nav-link" asp-action="ManageCompany" asp-controller="Companies">Manage Company</a>
                                         </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-action="MemberIndex" asp-controller="Companies">Company Roster</a>
+                                        </li>
                                     </ul><!--end nav-->
                                 </div><!--end sidebarDashboards-->
                             </li><!--end nav-item-->
@@ -176,8 +179,9 @@
                     <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown" href="#" role="button"
                        aria-haspopup="false" aria-expanded="false">
                         <i class="ti ti-bell"></i>
-                        @if (notificationCount > 0) {
-                        <span class="alert-badge"></span>
+                        @if (notificationCount > 0)
+                        {
+                            <span class="alert-badge"></span>
                         }
                     </a>
                     <div class="dropdown-menu dropdown-menu-end dropdown-lg pt-0">
