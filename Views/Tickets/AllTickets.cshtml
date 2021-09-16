@@ -4,8 +4,26 @@
 @{
     ViewData["Title"] = "Index";
 }
-<link href="~/~/assets/css/datatables.min.css" rel="stylesheet" />
+<link href="~/assets/css/datatables.min.css" rel="stylesheet" />
 <div class="page-content-tab">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="float-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Bug Avenger</a>
+                        </li><!--end nav-item-->
+                        <li class="breadcrumb-item">
+                            <a href="#">All Tickets</a>
+                        </li><!--end nav-item-->
+                    </ol>
+                </div>
+                <h4 class="page-title">All Tickets</h4>
+            </div><!--end page-title-box-->
+        </div><!--end col-->
+    </div>
+    <!-- end page title end breadcrumb -->
     <h1>Index</h1>
 
     <p>
@@ -104,7 +122,7 @@
 </div>
 
 @section scripts {
-    <script src="~/~/assets/js/datatables.min.js"></script>
+    <script src="~/assets/js/datatables.min.js"></script>
     <script>
         $(document).ready(function () {
             $('#myTable').DataTable();
