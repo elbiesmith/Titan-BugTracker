@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Titan_BugTracker.Data;
 using Titan_BugTracker.Models;
+using Titan_BugTracker.Models.ViewModels;
 using Titan_BugTracker.Services.Interfaces;
 
 namespace Titan_BugTracker.Controllers
@@ -25,8 +26,11 @@ namespace Titan_BugTracker.Controllers
         // GET: Notifications
         public async Task<IActionResult> Index(string id)
         {
-            List<Notification> notifications = await _notificationService.GetReceivedNotificationsAsync(id);
-            return View(notifications);
+            NotificationsViewModel model = new();
+
+            model.RecievedNotifications = await _notificationService.GetReceivedNotificationsAsync(id);
+            model.SentNotifications = await _notificationService.GetSentNotificationsAsync(id);
+            return View(model);
         }
 
         // GET: Notifications/Details/5

@@ -1,71 +1,151 @@
-﻿@model IEnumerable<Titan_BugTracker.Models.Notification>
-
+﻿@model Titan_BugTracker.Models.ViewModels.NotificationsViewModel
 @{
     ViewData["Title"] = "Index";
 }
+<link href="~/assets/css/datatables.min.css" rel="stylesheet" />
+<div class="page-content-tab">
+    <h1>Notifications</h1>
+    <div class="row">
+        <h5>Recieved Notifications</h5>
+        <table class="table table-striped" id="ReceivedTable">
+            <thead>
+                <tr>
+                    <th>
+                        Title
+                    </th>
+                    <th>
+                        Message
+                    </th>
+                    <th>
+                        Created
+                    </th>
+                    <th>
+                        Viewed
+                    </th>
+                    <th>
+                        Ticket
+                    </th>
+                    <th>
+                        Recipient
+                    </th>
+                    <th>
+                        Sender
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.RecievedNotifications)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Message)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Created)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Viewed)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ticket.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Recipient.FullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Sender.FullName)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
-<h1>Index</h1>
+    <div class="row mt-3">
+        <h5>Sent Notifications</h5>
+        <table class="table table-striped" id="SentTable">
+            <thead>
+                <tr>
+                    <th>
+                        Title
+                    </th>
+                    <th>
+                        Message
+                    </th>
+                    <th>
+                        Created
+                    </th>
+                    <th>
+                        Viewed
+                    </th>
+                    <th>
+                        Ticket
+                    </th>
+                    <th>
+                        Recipient
+                    </th>
+                    <th>
+                        Sender
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.SentNotifications)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Message)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Created)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Viewed)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ticket.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Recipient.FullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Sender.FullName)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@section scripts {
+    <script src="~/assets/js/datatables.min.js"></script>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Message)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Created)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Viewed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ticket)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Recipient)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Sender)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Message)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Viewed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ticket.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Recipient.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sender.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+    <script>
+        $(document).ready(function () {
+            $('#SentTable').DataTable();
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#ReceivedTable').DataTable();
+        });
+    </script>
 }
-    </tbody>
-</table>
