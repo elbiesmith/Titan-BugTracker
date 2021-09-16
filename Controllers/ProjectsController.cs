@@ -201,17 +201,6 @@ namespace Titan_BugTracker.Controllers
             return View(model);
         }
 
-        //public async Task<IActionResult> AssignPM()
-        //{
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //public async Task<IActionResult> AssignPM(AddProjectManagerViewModel model)
-        //{
-        //    return View();
-        //}
-
         // POST: Projects/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.

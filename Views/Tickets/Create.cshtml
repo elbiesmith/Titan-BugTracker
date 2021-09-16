@@ -3,7 +3,102 @@
 @{
     ViewData["Title"] = "Create";
 }
+
+<link href="~/assets/plugins/select/selectr.min.css" rel="stylesheet" type="text/css" />
+<link href="~/assets/plugins/huebee/huebee.min.css" rel="stylesheet" type="text/css" />
+<link href="~/assets/plugins/datepicker/datepicker.min.css" rel="stylesheet" type="text/css" />
+
 <div class="page-content-tab">
+
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-end">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="#">Bug Avenger</a>
+                            </li><!--end nav-item-->
+                            <li class="breadcrumb-item">
+                                <a href="#">Tickets</a>
+                            </li><!--end nav-item-->
+                            <li class="breadcrumb-item active">Create</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">Create Ticket</h4>
+                </div><!--end page-title-box-->
+            </div><!--end col-->
+        </div>
+        <!-- end page title end breadcrumb -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <form method="post" asp-action="Create" asp-controller="Tickets" enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label asp-for="ProjectId" class="control-label"></label>
+                                                <select asp-for="ProjectId" class="form-control" asp-items="ViewBag.ProjectId"></select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">Ticket Name :</label>
+                                                <input type="text" class="form-control" asp-for="Title" placeholder="Enter project name">
+                                                <span asp-validation-for="Title" class="text-danger"></span>
+                                            </div><!--end form-group-->
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-6">
+                                                        <label class="form-label mt-2" for="pro-end-date">Ticket Type</label>
+                                                        <select asp-for="TicketTypeId" class="form-control" asp-items="ViewBag.TicketTypeId"></select>
+                                                    </div><!--end col-->
+
+                                                    <div class="col-lg-3 col-6">
+                                                        <label class="form-label mt-2" for="pro-end-date">Priority</label>
+                                                        <select asp-for="TicketPriorityId" class="form-control" asp-items="ViewBag.TicketPriorityId"></select>
+                                                    </div><!--end col-->
+                                                </div><!--end row-->
+                                            </div><!--end form-group-->
+                                            <div class="form-group mb-3">
+                                                <label class="form-label mt-2">Description</label>
+                                                <textarea class="form-control" rows="5" asp-for="Description" placeholder="Description here.."></textarea>
+                                                <span asp-validation-for="Description" class="text-danger"></span>
+                                            </div><!--end form-group-->
+
+                                            <button type="submit" class="btn btn-de-primary btn-sm">Create Ticket</button>
+                                            <button type="button" class="btn btn-de-danger btn-sm">Cancel</button>
+                                            <!--end form-->
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div><!--end col-->
+                    </div><!--end row-->
+                </div><!--end card-body-->
+            </div><!--end card-->
+        </div><!--end col-->
+    </div><!--end row-->
+</div><!-- container -->
+<!--Start Rightbar-->
+<!--end Rightbar-->
+<!--Start Footer-->
+<!-- Footer Start -->
+<footer class="footer text-center text-sm-start">
+    &copy;
+    <script>
+        document.write(new Date().getFullYear())
+    </script> Metrica
+    <span class="text-muted d-none d-sm-inline-block float-end">
+        Crafted with <i class="mdi mdi-heart text-danger"></i> by Mannatthemes
+    </span>
+</footer>
+
+<!-- end Footer -->
+<!--end footer-->
+<!--<div class="page-content-tab">
     <h1>Create</h1>
 
     <h4>Ticket</h4>
@@ -21,47 +116,47 @@
                     <label asp-for="Description" class="control-label"></label>
                     <input asp-for="Description" class="form-control" />
                     <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
-                @*<div class="form-group">
-                        <label asp-for="Created" class="control-label"></label>
-                        <input asp-for="Created" class="form-control" />
-                        <span asp-validation-for="Created" class="text-danger"></span>
-                    </div>*@
-                @*<div class="form-group">
-                        <label asp-for="Updated" class="control-label"></label>
-                        <input asp-for="Updated" class="form-control" />
-                        <span asp-validation-for="Updated" class="text-danger"></span>
-                    </div>*@
-                @*<div class="form-group">
-                        <label asp-for="Archived" class="control-label"></label>
-                        <input asp-for="Archived" class="form-control" />
-                        <span asp-validation-for="Archived" class="text-danger"></span>
-                    </div>*@
-                <div class="form-group">
-                    <label asp-for="ProjectId" class="control-label"></label>
-                    <select asp-for="ProjectId" class="form-control" asp-items="ViewBag.ProjectId"></select>
-                </div>
-                <div class="form-group">
-                    <label asp-for="TicketTypeId" class="control-label"></label>
-                    <select asp-for="TicketTypeId" class="form-control" asp-items="ViewBag.TicketTypeId"></select>
-                </div>
-                @*<div class="form-group">
-                        <label asp-for="TicketStatusId" class="control-label"></label>
-                        <select asp-for="TicketStatusId" class="form-control" asp-items="ViewBag.TicketStatusId"></select>
-                    </div>*@
-                <div class="form-group">
-                    <label asp-for="TicketPriorityId" class="control-label"></label>
-                    <select asp-for="TicketPriorityId" class="form-control" asp-items="ViewBag.TicketPriorityId"></select>
-                </div>
-                @*<div class="form-group">
-                        <label asp-for="OwnerUserId" class="control-label"></label>
-                        <select asp-for="OwnerUserId" class="form-control" asp-items="ViewBag.OwnerUserId"></select>
-                    </div>*@
-                @*<div class="form-group">
-                        <label asp-for="DeveloperUserId" class="control-label"></label>
-                        <select asp-for="DeveloperUserId" class="form-control" asp-items="ViewBag.DeveloperUserId"></select>
-                    </div>*@
-                <div class="form-group">
+                </div>-->
+@*<div class="form-group">
+        <label asp-for="Created" class="control-label"></label>
+        <input asp-for="Created" class="form-control" />
+        <span asp-validation-for="Created" class="text-danger"></span>
+    </div>*@
+@*<div class="form-group">
+        <label asp-for="Updated" class="control-label"></label>
+        <input asp-for="Updated" class="form-control" />
+        <span asp-validation-for="Updated" class="text-danger"></span>
+    </div>*@
+@*<div class="form-group">
+        <label asp-for="Archived" class="control-label"></label>
+        <input asp-for="Archived" class="form-control" />
+        <span asp-validation-for="Archived" class="text-danger"></span>
+    </div>*@
+<!--<div class="form-group">
+    <label asp-for="ProjectId" class="control-label"></label>
+    <select asp-for="ProjectId" class="form-control" asp-items="ViewBag.ProjectId"></select>
+</div>
+<div class="form-group">
+    <label asp-for="TicketTypeId" class="control-label"></label>
+    <select asp-for="TicketTypeId" class="form-control" asp-items="ViewBag.TicketTypeId"></select>
+</div>-->
+@*<div class="form-group">
+        <label asp-for="TicketStatusId" class="control-label"></label>
+        <select asp-for="TicketStatusId" class="form-control" asp-items="ViewBag.TicketStatusId"></select>
+    </div>*@
+<!--<div class="form-group">
+    <label asp-for="TicketPriorityId" class="control-label"></label>
+    <select asp-for="TicketPriorityId" class="form-control" asp-items="ViewBag.TicketPriorityId"></select>
+</div>-->
+@*<div class="form-group">
+        <label asp-for="OwnerUserId" class="control-label"></label>
+        <select asp-for="OwnerUserId" class="form-control" asp-items="ViewBag.OwnerUserId"></select>
+    </div>*@
+@*<div class="form-group">
+        <label asp-for="DeveloperUserId" class="control-label"></label>
+        <select asp-for="DeveloperUserId" class="form-control" asp-items="ViewBag.DeveloperUserId"></select>
+    </div>*@
+<!--<div class="form-group">
                     <input type="submit" value="Create" class="btn btn-primary" />
                 </div>
             </form>
@@ -71,7 +166,7 @@
     <div>
         <a asp-action="Index">Back to List</a>
     </div>
-</div>
+</div>-->
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
