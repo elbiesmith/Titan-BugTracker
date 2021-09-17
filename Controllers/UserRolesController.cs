@@ -31,11 +31,6 @@ namespace Titan_BugTracker.Controllers
             }
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ManageUserRoles()

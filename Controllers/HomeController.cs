@@ -18,14 +18,12 @@ namespace Titan_BugTracker.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IBTProjectService _projectService;
         private readonly UserManager<BTUser> _usermanager;
         private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger, IBTProjectService projectService, UserManager<BTUser> usermanager, ApplicationDbContext context)
+        public HomeController(IBTProjectService projectService, UserManager<BTUser> usermanager, ApplicationDbContext context)
         {
-            _logger = logger;
             _projectService = projectService;
             _usermanager = usermanager;
             _context = context;

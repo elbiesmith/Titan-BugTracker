@@ -52,6 +52,7 @@ namespace Titan_BugTracker.Controllers
             return View(allProjects);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ManageProjects()
         {
             int companyId = User.Identity.GetCompanyId().Value;
@@ -67,6 +68,7 @@ namespace Titan_BugTracker.Controllers
             return View(myProjects);
         }
 
+        [Authorize(Roles = "Admin, ProjectManager")]
         public async Task<IActionResult> ArchiveProject(int id)
         {
             try
@@ -116,6 +118,7 @@ namespace Titan_BugTracker.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, ProjectManager")]
         public async Task<IActionResult> AssignMembers(ProjectMembersViewModel model)
         {
             if (ModelState.IsValid)
@@ -159,6 +162,7 @@ namespace Titan_BugTracker.Controllers
             return View(project);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AssignPMIndex()
         {
             int companyId = User.Identity.GetCompanyId().Value;
@@ -240,6 +244,7 @@ namespace Titan_BugTracker.Controllers
         }
 
         // GET: Projects/Edit/5
+        [Authorize(Roles = "Admin, ProjectManager")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -262,6 +267,7 @@ namespace Titan_BugTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, ProjectManager")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,StartDate,EndDate,FormFile, FileData, FileName, FileContentType,CompanyId,ProjectPriorityId")] Project project)
         {
             if (id != project.Id)
@@ -301,37 +307,6 @@ namespace Titan_BugTracker.Controllers
             ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Description", project.CompanyId);
             ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id", project.ProjectPriorityId);
             return View(project);
-        }
-
-        // GET: Projects/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var project = await _context.Projects
-                .Include(p => p.Company)
-                .Include(p => p.ProjectPriority)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (project == null)
-            {
-                return NotFound();
-            }
-
-            return View(project);
-        }
-
-        // POST: Projects/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var project = await _context.Projects.FindAsync(id);
-            _context.Projects.Remove(project);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         private bool ProjectExists(int id)

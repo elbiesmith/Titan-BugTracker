@@ -26,12 +26,6 @@ namespace Titan_BugTracker.Controllers
             _userManager = userManager;
         }
 
-        // GET: Companies
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Companies.ToListAsync());
-        }
-
         public async Task<IActionResult> MemberIndex()
         {
             int companyId = User.Identity.GetCompanyId().Value;
@@ -61,29 +55,8 @@ namespace Titan_BugTracker.Controllers
             return View();
         }
 
-        // GET: Companies/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Companies/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,FileName,FileData,FileContentType")] Company company)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(company);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(company);
-        }
-
         // GET: Companies/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -135,6 +108,7 @@ namespace Titan_BugTracker.Controllers
         }
 
         // GET: Companies/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
