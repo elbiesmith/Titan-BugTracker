@@ -284,7 +284,8 @@ namespace Titan_BugTracker.Controllers
         {
             //TODO: Add to history && send notifications
             //old ticket and user
-
+            BTUser btUser = await _userManager.GetUserAsync(User);
+            Ticket oldTicket = await _ticketService.GetTicketAsNoTrackingAsync(model.Ticket.Id);
             if (model.DeveloperId != null)
             {
                 try
@@ -298,9 +299,35 @@ namespace Titan_BugTracker.Controllers
             }
             // new ticket
             //addhistory
-
+            Ticket newTicket = await _ticketService.GetTicketAsNoTrackingAsync(model.Ticket.Id);
+            await _historyService.AddHistoryAsync(oldTicket, newTicket, btUser.Id);
             //notification
+            BTUser projectManager = await _projectService.GetProjectManagerAsync(model.Ticket.ProjectId);
+            int companyId = User.Identity.GetCompanyId().Value;
+            BTUser admin = (await _rolesService.GetUsersInRoleAsync(Roles.Admin.ToString(), companyId)).FirstOrDefault();
+            BTUser dev = (await _rolesService.GetUsersInRoleAsync(Roles.Developer.ToString(), companyId)).FirstOrDefault();
 
+            Notification notification = new()
+            {
+                TicketId = model.Ticket.Id,
+                Title = "Developer Added",
+                Message = $"Ticket: {model.Ticket.Title}, was updated by {btUser.FullName}. {dev.FullName} was added as the Developer.",
+                Created = DateTimeOffset.Now,
+                SenderId = btUser.Id,
+                RecipientId = projectManager?.Id
+            };
+
+            if (projectManager != null)
+            {
+                await _notificationService.AddNotificationAsync(notification);
+                await _notificationService.SendEmailNotificationAsync(notification, notification.Message);
+            }
+            else
+            {
+                notification.RecipientId = admin.Id;
+                await _notificationService.AddNotificationAsync(notification);
+                await _notificationService.SendEmailNotificationsByRoleAsync(notification, companyId, Roles.Admin.ToString());
+            }
             return RedirectToAction("AllTickets");
         }
 
