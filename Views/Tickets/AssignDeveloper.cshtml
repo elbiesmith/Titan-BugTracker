@@ -1,4 +1,5 @@
-﻿@model Titan_BugTracker.Models.ViewModels.AssignDeveloperViewModel
+﻿@using Titan_BugTracker.Models.Enums
+@model Titan_BugTracker.Models.ViewModels.AssignDeveloperViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -28,9 +29,19 @@
         </div>
     </div>
 
-    <div>
-        <a asp-action="AllTickets">Back to List</a>
-    </div>
+
+    @if (User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString()))
+    {
+        <div>
+            <a asp-action="AllTickets">Back to List</a>
+        </div>
+    }
+    else
+    {
+        <div>
+            <a asp-action="MyTickets">Back to List</a>
+        </div>
+    }
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
