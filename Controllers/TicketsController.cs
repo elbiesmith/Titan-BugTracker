@@ -54,6 +54,16 @@ namespace Titan_BugTracker.Controllers
             return View(allTickets);
         }
 
+        public async Task<IActionResult> ArchiveTicket(int id)
+        {
+            Ticket ticket = await _ticketService.GetTicketByIdAsync(id);
+            await _ticketService.ArchiveTicketAsync(ticket);
+
+            return RedirectToAction("Dashboard", "Home");
+        }
+
+
+
         public async Task<IActionResult> MyTickets()
         {
             int companyId = User.Identity.GetCompanyId().Value;
