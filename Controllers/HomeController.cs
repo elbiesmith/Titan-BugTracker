@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
@@ -39,6 +40,7 @@ namespace Titan_BugTracker.Controllers
             return View();
         }
 
+        [Authorize]
         public async Task<IActionResult> Dashboard()
         {
             BTUser user = await _usermanager.GetUserAsync(User);
