@@ -1,9 +1,14 @@
 ﻿@using Titan_BugTracker.Models.Enums
+@using Titan_BugTracker.Extensions
 @using Titan_BugTracker.Models.ViewModels
+@using Titan_BugTracker.Services.Interfaces
+@inject IBTChartService chartService
 @model DashboardViewModel
 
 @{
     int ticketCount = 0;
+    int companyId = User.Identity.GetCompanyId().Value;
+    //ChartViewModel chartsModel = await chartService.GetAdminLineChart(companyId);
 }
 
 <link href="/assets/plugins/tabulator/bootstrap/tabulator_bootstrap4.css" rel="stylesheet" type="text/css" />
@@ -75,9 +80,9 @@
                                 <p class="text-dark mb-1 fw-semibold">Unassigned Tickets</p>
                                 <h4 class="my-1">@ViewData["unassignedTickets"]</h4>
                                 @*<p class="mb-0 text-truncate text-muted">
-                                    <span class="text-muted">01:33</span> /
-                                    <span class="text-muted">9:30</span>  Duration
-                                </p>*@
+                                        <span class="text-muted">01:33</span> /
+                                        <span class="text-muted">9:30</span>  Duration
+                                    </p>*@
                             </div>
                             <div class="col-auto align-self-center">
                                 <div class="bg-light-alt d-flex justify-content-center align-items-center thumb-md  rounded-circle">
@@ -88,8 +93,6 @@
                     </div><!--end card-body-->
                 </div><!--end card-->
             </div> <!--end col-->
-
-           
         </div><!--end row-->
 
         @if (User.IsInRole(Roles.Admin.ToString()))
@@ -98,10 +101,26 @@
                 <div class="col-lg-8">
 
                     <div class="col">
+                        <section class="content">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <!-- DONUT CHART -->
+                                        <div class="card card-danger">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Company Ticket Distribution</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <canvas id="donutChart">
+                                                </canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
                     </div><!--end col-->
                 </div><!--end col-->
-
-                
             </div><!--end row-->
         }
         @if (User.IsInRole(Roles.ProjectManager.ToString()))
@@ -452,8 +471,6 @@
                         </div><!--end card-->
                     </div><!--end col-->
                 </div><!--end col-->
-
-                
             </div><!--end row-->
         }
         @if (User.IsInRole(Roles.Developer.ToString()))
@@ -536,9 +553,9 @@
                                                 <div class="task-box">
                                                     <div class="task-priority-icon"><i class="fas fa-circle text-success"></i></div>
                                                     @*<div class="d-flex justify-content-between">
-                                                        <h6 class="fw-semibold m-0 align-self-center">All Hours : <span class="text-muted fw-normal"> 530 / 281:30</span></h6>
-                                                        <h6 class="fw-semibold">Today : <span class="text-muted fw-normal"> 2:45</span><span class="badge badge-soft-pink fw-semibold ms-2"><i class="far fa-fw fa-clock"></i> 35 days left</span></h6>
-                                                    </div>*@
+                                                            <h6 class="fw-semibold m-0 align-self-center">All Hours : <span class="text-muted fw-normal"> 530 / 281:30</span></h6>
+                                                            <h6 class="fw-semibold">Today : <span class="text-muted fw-normal"> 2:45</span><span class="badge badge-soft-pink fw-semibold ms-2"><i class="far fa-fw fa-clock"></i> 35 days left</span></h6>
+                                                        </div>*@
                                                     <p class="text-muted mb-1">
                                                         @project.Description
                                                     </p>
@@ -565,11 +582,11 @@
                                                         </div><!--end img-group-->
                                                         <ul class="list-inline mb-0 align-self-center">
                                                             @*<li class="list-item d-inline-block me-2">
-                                                                <a class="" href="#">
-                                                                    <i class="mdi mdi-format-list-bulleted text-success font-15"></i>
-                                                                    <span class="text-muted fw-bold">34/100</span>
-                                                                </a>
-                                                            </li>*@
+                                                                    <a class="" href="#">
+                                                                        <i class="mdi mdi-format-list-bulleted text-success font-15"></i>
+                                                                        <span class="text-muted fw-bold">34/100</span>
+                                                                    </a>
+                                                                </li>*@
                                                             <li class="list-item d-inline-block me-2">
                                                                 <a class="" asp-action="Details" asp-controller="Projects" asp-route-id="@project.Id">
                                                                     <i class="mdi mdi-eye-outline text-primary font-15"></i>
@@ -582,15 +599,15 @@
                                                                 </a>
                                                             </li>
                                                             @*<li class="list-item d-inline-block">
-                                                                <a class="ms-2" href="#">
-                                                                    <i class="mdi mdi-pencil-outline text-muted font-18"></i>
-                                                                </a>
-                                                            </li>
-                                                            <li class="list-item d-inline-block">
-                                                                <a class="" href="#">
-                                                                    <i class="mdi mdi-trash-can-outline text-muted font-18"></i>
-                                                                </a>
-                                                            </li>*@
+                                                                    <a class="ms-2" href="#">
+                                                                        <i class="mdi mdi-pencil-outline text-muted font-18"></i>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item d-inline-block">
+                                                                    <a class="" href="#">
+                                                                        <i class="mdi mdi-trash-can-outline text-muted font-18"></i>
+                                                                    </a>
+                                                                </li>*@
                                                         </ul>
                                                     </div>
                                                 </div><!--end task-box-->
@@ -686,11 +703,11 @@
                                                         </div><!--end img-group-->
                                                         <ul class="list-inline mb-0 align-self-center">
                                                             @*<li class="list-item d-inline-block me-2">
-                                                                <a class="" href="#">
-                                                                    <i class="mdi mdi-format-list-bulleted text-success font-15"></i>
-                                                                    <span class="text-muted fw-bold">34/100</span>
-                                                                </a>
-                                                            </li>*@
+                                                                    <a class="" href="#">
+                                                                        <i class="mdi mdi-format-list-bulleted text-success font-15"></i>
+                                                                        <span class="text-muted fw-bold">34/100</span>
+                                                                    </a>
+                                                                </li>*@
                                                             <li class="list-item d-inline-block me-2">
                                                                 <a class="" asp-action="Details" asp-controller="Projects" asp-route-id="@project.Id">
                                                                     <i class="mdi mdi-eye-outline text-primary font-15"></i>
@@ -703,15 +720,15 @@
                                                                 </a>
                                                             </li>
                                                             @*<li class="list-item d-inline-block">
-                                                                    <a class="ms-2" href="#">
-                                                                        <i class="mdi mdi-pencil-outline text-muted font-18"></i>
-                                                                    </a>
-                                                                </li>
-                                                                <li class="list-item d-inline-block">
-                                                                    <a class="" href="#">
-                                                                        <i class="mdi mdi-trash-can-outline text-muted font-18"></i>
-                                                                    </a>
-                                                            </li>*@
+                                                                        <a class="ms-2" href="#">
+                                                                            <i class="mdi mdi-pencil-outline text-muted font-18"></i>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li class="list-item d-inline-block">
+                                                                        <a class="" href="#">
+                                                                            <i class="mdi mdi-trash-can-outline text-muted font-18"></i>
+                                                                        </a>
+                                                                </li>*@
                                                         </ul>
                                                     </div>
                                                 </div><!--end task-box-->
@@ -747,8 +764,6 @@
                         </div><!--end card-->
                     </div><!--end col-->
                 </div><!--end col-->
-
-                
             </div><!--end row-->
         }
         @if (User.IsInRole(Roles.Submitter.ToString()))
@@ -802,8 +817,6 @@
             </div><!--end col-->
         }
 
-
-
         @if (User.IsInRole(Roles.Admin.ToString()))
         {
             <div class="row">
@@ -827,8 +840,8 @@
                                                     Name
                                                 </th>
                                                 @*<th>
-                                                    @Html.DisplayNameFor(model => model.Description)
-                                                </th>*@
+                                                        @Html.DisplayNameFor(model => model.Description)
+                                                    </th>*@
                                                 <th>
                                                     StartDate
                                                 </th>
@@ -836,20 +849,20 @@
                                                     EndDate
                                                 </th>
                                                 @*<th>
-                                                    @Html.DisplayNameFor(model => model.FileName)
-                                                </th>*@
+                                                        @Html.DisplayNameFor(model => model.FileName)
+                                                    </th>*@
                                                 @*<th>
-                                                    @Html.DisplayNameFor(model => model.FileData)
-                                                </th>*@
+                                                        @Html.DisplayNameFor(model => model.FileData)
+                                                    </th>*@
                                                 @*<th>
-                                                    @Html.DisplayNameFor(model => model.FileContentType)
-                                                </th>*@
+                                                        @Html.DisplayNameFor(model => model.FileContentType)
+                                                    </th>*@
                                                 @*<th>
-                                                    @Html.DisplayNameFor(model => model.Archived)
-                                                </th>*@
+                                                        @Html.DisplayNameFor(model => model.Archived)
+                                                    </th>*@
                                                 @*<th>
-                                                    @Html.DisplayNameFor(model => model.Company)
-                                                </th>*@
+                                                        @Html.DisplayNameFor(model => model.Company)
+                                                    </th>*@
                                                 <th>
                                                     ProjectPriority
                                                 </th>
@@ -864,8 +877,8 @@
                                                         @Html.DisplayFor(modelItem => item.Name)
                                                     </td>
                                                     @*<td>
-                                                        @Html.DisplayFor(modelItem => item.Description)
-                                                    </td>*@
+                                                            @Html.DisplayFor(modelItem => item.Description)
+                                                        </td>*@
                                                     <td>
                                                         @Html.DisplayFor(modelItem => item.StartDate)
                                                     </td>
@@ -873,20 +886,20 @@
                                                         @Html.DisplayFor(modelItem => item.EndDate)
                                                     </td>
                                                     @*<td>
-                                                        @Html.DisplayFor(modelItem => item.FileName)
-                                                    </td>*@
+                                                            @Html.DisplayFor(modelItem => item.FileName)
+                                                        </td>*@
                                                     @*<td>
-                                                        @Html.DisplayFor(modelItem => item.FileData)
-                                                    </td>*@
+                                                            @Html.DisplayFor(modelItem => item.FileData)
+                                                        </td>*@
                                                     @*<td>
-                                                        @Html.DisplayFor(modelItem => item.FileContentType)
-                                                    </td>*@
+                                                            @Html.DisplayFor(modelItem => item.FileContentType)
+                                                        </td>*@
                                                     @*<td>
-                                                        @Html.DisplayFor(modelItem => item.Archived)
-                                                    </td>*@
+                                                            @Html.DisplayFor(modelItem => item.Archived)
+                                                        </td>*@
                                                     @*<td>
-                                                        @Html.DisplayFor(modelItem => item.Company.Description)
-                                                    </td>*@
+                                                            @Html.DisplayFor(modelItem => item.Company.Description)
+                                                        </td>*@
                                                     <td>
                                                         @Html.DisplayFor(modelItem => item.ProjectPriority.Name)
                                                     </td>
@@ -903,9 +916,7 @@
                                     </table>
                                 </div><!--end /div-->
                             </div><!--end card-body-->
-
                         </div><!--end card-->
-
                     </div> <!--end col-->
                 </div>
                 <div class="row">
@@ -927,17 +938,17 @@
                                                     Title
                                                 </th>
                                                 @*<th>
-                                                    Description
-                                                </th>*@
+                                                        Description
+                                                    </th>*@
                                                 <th>
                                                     Created
                                                 </th>
                                                 @*<th>
-                                                    Updated
-                                                </th>*@
+                                                        Updated
+                                                    </th>*@
                                                 @*<th>
-                                                    Archived
-                                                </th>*@
+                                                        Archived
+                                                    </th>*@
                                                 <th>
                                                     Project
                                                 </th>
@@ -968,17 +979,17 @@
                                                         @Html.DisplayFor(modelItem => item.Title)
                                                     </td>
                                                     @*<td>
-                                                        @Html.DisplayFor(modelItem => item.Description)
-                                                    </td>*@
+                                                            @Html.DisplayFor(modelItem => item.Description)
+                                                        </td>*@
                                                     <td>
                                                         @Html.DisplayFor(modelItem => item.Created)
                                                     </td>
                                                     @*<td>
-                                                        @Html.DisplayFor(modelItem => item.Updated)
-                                                    </td>*@
+                                                            @Html.DisplayFor(modelItem => item.Updated)
+                                                        </td>*@
                                                     @*<td>
-                                                        @Html.DisplayFor(modelItem => item.Archived)
-                                                    </td>*@
+                                                            @Html.DisplayFor(modelItem => item.Archived)
+                                                        </td>*@
                                                     <td>
                                                         @Html.DisplayFor(modelItem => item.Project.Name)
                                                     </td>
@@ -1037,8 +1048,8 @@
                                                     Name
                                                 </th>
                                                 @*<th>
-                                                    @Html.DisplayNameFor(model => model.Description)
-                                                </th>*@
+                                                        @Html.DisplayNameFor(model => model.Description)
+                                                    </th>*@
                                                 <th>
                                                     StartDate
                                                 </th>
@@ -1046,20 +1057,20 @@
                                                     EndDate
                                                 </th>
                                                 @*<th>
-                                                    @Html.DisplayNameFor(model => model.FileName)
-                                                </th>*@
+                                                        @Html.DisplayNameFor(model => model.FileName)
+                                                    </th>*@
                                                 @*<th>
-                                                    @Html.DisplayNameFor(model => model.FileData)
-                                                </th>*@
+                                                        @Html.DisplayNameFor(model => model.FileData)
+                                                    </th>*@
                                                 @*<th>
-                                                    @Html.DisplayNameFor(model => model.FileContentType)
-                                                </th>*@
+                                                        @Html.DisplayNameFor(model => model.FileContentType)
+                                                    </th>*@
                                                 @*<th>
-                                                    @Html.DisplayNameFor(model => model.Archived)
-                                                </th>*@
+                                                        @Html.DisplayNameFor(model => model.Archived)
+                                                    </th>*@
                                                 @*<th>
-                                                    @Html.DisplayNameFor(model => model.Company)
-                                                </th>*@
+                                                        @Html.DisplayNameFor(model => model.Company)
+                                                    </th>*@
                                                 <th>
                                                     ProjectPriority
                                                 </th>
@@ -1074,8 +1085,8 @@
                                                         @Html.DisplayFor(modelItem => item.Name)
                                                     </td>
                                                     @*<td>
-                                                        @Html.DisplayFor(modelItem => item.Description)
-                                                    </td>*@
+                                                            @Html.DisplayFor(modelItem => item.Description)
+                                                        </td>*@
                                                     <td>
                                                         @Html.DisplayFor(modelItem => item.StartDate)
                                                     </td>
@@ -1083,20 +1094,20 @@
                                                         @Html.DisplayFor(modelItem => item.EndDate)
                                                     </td>
                                                     @*<td>
-                                                        @Html.DisplayFor(modelItem => item.FileName)
-                                                    </td>*@
+                                                            @Html.DisplayFor(modelItem => item.FileName)
+                                                        </td>*@
                                                     @*<td>
-                                                        @Html.DisplayFor(modelItem => item.FileData)
-                                                    </td>*@
+                                                            @Html.DisplayFor(modelItem => item.FileData)
+                                                        </td>*@
                                                     @*<td>
-                                                        @Html.DisplayFor(modelItem => item.FileContentType)
-                                                    </td>*@
+                                                            @Html.DisplayFor(modelItem => item.FileContentType)
+                                                        </td>*@
                                                     @*<td>
-                                                        @Html.DisplayFor(modelItem => item.Archived)
-                                                    </td>*@
+                                                            @Html.DisplayFor(modelItem => item.Archived)
+                                                        </td>*@
                                                     @*<td>
-                                                        @Html.DisplayFor(modelItem => item.Company.Description)
-                                                    </td>*@
+                                                            @Html.DisplayFor(modelItem => item.Company.Description)
+                                                        </td>*@
                                                     <td>
                                                         @Html.DisplayFor(modelItem => item.ProjectPriority.Name)
                                                     </td>
@@ -1113,9 +1124,7 @@
                                     </table>
                                 </div><!--end /div-->
                             </div><!--end card-body-->
-
                         </div><!--end card-->
-
                     </div> <!--end col-->
                 </div>
                 <div class="row">
@@ -1136,11 +1145,11 @@
                                                 <th>
                                                     Title
                                                 </th>
-                                                
+
                                                 <th>
                                                     Created
                                                 </th>
-                                               
+
                                                 <th>
                                                     Project
                                                 </th>
@@ -1170,11 +1179,11 @@
                                                     <td>
                                                         @Html.DisplayFor(modelItem => item.Title)
                                                     </td>
-                                                   
+
                                                     <td>
                                                         @Html.DisplayFor(modelItem => item.Created)
                                                     </td>
-                                                    
+
                                                     <td>
                                                         @Html.DisplayFor(modelItem => item.Project.Name)
                                                     </td>
@@ -1209,7 +1218,6 @@
                 </div>
             </div><!--end row-->
         }
-
     </div><!-- container -->
     <!--Start Rightbar-->
     <!--Start Rightbar/offcanvas-->
@@ -1271,12 +1279,45 @@
 @section scripts {
     <script src="~/assets/plugins/tabulator/tabulator.min.js"></script>
     <script src="~/assets/js/datatables.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
     <script>
         var table = new Tabulator("#projectTable", { pagination: "local", paginationSize: 6, height: "600px", formatter: "html", columns: [{ title: "", formatter: "html" }] });
     </script>
     <script>
         var table = new Tabulator("#ticketTable", { pagination: "local", paginationSize: 6, height: "600px", columns: [{ title: "", formatter: "html" }] });
+    </script>
+
+    <script type="text/javascript">
+        $.ajax({
+            type: "POST",
+            url: "/Home/DonutMethod",
+            data: '{}',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                //Donut
+                var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
+                var donutData = result
+
+                var donutOptions = {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                }
+                //Create pie or douhnut chart
+                // You can switch between pie and douhnut using the method below.
+                new Chart(donutChartCanvas, {
+                    type: 'doughnut',
+                    data: donutData,
+                    options: donutOptions
+                })
+            },
+            failure: function (result) {
+                alert(result.d);
+            },
+            error: function (result) {
+                alert(result.d);
+            }
+        });
     </script>
     @*<script>
             $(document).ready(function () {

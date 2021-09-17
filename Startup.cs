@@ -53,6 +53,7 @@ namespace Titan_BugTracker
             services.AddScoped<IBTTicketHistoryService, BTTicketHistoryService>();
             services.AddScoped<IBTFileService, BTFileService>();
             services.AddScoped<IBTInviteService, BTInviteService>();
+            services.AddScoped<IBTChartService, BTChartService>();
 
             services.AddScoped<IEmailSender, BTEmailService>();
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
