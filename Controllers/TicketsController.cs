@@ -62,8 +62,6 @@ namespace Titan_BugTracker.Controllers
             return RedirectToAction("Dashboard", "Home");
         }
 
-
-
         public async Task<IActionResult> MyTickets()
         {
             int companyId = User.Identity.GetCompanyId().Value;
@@ -286,7 +284,7 @@ namespace Titan_BugTracker.Controllers
             model.Ticket = await _ticketService.GetTicketByIdAsync(id);
             model.Developers = new SelectList(await _projectService.GetProjectMembersByRoleAsync(model.Ticket.ProjectId, Roles.Developer.ToString()),
                "Id", "FullName");
-            model.Project = await _projectService.GetProjectByIdAsync(id, companyId);
+            model.Project = await _projectService.GetProjectByIdAsync(model.Ticket.ProjectId, companyId);
             return View(model);
         }
 

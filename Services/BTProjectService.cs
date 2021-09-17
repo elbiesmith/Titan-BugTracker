@@ -243,8 +243,7 @@ namespace Titan_BugTracker.Services
         {
             try
             {
-                Project project = await _context.Projects
-                                                .Include(p => p.Tickets)
+                Project project = await _context.Projects.Include(p => p.Tickets)
                                                  .ThenInclude(t => t.TicketPriority)
                                                 .Include(p=>p.Tickets)
                                                   .ThenInclude(p=>p.History).ThenInclude(p=>p.User)
