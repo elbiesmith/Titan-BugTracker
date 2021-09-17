@@ -151,19 +151,20 @@ namespace Titan_BugTracker.Controllers
             {
                 return NotFound();
             }
-            int companyId = User.Identity.GetCompanyId().Value;
-            var project = await _projectService.GetProjectByIdAsync((int)id, companyId);
 
-            if (project == null)
+            ProjectDetailsViewModel model = new();
+
+            int companyId = User.Identity.GetCompanyId().Value;
+            model.Project = await _projectService.GetProjectByIdAsync((int)id, companyId);
+
+            if (model.Project == null)
             {
                 return NotFound();
             }
 
-            BTUser projectManager = await _projectService.GetProjectManagerAsync(id.Value);
+            model.ProjectManager = await _projectService.GetProjectManagerAsync(id.Value);
 
-            ViewData["ProjectManager"] = projectManager;
-
-            return View(project);
+            return View(model);
         }
 
         [Authorize(Roles = "Admin")]
