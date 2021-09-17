@@ -267,12 +267,14 @@ namespace Titan_BugTracker.Services
             try
             {
                 Project project = await _context.Projects.Include(p => p.Members).FirstOrDefaultAsync(p => p.Id == projectId);
-
-                foreach (BTUser member in project.Members)
+                if (project != null)
                 {
-                    if (await _roleService.IsUserInRoleAsync(member, Roles.ProjectManager.ToString()))
+                    foreach (BTUser member in project.Members)
                     {
-                        return member;
+                        if (await _roleService.IsUserInRoleAsync(member, Roles.ProjectManager.ToString()))
+                        {
+                            return member;
+                        }
                     }
                 }
                 return null;
