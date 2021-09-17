@@ -188,16 +188,29 @@
             <div class="col-lg-6">
                 <h5 class="d-inline-block me-2">Project team members.</h5>
                 <div class="img-group d-inline-block">
-                    @foreach (BTUser member in Model.Project.Members)
-                    {
-                        <a class="user-avatar" href="#">
-                            <img src="~/assets/images/users/user-8.jpg" alt="user" class="thumb-xs rounded-circle">
-                        </a>
-                    }
+                    <ul>
+                        @foreach (BTUser member in Model.Members)
+                        {
+                            <li class="list-inline-item">
+                                @if (member.AvatarFileData != null)
+                                {
+                                    <a class="user-avatar user-avatar-group" href="#">
+                                        <img src="data:image/*;base64, @(Convert.ToBase64String(member.AvatarFileData))" alt="user" class="rounded-circle thumb-xs">
+                                    </a>
+                                }
+                                else
+                                {
+
+                                    <img src="~/img/noImage.jpg" alt="user" class="rounded-circle thumb-xs">
+                                }
+
+                            </li>
+                        }
+                    </ul>
 
                     @*<a href="#" class="user-avatar">
-                        <span class="thumb-xs justify-content-center d-flex align-items-center bg-soft-info rounded-circle fw-semibold">+6</span>
-                    </a>*@
+            <span class="thumb-xs justify-content-center d-flex align-items-center bg-soft-info rounded-circle fw-semibold">+6</span>
+        </a>*@
                 </div>
             </div><!--end col-->
 

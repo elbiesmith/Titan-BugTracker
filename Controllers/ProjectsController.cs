@@ -256,8 +256,8 @@ namespace Titan_BugTracker.Controllers
             {
                 return NotFound();
             }
-
-            var project = await _context.Projects.FindAsync(id);
+            int companyId = User.Identity.GetCompanyId().Value;
+            var project = await _projectService.GetProjectByIdAsync(id.Value, companyId);
             if (project == null)
             {
                 return NotFound();
