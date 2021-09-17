@@ -281,11 +281,12 @@ namespace Titan_BugTracker.Controllers
         [HttpGet]
         public async Task<IActionResult> AssignDeveloper(int id)
         {
+            int companyId = User.Identity.GetCompanyId().Value;
             AssignDeveloperViewModel model = new();
             model.Ticket = await _ticketService.GetTicketByIdAsync(id);
             model.Developers = new SelectList(await _projectService.GetProjectMembersByRoleAsync(model.Ticket.ProjectId, Roles.Developer.ToString()),
                "Id", "FullName");
-
+            model.Project = await _projectService.GetProjectByIdAsync(id, companyId);
             return View(model);
         }
 
