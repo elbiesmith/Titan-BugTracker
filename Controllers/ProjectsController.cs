@@ -159,6 +159,10 @@ namespace Titan_BugTracker.Controllers
                 return NotFound();
             }
 
+            BTUser projectManager = await _projectService.GetProjectManagerAsync(id.Value);
+
+            ViewData["ProjectManager"] = projectManager;
+
             return View(project);
         }
 
