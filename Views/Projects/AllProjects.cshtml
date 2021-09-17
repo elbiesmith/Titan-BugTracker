@@ -189,7 +189,7 @@
                         @Html.DisplayFor(modelItem => item.ProjectPriority.Name)
                     </td>
                     <td>
-                        <a asp-action="Details" asp-route-id="@item.Id"><span class="badge bg-primary">Details</span></a> |
+                        <a asp-action="Details" asp-route-id="@item.Id"><span class="badge bg-primary">View</span></a> |
 
                         @if(User.IsInRole(Roles.Admin.ToString()) || User.IsInRole(Roles.ProjectManager.ToString())) { 
                         <a asp-action="Edit" asp-route-id="@item.Id"><span class="badge bg-primary">Edit</span></a> <span> | </span>
