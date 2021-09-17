@@ -17,11 +17,12 @@
                                 <img src="~/img/noImage.jpg" id="imageFileData" height="110" class="rounded-circle">
                             }
 
-                        </div>
-                        <h2 class="m-t-0 h3"><b>@member.BTUser.FullName</b></h2>
-                        <p class="text-muted font-13 m-b-30">
 
-                        </p>
+                            <h2 class="m-t-0 h3"><b>@member.BTUser.FullName</b></h2>
+                            <p class="text-muted font-13 m-b-30">
+
+                            </p>
+                        </div>
                         <hr />
                         <form asp-controller="UserRoles" asp-action="ManageUserRoles" method="post">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
