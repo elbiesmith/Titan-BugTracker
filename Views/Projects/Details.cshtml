@@ -189,7 +189,7 @@
                 <h5 class="d-inline-block me-2">Project team members.</h5>
                 <div class="img-group d-inline-block">
                     <ul>
-                        @foreach (BTUser member in Model.Members)
+                        @foreach (BTUser member in Model.Project.Members)
                         {
                             <li class="list-inline-item">
                                 @if (member.AvatarFileData != null)
