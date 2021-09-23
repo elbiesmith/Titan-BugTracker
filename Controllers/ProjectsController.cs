@@ -180,6 +180,7 @@ namespace Titan_BugTracker.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AssignPMIndex(PMIndexViewModel model, int projectId)
         {
             //int companyId = User.Identity.GetCompanyId().Value;
