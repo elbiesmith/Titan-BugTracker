@@ -93,6 +93,24 @@
                     </div><!--end card-body-->
                 </div><!--end card-->
             </div> <!--end col-->
+            <div class="col-md-6 col-lg-3">
+                <div class="card report-card">
+                    <div class="card-body">
+                        <div class="row d-flex justify-content-center">
+                            <div class="col">
+                                <p class="text-dark mb-1 fw-semibold">Unassigned Tickets</p>
+                                <h4 class="my-1">@ViewData["unassignedTickets"]</h4>
+                                
+                            </div>
+                            <div class="col-auto align-self-center">
+                                <div class="bg-light-alt d-flex justify-content-center align-items-center thumb-md  rounded-circle">
+                                    <i data-feather="clock" class="align-self-center text-muted icon-sm"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end card-body-->
+                </div><!--end card-->
+            </div> <!--end col-->
         </div><!--end row-->
 
         @if (User.IsInRole(Roles.Admin.ToString()))
