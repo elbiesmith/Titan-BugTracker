@@ -21,7 +21,7 @@ namespace Titan_BugTracker
             var dbContext = host.Services.CreateScope().ServiceProvider
                                          .GetRequiredService<ApplicationDbContext>();
 
-            await dbContext.Database.MigrateAsync();
+            // await dbContext.Database.MigrateAsync();
 
             await DataUtility.ManageDataAsync(host);
             host.Run();

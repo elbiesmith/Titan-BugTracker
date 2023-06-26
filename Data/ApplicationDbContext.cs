@@ -11,6 +11,10 @@ namespace Titan_BugTracker.Data
         {
         }
 
+        //protected override void OnModelCreating(ModelBuilder builder)
+        //{
+        //    builder.Entity<Notification>().HasOne(u => u.Sender).
+        //}
         public DbSet<Company> Companies { get; set; }
         public DbSet<Invite> Invites { get; set; }
         public DbSet<Project> Projects { get; set; }

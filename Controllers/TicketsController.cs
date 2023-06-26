@@ -380,7 +380,7 @@ namespace Titan_BugTracker.Controllers
             int companyId = User.Identity.GetCompanyId().Value;
             return (await _ticketService.GetAllTicketsByCompanyAsync(companyId)).Any(t => t.Id == id);
 
-            return _context.Tickets.Any(e => e.Id == id);
+            // return _context.Tickets.Any(e => e.Id == id);
         }
 
         public IActionResult ShowFile(int id)
