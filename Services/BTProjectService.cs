@@ -249,6 +249,8 @@ namespace Titan_BugTracker.Services
                                                   .ThenInclude(p=>p.History).ThenInclude(p=>p.User)
                                                   .Include(p => p.Tickets)
                                                   .ThenInclude(p => p.Comments).ThenInclude(p => p.User)
+                                                  .Include(p => p.Tickets)
+                                                  .ThenInclude(p => p.TicketStatus)
                                                 .Include(p => p.Members)
                                                 .Include(p => p.ProjectPriority)
                                                 .FirstOrDefaultAsync(p => p.Id == projectId && p.CompanyId == companyId);
