@@ -337,7 +337,7 @@ namespace Titan_BugTracker.Controllers
                 await _notificationService.AddNotificationAsync(notification);
                 await _notificationService.SendEmailNotificationsByRoleAsync(notification, companyId, Roles.Admin.ToString());
             }
-            return RedirectToAction("AllTickets");
+            return RedirectToAction("Details", "Tickets", new { id = model.Ticket.Id });
         }
 
         // GET: Tickets/Delete/5

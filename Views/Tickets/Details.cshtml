@@ -61,7 +61,7 @@
                                 {
                                     if (Model.DeveloperUser.AvatarFileData != null)
                                     {
-                                        <a class="user-avatar user-avatar-group" href="#">
+                                        <a class="user-avatar user-avatar-group" asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-id="@Model.Id">
                                             <img src="data:image/*;base64, @(Convert.ToBase64String(Model.DeveloperUser.AvatarFileData))" alt="user" class="rounded-circle thumb-xs">
                                         </a>
                                     }
@@ -73,7 +73,7 @@
                                 }
                                 else
                                 {
-                                    <span>Developer: None | </span>
+                                    <span><a class="ms-2" asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-id="@Model.Id">Developer: None</a> | </span>
                                 }
                                 @if (Model.OwnerUser != null)
                                 {

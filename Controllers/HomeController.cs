@@ -35,9 +35,18 @@ namespace Titan_BugTracker.Controllers
             return View();
         }
 
-        public IActionResult Landing()
+        public async Task<IActionResult> Landing()
         {
-            return View();
+            BTUser user = await _usermanager.GetUserAsync(User);
+            if (user != null)
+            {
+                return RedirectToAction("Dashboard");
+            }
+            else
+            {
+
+                return View();
+            }
         }
 
         [Authorize]

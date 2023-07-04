@@ -857,30 +857,12 @@
                                                 <th>
                                                     Name
                                                 </th>
-                                                @*<th>
-                                                        @Html.DisplayNameFor(model => model.Description)
-                                                    </th>*@
                                                 <th>
                                                     StartDate
                                                 </th>
                                                 <th>
                                                     EndDate
                                                 </th>
-                                                @*<th>
-                                                        @Html.DisplayNameFor(model => model.FileName)
-                                                    </th>*@
-                                                @*<th>
-                                                        @Html.DisplayNameFor(model => model.FileData)
-                                                    </th>*@
-                                                @*<th>
-                                                        @Html.DisplayNameFor(model => model.FileContentType)
-                                                    </th>*@
-                                                @*<th>
-                                                        @Html.DisplayNameFor(model => model.Archived)
-                                                    </th>*@
-                                                @*<th>
-                                                        @Html.DisplayNameFor(model => model.Company)
-                                                    </th>*@
                                                 <th>
                                                     ProjectPriority
                                                 </th>
@@ -894,39 +876,20 @@
                                                     <td>
                                                         @Html.DisplayFor(modelItem => item.Name)
                                                     </td>
-                                                    @*<td>
-                                                            @Html.DisplayFor(modelItem => item.Description)
-                                                        </td>*@
                                                     <td>
                                                         @Html.DisplayFor(modelItem => item.StartDate)
                                                     </td>
                                                     <td>
                                                         @Html.DisplayFor(modelItem => item.EndDate)
                                                     </td>
-                                                    @*<td>
-                                                            @Html.DisplayFor(modelItem => item.FileName)
-                                                        </td>*@
-                                                    @*<td>
-                                                            @Html.DisplayFor(modelItem => item.FileData)
-                                                        </td>*@
-                                                    @*<td>
-                                                            @Html.DisplayFor(modelItem => item.FileContentType)
-                                                        </td>*@
-                                                    @*<td>
-                                                            @Html.DisplayFor(modelItem => item.Archived)
-                                                        </td>*@
-                                                    @*<td>
-                                                            @Html.DisplayFor(modelItem => item.Company.Description)
-                                                        </td>*@
                                                     <td>
                                                         @Html.DisplayFor(modelItem => item.ProjectPriority.Name)
                                                     </td>
                                                     <td>
-                                                        <a asp-action="Edit" asp-controller="Projects" asp-route-id="@item.Id">Edit</a> |
-                                                        <a asp-action="Details" asp-controller="Projects" asp-route-id="@item.Id">Details</a> |
-                                                        <a asp-action="AssignMembers" asp-controller="Projects" asp-route-id="@item.Id">Assign Members</a> |
-
-                                                        <a asp-action="ArchiveProject" asp-controller="Projects" asp-route-id="@item.Id">Archive</a>
+                                                        <a asp-action="Edit" asp-controller="Projects" asp-route-id="@item.Id"><span class="badge bg-primary">Edit</span></a> |
+                                                        <a asp-action="Details" asp-controller="Projects" asp-route-id="@item.Id"><span class="badge bg-primary">Details</span></a> |
+                                                        <a asp-action="AssignMembers" asp-controller="Projects" asp-route-id="@item.Id"><span class="badge bg-secondary">Assign Members</span></a> |
+                                                        <a asp-action="ArchiveProject" asp-controller="Projects" asp-route-id="@item.Id"><span class="badge bg-danger">Archive</span></a>
                                                     </td>
                                                 </tr>
                                             }
@@ -955,18 +918,9 @@
                                                 <th>
                                                     Title
                                                 </th>
-                                                @*<th>
-                                                        Description
-                                                    </th>*@
                                                 <th>
                                                     Created
                                                 </th>
-                                                @*<th>
-                                                        Updated
-                                                    </th>*@
-                                                @*<th>
-                                                        Archived
-                                                    </th>*@
                                                 <th>
                                                     Project
                                                 </th>
@@ -996,18 +950,9 @@
                                                     <td>
                                                         @Html.DisplayFor(modelItem => item.Title)
                                                     </td>
-                                                    @*<td>
-                                                            @Html.DisplayFor(modelItem => item.Description)
-                                                        </td>*@
                                                     <td>
                                                         @Html.DisplayFor(modelItem => item.Created)
                                                     </td>
-                                                    @*<td>
-                                                            @Html.DisplayFor(modelItem => item.Updated)
-                                                        </td>*@
-                                                    @*<td>
-                                                            @Html.DisplayFor(modelItem => item.Archived)
-                                                        </td>*@
                                                     <td>
                                                         @Html.DisplayFor(modelItem => item.Project.Name)
                                                     </td>
@@ -1027,9 +972,9 @@
                                                         @Html.DisplayFor(modelItem => item.DeveloperUser.FullName)
                                                     </td>
                                                     <td>
-                                                        <a asp-action="Edit" asp-controller="Tickets" asp-route-id="@item.Id">Edit</a> |
-                                                        <a asp-action="Details" asp-controller="Tickets" asp-route-id="@item.Id">Details</a> |
-                                                        <a asp-action="Delete" asp-controller="Tickets" asp-route-id="@item.Id">Delete</a>
+                                                        <a asp-action="Edit" asp-controller="Tickets" asp-route-id="@item.Id"><span class="badge bg-primary">Edit</span></a> |
+                                                        <a asp-action="Details" asp-controller="Tickets" asp-route-id="@item.Id"><span class="badge bg-secondary">Details</span></a> |
+                                                        <a asp-action="Delete" asp-controller="Tickets" asp-route-id="@item.Id"><span class="badge bg-danger">Delete</span></a>
                                                     </td>
                                                 </tr>
                                             }
