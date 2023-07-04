@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,8 +28,6 @@ namespace Titan_BugTracker.Data
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             return connectionString;
         }
-
-
 
         public static async Task ManageDataAsync(IHost host)
         {

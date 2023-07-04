@@ -52,10 +52,9 @@ window.onload = function () {
   var uploadedImageURL;
 
   // Tooltip
-  
 
   // Buttons
-  
+
   // Download
   if (typeof download.download === 'undefined') {
     download.className += ' disabled';
@@ -63,7 +62,7 @@ window.onload = function () {
   }
 
   // Options
-  
+
   document.querySelector('.docs-toggles').addEventListener('change',function (event) {
     var e = event || window.event;
     var target = e.target || e.srcElement;
@@ -193,8 +192,6 @@ window.onload = function () {
         case 'scaleY':
           target.setAttribute('data-option', -data.option);
           break;
-
-  
 
         case 'destroy':
           cropper = null;

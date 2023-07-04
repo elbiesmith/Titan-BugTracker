@@ -35,7 +35,6 @@
  * Module/App: Main Js
  */
 
-
  feather.replace();
  // Menu sticky
  function windowScroll() {
@@ -101,7 +100,7 @@
          document.body.classList.toggle('enlarge-menu')
      });
  } catch (err) {}
- // Left sidebar Tab Menu Responsive Resize 
+ // Left sidebar Tab Menu Responsive Resize
  if (window.screen.width < 1025) {
      document.getElementsByTagName('body')[0].classList.add('enlarge-menu', 'enlarge-menu-all');
  } else if (window.screen.width < 1340) {
@@ -205,9 +204,6 @@
      }
  };
 
-
-
-
  function activateMenu() {
     var menuItems = document.getElementsByClassName("sub-menu-item");
     if (menuItems) {
@@ -249,12 +245,11 @@ document.querySelectorAll('.menu-body a')
   var pageUrl = window.location.href.split(/[?#]/)[0];
   const target = element;
   if (element.href == pageUrl) {
-
     target.classList.add('active');
     target.parentNode.classList.add('menuitem-active');
     target.parentNode.querySelector('.nav-link')?.setAttribute('aria-expanded',"true");
     target.parentNode.parentNode.parentNode.classList.add('show');
-    target.parentNode.parentNode.parentNode.parentNode.classList.add('menuitem-active'); 
+    target.parentNode.parentNode.parentNode.parentNode.classList.add('menuitem-active');
     target.parentNode.parentNode.parentNode.parentNode.querySelector('.nav-link')?.setAttribute('aria-expanded',"true");// add active to li of the current link
 
     var firstLevelParent = target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
@@ -279,11 +274,9 @@ document.querySelectorAll('.menu-body a')
     if (upperLevelParent) {
       upperLevelParent.classList.add('menuitem-active');
       //upperLevelParent.querySelector('.nav-link')?.setAttribute('aria-expanded',"true");
-
     }
   }
 });
-
 
 if (document.querySelectorAll("#navigation").length) {
     document.querySelectorAll('#navigation li a').forEach(function (element, index) {

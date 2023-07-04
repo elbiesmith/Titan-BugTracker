@@ -7,7 +7,6 @@
 var tabledata = [
 ];
 
-
 var table = new Tabulator("#datatable-1", {
     data:tabledata,           //load row data from array
     layout:"fitColumns",      //fit columns to width of table
@@ -20,12 +19,9 @@ var table = new Tabulator("#datatable-1", {
     movableColumns:true,      //allow column order to be changed
     resizableRows:true,       //allow row order to be changed
     initialSort:[             //set the initial sort order of the data
-        
+
     ]
-    
 });
-
-
 
 var table = new Tabulator("#datatable-2", {
     layout:"fitDataFill",
@@ -88,7 +84,6 @@ var headerMenu = function(){
     var columns = this.getColumns();
 
     for(let column of columns){
-
         //create checkbox element using font awesome icons
         let icon = document.createElement("i");
         icon.classList.add("fas");

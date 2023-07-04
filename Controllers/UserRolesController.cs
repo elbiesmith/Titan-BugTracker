@@ -2,13 +2,11 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Titan_BugTracker.Extensions;
 using Titan_BugTracker.Models;
-using Titan_BugTracker.Models.Enums;
 using Titan_BugTracker.Models.ViewModels;
 using Titan_BugTracker.Services.Interfaces;
 

@@ -9,10 +9,7 @@
   else {
     root.GMaps = factory();
   }
-
-
 }(this, function() {
-
 /*!
  * GMaps.js v0.4.25
  * http://hpneo.github.com/gmaps/
@@ -128,7 +125,6 @@ var getElementsByClassName = function (class_name, context) {
         element = document.getElementsByClassName(_class)[0];
     }
     return element;
-
 };
 
 var getElementById = function(id, context) {
@@ -181,7 +177,6 @@ var GMaps = (function(global) {
    * * `markerClusterer` (function): A function to create a marker cluster. You can use MarkerClusterer or MarkerClustererPlus.
    */
   var GMaps = function(options) {
-
     if (!(typeof window.google === 'object' && window.google.maps)) {
       if (typeof window.console === 'object' && window.console.error) {
         console.error('Google Maps API is required. Please register the following JavaScript library https://maps.googleapis.com/maps/api/js.');
@@ -990,7 +985,7 @@ GMaps.prototype.drawOverlay = function(options) {
     if (!options.layer) {
       options.layer = 'overlayLayer';
     }
-    
+
     var panes = this.getPanes(),
         overlayLayer = panes[options.layer],
         stop_overlay_events = ['contextmenu', 'DOMMouseScroll', 'dblclick', 'mousedown'];
@@ -1855,7 +1850,7 @@ GMaps.prototype.toImage = function(options) {
 
   if (this.markers.length > 0) {
     static_map_options['markers'] = [];
-    
+
     for (var i = 0; i < this.markers.length; i++) {
       static_map_options['markers'].push({
         lat: this.markers[i].getPosition().lat(),
@@ -1866,7 +1861,7 @@ GMaps.prototype.toImage = function(options) {
 
   if (this.polylines.length > 0) {
     var polyline = this.polylines[0];
-    
+
     static_map_options['polyline'] = {};
     static_map_options['polyline']['path'] = google.maps.geometry.encoding.encodePath(polyline.getPath());
     static_map_options['polyline']['strokeColor'] = polyline.strokeColor
@@ -1890,7 +1885,7 @@ GMaps.staticMapURL = function(options){
   static_root += '?';
 
   var markers = options.markers;
-  
+
   delete options.markers;
 
   if (!markers && options.marker) {
@@ -2192,7 +2187,7 @@ GMaps.custom_events = ['marker_added', 'marker_removed', 'polyline_added', 'poly
 
 GMaps.on = function(event_name, object, handler) {
   if (GMaps.custom_events.indexOf(event_name) == -1) {
-    if(object instanceof GMaps) object = object.map; 
+    if(object instanceof GMaps) object = object.map;
     return google.maps.event.addListener(object, event_name, handler);
   }
   else {
@@ -2210,7 +2205,7 @@ GMaps.on = function(event_name, object, handler) {
 
 GMaps.off = function(event_name, object) {
   if (GMaps.custom_events.indexOf(event_name) == -1) {
-    if(object instanceof GMaps) object = object.map; 
+    if(object instanceof GMaps) object = object.map;
     google.maps.event.clearListeners(object, event_name);
   }
   else {
@@ -2279,7 +2274,7 @@ GMaps.geocode = function(options) {
   delete options.lat;
   delete options.lng;
   delete options.callback;
-  
+
   this.geocoder.geocode(options, function(results, status) {
     callback(results, status);
   });

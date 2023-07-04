@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Titan_BugTracker.Models
 {
@@ -24,7 +21,8 @@ namespace Titan_BugTracker.Models
 
         [NotMapped]
         [DisplayName("FullName")]
-        public string FullName { get { return $"{FirstName} {LastName}"; } }
+        public string FullName
+        { get { return $"{FirstName} {LastName}"; } }
 
         [NotMapped]
         [DataType(DataType.Upload)]

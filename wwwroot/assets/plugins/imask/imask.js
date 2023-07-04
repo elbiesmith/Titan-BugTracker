@@ -14,7 +14,6 @@
 	  return it && it.Math == Math && it;
 	}; // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 
-
 	var global_1 = // eslint-disable-next-line no-undef
 	check(typeof globalThis == 'object' && globalThis) || check(typeof window == 'object' && window) || check(typeof self == 'object' && self) || check(typeof commonjsGlobal == 'object' && commonjsGlobal) || // eslint-disable-next-line no-new-func
 	Function('return this')();
@@ -28,7 +27,6 @@
 	};
 
 	// Thank's IE8 for his funny defineProperty
-
 
 	var descriptors = !fails(function () {
 	  return Object.defineProperty({}, 1, {
@@ -89,9 +87,6 @@
 
 	// toObject with fallback for non-array-like ES3 strings
 
-
-
-
 	var toIndexedObject = function (it) {
 	  return indexedObject(requireObjectCoercible(it));
 	};
@@ -104,7 +99,6 @@
 	// https://tc39.github.io/ecma262/#sec-toprimitive
 	// instead of the ES6 spec version, we didn't implement @@toPrimitive case
 	// and the second argument - flag - preferred type is a string
-
 
 	var toPrimitive = function (input, PREFERRED_STRING) {
 	  if (!isObject(input)) return input;
@@ -130,7 +124,6 @@
 	};
 
 	// Thank's IE8 for his funny defineProperty
-
 
 	var ie8DomDefine = !descriptors && !fails(function () {
 	  return Object.defineProperty(documentCreateElement('div'), 'a', {
@@ -375,7 +368,6 @@
 
 	// `Array.prototype.{ indexOf, includes }` methods implementation
 
-
 	var createMethod = function (IS_INCLUDES) {
 	  return function ($this, el, fromIndex) {
 	    var O = toIndexedObject($this);
@@ -406,8 +398,6 @@
 
 	var indexOf = arrayIncludes.indexOf;
 
-
-
 	var objectKeysInternal = function (object, names) {
 	  var O = toIndexedObject(object);
 	  var i = 0;
@@ -415,7 +405,6 @@
 	  var key;
 
 	  for (key in O) !has(hiddenKeys, key) && has(O, key) && result.push(key); // Don't enum bug & hidden keys
-
 
 	  while (names.length > i) if (has(O, key = names[i++])) {
 	    ~indexOf(result, key) || result.push(key);
@@ -445,7 +434,6 @@
 	};
 
 	// all object keys, includes non-enumerable and symbols
-
 
 	var ownKeys = getBuiltIn('Reflect', 'ownKeys') || function ownKeys(it) {
 	  var keys = objectGetOwnPropertyNames.f(anObject(it));
@@ -482,15 +470,6 @@
 
 	var getOwnPropertyDescriptor$1 = objectGetOwnPropertyDescriptor.f;
 
-
-
-
-
-
-
-
-
-
 	/*
 	  options.target      - name of the target object
 	  options.global      - target is the global object
@@ -505,7 +484,6 @@
 	  options.enumerable  - export as enumerable property
 	  options.noTargetGet - prevent calling a getter on target
 	*/
-
 
 	var _export = function (options, source) {
 	  var TARGET = options.target;
@@ -536,11 +514,9 @@
 	      copyConstructorProperties(sourceProperty, targetProperty);
 	    } // add a flag to not completely full polyfills
 
-
 	    if (options.sham || targetProperty && targetProperty.sham) {
 	      createNonEnumerableProperty(sourceProperty, 'sham', true);
 	    } // extend global
-
 
 	    redefine(target, key, sourceProperty, options);
 	  }
@@ -549,14 +525,12 @@
 	// `Object.keys` method
 	// https://tc39.github.io/ecma262/#sec-object.keys
 
-
 	var objectKeys = Object.keys || function keys(O) {
 	  return objectKeysInternal(O, enumBugKeys);
 	};
 
 	// `ToObject` abstract operation
 	// https://tc39.github.io/ecma262/#sec-toobject
-
 
 	var toObject = function (argument) {
 	  return Object(requireObjectCoercible(argument));
@@ -619,7 +593,6 @@
 	// `Object.assign` method
 	// https://tc39.github.io/ecma262/#sec-object.assign
 
-
 	_export({
 	  target: 'Object',
 	  stat: true,
@@ -630,7 +603,6 @@
 
 	// `String.prototype.repeat` method implementation
 	// https://tc39.github.io/ecma262/#sec-string.prototype.repeat
-
 
 	var stringRepeat = ''.repeat || function repeat(count) {
 	  var str = String(requireObjectCoercible(this));
@@ -644,11 +616,6 @@
 	};
 
 	// https://github.com/tc39/proposal-string-pad-start-end
-
-
-
-
-
 
 	var ceil$1 = Math.ceil; // `String.prototype.{ padStart, padEnd }` methods implementation
 
@@ -681,14 +648,12 @@
 	// https://github.com/zloirock/core-js/issues/280
 	 // eslint-disable-next-line unicorn/no-unsafe-regex
 
-
 	var stringPadWebkitBug = /Version\/10\.\d+(\.\d+)?( Mobile\/\w+)? Safari\//.test(engineUserAgent);
 
 	var $padEnd = stringPad.end;
 
 	 // `String.prototype.padEnd` method
 	// https://tc39.github.io/ecma262/#sec-string.prototype.padend
-
 
 	_export({
 	  target: 'String',
@@ -707,7 +672,6 @@
 	 // `String.prototype.padStart` method
 	// https://tc39.github.io/ecma262/#sec-string.prototype.padstart
 
-
 	_export({
 	  target: 'String',
 	  proto: true,
@@ -723,7 +687,6 @@
 	// `String.prototype.repeat` method
 	// https://tc39.github.io/ecma262/#sec-string.prototype.repeat
 
-
 	_export({
 	  target: 'String',
 	  proto: true
@@ -733,7 +696,6 @@
 
 	// `globalThis` object
 	// https://github.com/tc39/proposal-global
-
 
 	_export({
 	  global: true
@@ -1114,7 +1076,6 @@
 	    @readonly
 	  */
 
-
 	  _createClass(ActionDetails, [{
 	    key: "startChangePos",
 	    get: function get() {
@@ -1124,7 +1085,6 @@
 	      Inserted symbols count
 	      @readonly
 	    */
-
 	  }, {
 	    key: "insertedCount",
 	    get: function get() {
@@ -1134,7 +1094,6 @@
 	      Inserted symbols
 	      @readonly
 	    */
-
 	  }, {
 	    key: "inserted",
 	    get: function get() {
@@ -1144,7 +1103,6 @@
 	      Removed symbols count
 	      @readonly
 	    */
-
 	  }, {
 	    key: "removedCount",
 	    get: function get() {
@@ -1156,7 +1114,6 @@
 	      Removed symbols
 	      @readonly
 	    */
-
 	  }, {
 	    key: "removed",
 	    get: function get() {
@@ -1166,7 +1123,6 @@
 	      Unchanged head symbols
 	      @readonly
 	    */
-
 	  }, {
 	    key: "head",
 	    get: function get() {
@@ -1176,7 +1132,6 @@
 	      Unchanged tail symbols
 	      @readonly
 	    */
-
 	  }, {
 	    key: "tail",
 	    get: function get() {
@@ -1186,7 +1141,6 @@
 	      Remove direction
 	      @readonly
 	    */
-
 	  }, {
 	    key: "removeDirection",
 	    get: function get() {
@@ -1232,7 +1186,6 @@
 	    @returns {ChangeDetails} `this`
 	  */
 
-
 	  _createClass(ChangeDetails, [{
 	    key: "aggregate",
 	    value: function aggregate(details) {
@@ -1243,7 +1196,6 @@
 	      return this;
 	    }
 	    /** Total offset considering all changes */
-
 	  }, {
 	    key: "offset",
 	    get: function get() {
@@ -1367,7 +1319,6 @@
 	  }
 	  /** Sets and applies new options */
 
-
 	  _createClass(Masked, [{
 	    key: "updateOptions",
 	    value: function updateOptions(opts) {
@@ -1378,14 +1329,12 @@
 	      Sets new options
 	      @protected
 	    */
-
 	  }, {
 	    key: "_update",
 	    value: function _update(opts) {
 	      Object.assign(this, opts);
 	    }
 	    /** Mask state */
-
 	  }, {
 	    key: "reset",
 
@@ -1394,7 +1343,6 @@
 	      this._value = '';
 	    }
 	    /** */
-
 	  }, {
 	    key: "resolve",
 
@@ -1408,7 +1356,6 @@
 	      return this.value;
 	    }
 	    /** */
-
 	  }, {
 	    key: "nearestInputPos",
 
@@ -1417,7 +1364,6 @@
 	      return cursorPos;
 	    }
 	    /** Extracts value in range considering flags */
-
 	  }, {
 	    key: "extractInput",
 	    value: function extractInput() {
@@ -1426,7 +1372,6 @@
 	      return this.value.slice(fromPos, toPos);
 	    }
 	    /** Extracts tail in range */
-
 	  }, {
 	    key: "extractTail",
 	    value: function extractTail() {
@@ -1436,7 +1381,6 @@
 	    }
 	    /** Appends tail */
 	    // $FlowFixMe no ideas
-
 	  }, {
 	    key: "appendTail",
 	    value: function appendTail(tail) {
@@ -1444,7 +1388,6 @@
 	      return tail.appendTo(this);
 	    }
 	    /** Appends char */
-
 	  }, {
 	    key: "_appendCharRaw",
 	    value: function _appendCharRaw(ch) {
@@ -1458,7 +1401,6 @@
 	      });
 	    }
 	    /** Appends char */
-
 	  }, {
 	    key: "_appendChar",
 	    value: function _appendChar(ch) {
@@ -1487,7 +1429,6 @@
 	          if (appended && tailDetails.inserted) this.state = beforeTailState;
 	        } // revert all if something went wrong
 
-
 	        if (!appended) {
 	          details = new ChangeDetails();
 	          this.state = consistentState;
@@ -1498,7 +1439,6 @@
 	      return details;
 	    }
 	    /** Appends optional placeholder at end */
-
 	  }, {
 	    key: "_appendPlaceholder",
 	    value: function _appendPlaceholder() {
@@ -1506,7 +1446,6 @@
 	    }
 	    /** Appends symbols considering flags */
 	    // $FlowFixMe no ideas
-
 	  }, {
 	    key: "append",
 	    value: function append(str, flags, tail) {
@@ -1519,7 +1458,6 @@
 	        details.aggregate(this._appendChar(str[ci], flags, checkTail));
 	      } // append tail but aggregate only tailShift
 
-
 	      if (checkTail != null) {
 	        details.tailShift += this.appendTail(checkTail).tailShift; // TODO it's a good idea to clear state after appending ends
 	        // but it causes bugs when one append calls another (when dynamic dispatch set rawInputValue)
@@ -1529,7 +1467,6 @@
 	      return details;
 	    }
 	    /** */
-
 	  }, {
 	    key: "remove",
 	    value: function remove() {
@@ -1539,7 +1476,6 @@
 	      return new ChangeDetails();
 	    }
 	    /** Calls function and reapplies current value */
-
 	  }, {
 	    key: "withValueRefresh",
 	    value: function withValueRefresh(fn) {
@@ -1558,7 +1494,6 @@
 	      return ret;
 	    }
 	    /** */
-
 	  }, {
 	    key: "runIsolated",
 	    value: function runIsolated(fn) {
@@ -1574,7 +1509,6 @@
 	      Prepares string before mask processing
 	      @protected
 	    */
-
 	  }, {
 	    key: "doPrepare",
 	    value: function doPrepare(str) {
@@ -1585,7 +1519,6 @@
 	      Validates if value is acceptable
 	      @protected
 	    */
-
 	  }, {
 	    key: "doValidate",
 	    value: function doValidate(flags) {
@@ -1595,28 +1528,24 @@
 	      Does additional processing in the end of editing
 	      @protected
 	    */
-
 	  }, {
 	    key: "doCommit",
 	    value: function doCommit() {
 	      if (this.commit) this.commit(this.value, this);
 	    }
 	    /** */
-
 	  }, {
 	    key: "doFormat",
 	    value: function doFormat(value) {
 	      return this.format ? this.format(value, this) : value;
 	    }
 	    /** */
-
 	  }, {
 	    key: "doParse",
 	    value: function doParse(str) {
 	      return this.parse ? this.parse(str, this) : str;
 	    }
 	    /** */
-
 	  }, {
 	    key: "splice",
 	    value: function splice(start, deleteCount, inserted, removeDirection) {
@@ -1625,7 +1554,6 @@
 	      var startChangePos = this.nearestInputPos(start, removeDirection);
 	      var changeDetails = new ChangeDetails({
 	        tailShift: startChangePos - start // adjust tailShift if start was aligned
-
 	      }).aggregate(this.remove(startChangePos)).aggregate(this.append(inserted, {
 	        input: true
 	      }, tail));
@@ -1660,7 +1588,6 @@
 	      this.doCommit();
 	    }
 	    /** */
-
 	  }, {
 	    key: "typedValue",
 	    get: function get() {
@@ -1670,7 +1597,6 @@
 	      this.value = this.doFormat(value);
 	    }
 	    /** Value that includes raw user input */
-
 	  }, {
 	    key: "rawInputValue",
 	    get: function get() {
@@ -1686,7 +1612,6 @@
 	      this.doCommit();
 	    }
 	    /** */
-
 	  }, {
 	    key: "isComplete",
 	    get: function get() {
@@ -1712,7 +1637,6 @@
 	  if (mask == null) {
 	    throw new Error('mask property should be defined');
 	  } // $FlowFixMe
-
 
 	  if (mask instanceof RegExp) return IMask.MaskedRegExp; // $FlowFixMe
 
@@ -2014,7 +1938,6 @@
 	      var toPos = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.value.length;
 	      return new ContinuousTailDetails('');
 	    } // $FlowFixMe no ideas
-
 	  }, {
 	    key: "appendTail",
 	    value: function appendTail(tail) {
@@ -2085,7 +2008,6 @@
 	    value: function toString() {
 	      return this.chunks.map(String).join('');
 	    } // $FlowFixMe no ideas
-
 	  }, {
 	    key: "extend",
 	    value: function extend(tailChunk) {
@@ -2116,7 +2038,6 @@
 	            this.extend(firstTailChunk);
 	          }
 	        } // if tail chunk still has value
-
 
 	        if (tailChunk.toString()) {
 	          // if chunks contains stops, then popup stop to container
@@ -2295,7 +2216,6 @@
 	    @param {Object} opts
 	  */
 
-
 	  _createClass(MaskedPattern, [{
 	    key: "_update",
 	    value: function _update() {
@@ -2307,7 +2227,6 @@
 	      this._rebuildMask();
 	    }
 	    /** */
-
 	  }, {
 	    key: "_rebuildMask",
 	    value: function _rebuildMask() {
@@ -2346,7 +2265,6 @@
 
 	              if (maskedBlock) {
 	                _this._blocks.push(maskedBlock); // store block index
-
 
 	                if (!_this._maskedBlocks[bName]) _this._maskedBlocks[bName] = [];
 
@@ -2405,7 +2323,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "reset",
 
@@ -2422,7 +2339,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "doCommit",
 
@@ -2439,7 +2355,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "appendTail",
 
@@ -2452,7 +2367,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "_appendCharRaw",
 	    value: function _appendCharRaw(ch) {
@@ -2480,7 +2394,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "extractTail",
 	    value: function extractTail() {
@@ -2504,7 +2417,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "extractInput",
 	    value: function extractInput() {
@@ -2533,7 +2445,6 @@
 	      return stopBefore;
 	    }
 	    /** Appends placeholder depending on laziness */
-
 	  }, {
 	    key: "_appendPlaceholder",
 	    value: function _appendPlaceholder(toBlockIndex) {
@@ -2563,7 +2474,6 @@
 	      return details;
 	    }
 	    /** Finds block in pos */
-
 	  }, {
 	    key: "_mapPosToBlock",
 	    value: function _mapPosToBlock(pos) {
@@ -2583,7 +2493,6 @@
 	      }
 	    }
 	    /** */
-
 	  }, {
 	    key: "_blockStartPos",
 	    value: function _blockStartPos(blockIndex) {
@@ -2592,7 +2501,6 @@
 	      }, 0);
 	    }
 	    /** */
-
 	  }, {
 	    key: "_forEachBlocksInRange",
 	    value: function _forEachBlocksInRange(fromPos) {
@@ -2603,7 +2511,6 @@
 
 	      if (fromBlockIter) {
 	        var toBlockIter = this._mapPosToBlock(toPos); // process first block
-
 
 	        var isSameBlock = toBlockIter && fromBlockIter.index === toBlockIter.index;
 	        var fromBlockStartPos = fromBlockIter.offset;
@@ -2616,7 +2523,6 @@
 	            fn(this._blocks[bi], bi, 0, this._blocks[bi].value.length);
 	          } // process last block
 
-
 	          fn(this._blocks[toBlockIter.index], toBlockIter.index, 0, toBlockIter.offset);
 	        }
 	      }
@@ -2624,7 +2530,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "remove",
 	    value: function remove() {
@@ -2642,7 +2547,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "nearestInputPos",
 	    value: function nearestInputPos(cursorPos) {
@@ -2688,7 +2592,6 @@
 	          }
 	        } // ->
 
-
 	        var firstInputAtRight = searchBlockIndex;
 
 	        for (var bi = firstInputAtRight; bi < this._blocks.length; ++bi) {
@@ -2702,12 +2605,10 @@
 	        } // <-
 	        // find first non-fixed symbol
 
-
 	        for (var _bi = searchBlockIndex - 1; _bi >= 0; --_bi) {
 	          var _block3 = this._blocks[_bi];
 
 	          var _blockInputPos2 = _block3.nearestInputPos(0, DIRECTION.NONE); // is input
-
 
 	          if (!_block3.value.length || _blockInputPos2 !== _block3.value.length) {
 	            return this._blockStartPos(_bi) + _block3.value.length;
@@ -2747,7 +2648,6 @@
 	        } // <-
 	        // find this vars
 
-
 	        var firstFilledInputBlockIndex = -1;
 	        var firstEmptyInputBlockIndex; // TODO consider nested empty inputs
 
@@ -2785,11 +2685,9 @@
 	          }
 	        } // process overflow
 
-
 	        if (firstFilledInputBlockIndex >= 0) {
 	          return this._blockStartPos(firstFilledInputBlockIndex) + this._blocks[firstFilledInputBlockIndex].value.length;
 	        } // for lazy if has aligned left inside fixed and has came to the start - use start position
-
 
 	        if (direction === DIRECTION.FORCE_LEFT || this.lazy && !this.extractInput() && !isInput(this._blocks[searchBlockIndex])) {
 	          return 0;
@@ -2799,12 +2697,10 @@
 	          return this._blockStartPos(firstEmptyInputBlockIndex);
 	        } // find first input
 
-
 	        for (var _bi5 = searchBlockIndex; _bi5 < this._blocks.length; ++_bi5) {
 	          var _block6 = this._blocks[_bi5];
 
 	          var _blockInputPos6 = _block6.nearestInputPos(0, DIRECTION.NONE); // is input
-
 
 	          if (!_block6.value.length || _blockInputPos6 !== _block6.value.length) {
 	            return this._blockStartPos(_bi5) + _blockInputPos6;
@@ -2866,14 +2762,12 @@
 	      return cursorPos;
 	    }
 	    /** Get block by name */
-
 	  }, {
 	    key: "maskedBlock",
 	    value: function maskedBlock(name) {
 	      return this.maskedBlocks(name)[0];
 	    }
 	    /** Get all blocks by name */
-
 	  }, {
 	    key: "maskedBlocks",
 	    value: function maskedBlocks(name) {
@@ -2924,7 +2818,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "value",
 	    get: function get() {
@@ -3000,7 +2893,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "boundaries",
 	    value: function boundaries(str) {
@@ -3024,7 +2916,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "doPrepare",
 	    value: function doPrepare(str) {
@@ -3052,7 +2943,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "doValidate",
 	    value: function doValidate() {
@@ -3127,7 +3017,6 @@
 	    @override
 	  */
 
-
 	  _createClass(MaskedDate, [{
 	    key: "_update",
 	    value: function _update(opts) {
@@ -3161,7 +3050,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "doValidate",
 	    value: function doValidate() {
@@ -3176,14 +3064,12 @@
 	      return (_get2 = _get(_getPrototypeOf(MaskedDate.prototype), "doValidate", this)).call.apply(_get2, [this].concat(args)) && (!this.isComplete || this.isDateExist(this.value) && date != null && (this.min == null || this.min <= date) && (this.max == null || date <= this.max));
 	    }
 	    /** Checks if date is exists */
-
 	  }, {
 	    key: "isDateExist",
 	    value: function isDateExist(str) {
 	      return this.format(this.parse(str, this), this).indexOf(str) >= 0;
 	    }
 	    /** Parsed Date */
-
 	  }, {
 	    key: "date",
 	    get: function get() {
@@ -3195,7 +3081,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "typedValue",
 	    get: function get() {
@@ -3274,19 +3159,16 @@
 	      } catch (e) {}
 	    }
 	    /** Should be overriden in subclasses */
-
 	  }, {
 	    key: "_unsafeSelect",
 	    value: function _unsafeSelect(start, end) {}
 	    /** Should be overriden in subclasses */
-
 	  }, {
 	    key: "bindEvents",
 
 	    /** Should be overriden in subclasses */
 	    value: function bindEvents(handlers) {}
 	    /** Should be overriden in subclasses */
-
 	  }, {
 	    key: "unbindEvents",
 	    value: function unbindEvents() {}
@@ -3310,7 +3192,6 @@
 	      return start != null ? start : this.value.length;
 	    }
 	    /** Safely returns selection end */
-
 	  }, {
 	    key: "selectionEnd",
 	    get: function get() {
@@ -3360,7 +3241,6 @@
 	  /** */
 	  // $FlowFixMe https://github.com/facebook/flow/issues/2839
 
-
 	  _createClass(HTMLMaskElement, [{
 	    key: "_unsafeSelect",
 
@@ -3375,7 +3255,6 @@
 	      HTMLElement value
 	      @override
 	    */
-
 	  }, {
 	    key: "bindEvents",
 
@@ -3394,7 +3273,6 @@
 	      Unbinds HTMLElement events to mask internal events
 	      @override
 	    */
-
 	  }, {
 	    key: "unbindEvents",
 	    value: function unbindEvents() {
@@ -3405,7 +3283,6 @@
 	      });
 	    }
 	    /** */
-
 	  }, {
 	    key: "_toggleEventHandler",
 	    value: function _toggleEventHandler(event, handler) {
@@ -3428,7 +3305,6 @@
 	      Is element in focus
 	      @readonly
 	    */
-
 	  }, {
 	    key: "isActive",
 	    get: function get() {
@@ -3439,7 +3315,6 @@
 	      Returns HTMLElement selection start
 	      @override
 	    */
-
 	  }, {
 	    key: "_unsafeSelectionStart",
 	    get: function get() {
@@ -3449,7 +3324,6 @@
 	      Returns HTMLElement selection end
 	      @override
 	    */
-
 	  }, {
 	    key: "_unsafeSelectionEnd",
 	    get: function get() {
@@ -3512,7 +3386,6 @@
 	      HTMLElement value
 	      @override
 	    */
-
 	  }, {
 	    key: "_unsafeSelectionStart",
 
@@ -3529,7 +3402,6 @@
 	      Returns HTMLElement selection end
 	      @override
 	    */
-
 	  }, {
 	    key: "_unsafeSelectionEnd",
 	    get: function get() {
@@ -3590,13 +3462,11 @@
 
 	    this._bindEvents(); // refresh
 
-
 	    this.updateValue();
 
 	    this._onChange();
 	  }
 	  /** Read or update mask */
-
 
 	  _createClass(InputMask, [{
 	    key: "maskEquals",
@@ -3624,7 +3494,6 @@
 	      Stops listening to element events
 	      @protected
 	     */
-
 	  }, {
 	    key: "_unbindEvents",
 	    value: function _unbindEvents() {
@@ -3634,7 +3503,6 @@
 	      Fires custom event
 	      @protected
 	     */
-
 	  }, {
 	    key: "_fireEvent",
 	    value: function _fireEvent(ev) {
@@ -3652,7 +3520,6 @@
 	      Current selection start
 	      @readonly
 	    */
-
 	  }, {
 	    key: "_saveSelection",
 
@@ -3673,7 +3540,6 @@
 	      };
 	    }
 	    /** Syncronizes model value from view */
-
 	  }, {
 	    key: "updateValue",
 	    value: function updateValue() {
@@ -3681,7 +3547,6 @@
 	      this._value = this.masked.value;
 	    }
 	    /** Syncronizes view from model value, fires change events */
-
 	  }, {
 	    key: "updateControl",
 	    value: function updateControl() {
@@ -3694,7 +3559,6 @@
 	      if (isChanged) this._fireChangeEvents();
 	    }
 	    /** Updates options with deep equal check, recreates @{link Masked} model if mask type changes */
-
 	  }, {
 	    key: "updateOptions",
 	    value: function updateOptions(opts) {
@@ -3708,7 +3572,6 @@
 	      if (updateMask || updateOpts) this.updateControl();
 	    }
 	    /** Updates cursor */
-
 	  }, {
 	    key: "updateCursor",
 	    value: function updateCursor(cursorPos) {
@@ -3721,7 +3584,6 @@
 	      Delays cursor update to support mobile browsers
 	      @private
 	    */
-
 	  }, {
 	    key: "_delayUpdateCursor",
 	    value: function _delayUpdateCursor(cursorPos) {
@@ -3742,7 +3604,6 @@
 	      Fires custom events
 	      @protected
 	    */
-
 	  }, {
 	    key: "_fireChangeEvents",
 	    value: function _fireChangeEvents() {
@@ -3754,7 +3615,6 @@
 	      Aborts delayed cursor update
 	      @private
 	    */
-
 	  }, {
 	    key: "_abortUpdateCursor",
 	    value: function _abortUpdateCursor() {
@@ -3764,14 +3624,12 @@
 	      }
 	    }
 	    /** Aligns cursor to nearest available position */
-
 	  }, {
 	    key: "alignCursor",
 	    value: function alignCursor() {
 	      this.cursorPos = this.masked.nearestInputPos(this.cursorPos, DIRECTION.LEFT);
 	    }
 	    /** Aligns cursor only if selection is empty */
-
 	  }, {
 	    key: "alignCursorFriendly",
 	    value: function alignCursorFriendly() {
@@ -3780,7 +3638,6 @@
 	      this.alignCursor();
 	    }
 	    /** Adds listener on custom event */
-
 	  }, {
 	    key: "on",
 	    value: function on(ev, handler) {
@@ -3791,7 +3648,6 @@
 	      return this;
 	    }
 	    /** Removes custom event listener */
-
 	  }, {
 	    key: "off",
 	    value: function off(ev, handler) {
@@ -3808,14 +3664,12 @@
 	      return this;
 	    }
 	    /** Handles view input event */
-
 	  }, {
 	    key: "_onInput",
 	    value: function _onInput(e) {
 	      this._inputEvent = e;
 
 	      this._abortUpdateCursor(); // fix strange IE behavior
-
 
 	      if (!this._selection) return this.updateValue();
 	      var details = new ActionDetails( // new state
@@ -3832,7 +3686,6 @@
 	      delete this._inputEvent;
 	    }
 	    /** Handles view change event and commits model value */
-
 	  }, {
 	    key: "_onChange",
 	    value: function _onChange() {
@@ -3846,7 +3699,6 @@
 	      this._saveSelection();
 	    }
 	    /** Handles view drop event, prevents by default */
-
 	  }, {
 	    key: "_onDrop",
 	    value: function _onDrop(ev) {
@@ -3854,26 +3706,22 @@
 	      ev.stopPropagation();
 	    }
 	    /** Restore last selection on focus */
-
 	  }, {
 	    key: "_onFocus",
 	    value: function _onFocus(ev) {
 	      this.alignCursorFriendly();
 	    }
 	    /** Restore last selection on focus */
-
 	  }, {
 	    key: "_onClick",
 	    value: function _onClick(ev) {
 	      this.alignCursorFriendly();
 	    }
 	    /** Unbind view events and removes element reference */
-
 	  }, {
 	    key: "destroy",
 	    value: function destroy() {
 	      this._unbindEvents(); // $FlowFixMe why not do so?
-
 
 	      this._listeners.length = 0; // $FlowFixMe
 
@@ -3901,7 +3749,6 @@
 	      this.masked = masked;
 	    }
 	    /** Raw value */
-
 	  }, {
 	    key: "value",
 	    get: function get() {
@@ -3913,7 +3760,6 @@
 	      this.alignCursor();
 	    }
 	    /** Unmasked value */
-
 	  }, {
 	    key: "unmaskedValue",
 	    get: function get() {
@@ -3925,7 +3771,6 @@
 	      this.alignCursor();
 	    }
 	    /** Typed unmasked value */
-
 	  }, {
 	    key: "typedValue",
 	    get: function get() {
@@ -3942,7 +3787,6 @@
 	      return this._cursorChanging ? this._changingCursorPos : this.el.selectionStart;
 	    }
 	    /** Current cursor position */
-
 	  }, {
 	    key: "cursorPos",
 	    get: function get() {
@@ -3989,7 +3833,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "doValidate",
 	    value: function doValidate() {
@@ -4054,7 +3897,6 @@
 	    @override
 	  */
 
-
 	  _createClass(MaskedNumber, [{
 	    key: "_update",
 	    value: function _update(opts) {
@@ -4063,7 +3905,6 @@
 	      this._updateRegExps();
 	    }
 	    /** */
-
 	  }, {
 	    key: "_updateRegExps",
 	    value: function _updateRegExps() {
@@ -4078,14 +3919,12 @@
 	      this._thousandsSeparatorRegExp = new RegExp(escapeRegExp(this.thousandsSeparator), 'g');
 	    }
 	    /** */
-
 	  }, {
 	    key: "_removeThousandsSeparators",
 	    value: function _removeThousandsSeparators(value) {
 	      return value.replace(this._thousandsSeparatorRegExp, '');
 	    }
 	    /** */
-
 	  }, {
 	    key: "_insertThousandsSeparators",
 	    value: function _insertThousandsSeparators(value) {
@@ -4097,7 +3936,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "doPrepare",
 	    value: function doPrepare(str) {
@@ -4110,7 +3948,6 @@
 	      return (_get2 = _get(_getPrototypeOf(MaskedNumber.prototype), "doPrepare", this)).call.apply(_get2, [this, this._removeThousandsSeparators(str.replace(this._mapToRadixRegExp, this.radix))].concat(args));
 	    }
 	    /** */
-
 	  }, {
 	    key: "_separatorsCount",
 	    value: function _separatorsCount(to) {
@@ -4127,7 +3964,6 @@
 	      return count;
 	    }
 	    /** */
-
 	  }, {
 	    key: "_separatorsCountFromSlice",
 	    value: function _separatorsCountFromSlice() {
@@ -4137,7 +3973,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "extractInput",
 	    value: function extractInput() {
@@ -4156,7 +3991,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "_appendCharRaw",
 	    value: function _appendCharRaw(ch) {
@@ -4180,7 +4014,6 @@
 	      return appendDetails;
 	    }
 	    /** */
-
 	  }, {
 	    key: "_findSeparatorAround",
 	    value: function _findSeparatorAround(pos) {
@@ -4207,7 +4040,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "remove",
 	    value: function remove() {
@@ -4236,7 +4068,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "nearestInputPos",
 	    value: function nearestInputPos(cursorPos, direction) {
@@ -4276,7 +4107,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "doValidate",
 	    value: function doValidate(flags) {
@@ -4297,7 +4127,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "doCommit",
 	    value: function doCommit() {
@@ -4317,12 +4146,10 @@
 	      _get(_getPrototypeOf(MaskedNumber.prototype), "doCommit", this).call(this);
 	    }
 	    /** */
-
 	  }, {
 	    key: "_normalizeZeros",
 	    value: function _normalizeZeros(value) {
 	      var parts = this._removeThousandsSeparators(value).split(this.radix); // remove leading zeros
-
 
 	      parts[0] = parts[0].replace(/^(\D*)(0*)(\d*)/, function (match, sign, zeros, num) {
 	        return sign + num;
@@ -4339,7 +4166,6 @@
 	      return this._insertThousandsSeparators(parts.join(this.radix));
 	    }
 	    /** */
-
 	  }, {
 	    key: "_padFractionalZeros",
 	    value: function _padFractionalZeros(value) {
@@ -4352,7 +4178,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "unmaskedValue",
 	    get: function get() {
@@ -4364,7 +4189,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "typedValue",
 	    get: function get() {
@@ -4374,7 +4198,6 @@
 	      _set(_getPrototypeOf(MaskedNumber.prototype), "unmaskedValue", String(n), this, true);
 	    }
 	    /** Parsed Number */
-
 	  }, {
 	    key: "number",
 	    get: function get() {
@@ -4387,7 +4210,6 @@
 	      Is negative allowed
 	      @readonly
 	    */
-
 	  }, {
 	    key: "allowNegative",
 	    get: function get() {
@@ -4467,7 +4289,6 @@
 	    @override
 	  */
 
-
 	  _createClass(MaskedDynamic, [{
 	    key: "_update",
 	    value: function _update(opts) {
@@ -4483,7 +4304,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "_appendCharRaw",
 	    value: function _appendCharRaw() {
@@ -4553,7 +4373,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "doDispatch",
 	    value: function doDispatch(appended) {
@@ -4563,7 +4382,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "doValidate",
 	    value: function doValidate() {
@@ -4578,7 +4396,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "reset",
 	    value: function reset() {
@@ -4590,7 +4407,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "remove",
 
@@ -4612,7 +4428,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "extractInput",
 
@@ -4627,7 +4442,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "extractTail",
 	    value: function extractTail() {
@@ -4642,7 +4456,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "doCommit",
 	    value: function doCommit() {
@@ -4653,7 +4466,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "nearestInputPos",
 	    value: function nearestInputPos() {
@@ -4676,7 +4488,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "unmaskedValue",
 	    get: function get() {
@@ -4688,7 +4499,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "typedValue",
 	    get: function get() {
@@ -4708,7 +4518,6 @@
 	    /**
 	      @override
 	    */
-
 	  }, {
 	    key: "isComplete",
 	    get: function get() {
@@ -4838,6 +4647,5 @@
 	exports.pipe = pipe;
 
 	Object.defineProperty(exports, '__esModule', { value: true });
-
 })));
 //# sourceMappingURL=imask.js.map

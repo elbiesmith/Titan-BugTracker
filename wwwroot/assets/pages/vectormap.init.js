@@ -4,8 +4,6 @@
  * SVG Map Js
  */
 
-
-
 var map = new jsVectorMap({
   map: 'world',
   selector: '#map_1',
@@ -66,7 +64,6 @@ var map_2 = new jsVectorMap({
     strokeDasharray: "6 3 6",
   },
 });
-
 
 var map_3 = new jsVectorMap({
   selector: "#map_3",

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Titan_BugTracker.Data;
 using Titan_BugTracker.Models;
 using Titan_BugTracker.Services.Interfaces;
@@ -81,7 +80,7 @@ namespace Titan_BugTracker.Controllers
 
                 _context.Add(ticketAttachment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Details", "Tickets", new { id = ticketAttachment.TicketId});
+                return RedirectToAction("Details", "Tickets", new { id = ticketAttachment.TicketId });
             }
             ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "Description", ticketAttachment.TicketId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", ticketAttachment.UserId);

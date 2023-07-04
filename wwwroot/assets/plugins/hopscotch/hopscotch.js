@@ -1297,7 +1297,6 @@
         cookieSkippedSteps = [],
         _configure,
 
-
     /**
      * getBubble
      *
@@ -1325,7 +1324,6 @@
       return bubble;
     },
 
-
     /**
      * Destroy the bubble currently associated with Hopscotch.
      * This is done when we end the current tour.
@@ -1338,7 +1336,6 @@
         bubble = null;
       }
     },
-
 
     /**
      * Convenience method for getting an option. Returns custom config option
@@ -1354,7 +1351,6 @@
       }
       return utils.valOrDefault(opt[name], defaultOpts[name]);
     },
-
 
     /**
      * getCurrStep
@@ -1374,7 +1370,6 @@
       return step;
     },
 
-
     /**
      * Used for nextOnTargetClick
      *
@@ -1383,7 +1378,6 @@
     targetClickNextFn = function targetClickNextFn() {
       self.nextStep();
     },
-
 
     /**
      * adjustWindowScroll
@@ -1398,12 +1392,10 @@
     adjustWindowScroll = function adjustWindowScroll(cb) {
       var bubble = getBubble(),
 
-
       // Calculate the bubble element top and bottom position
       bubbleEl = bubble.element,
           bubbleTop = utils.getPixelValue(bubbleEl.style.top),
           bubbleBottom = bubbleTop + utils.getPixelValue(bubbleEl.offsetHeight),
-
 
       // Calculate the target element top and bottom position
       targetEl = utils.getStepTarget(getCurrStep()),
@@ -1411,18 +1403,15 @@
           targetElTop = targetBounds.top + utils.getScrollTop(),
           targetElBottom = targetBounds.bottom + utils.getScrollTop(),
 
-
       // The higher of the two: bubble or target
       targetTop = bubbleTop < targetElTop ? bubbleTop : targetElTop,
 
       // The lower of the two: bubble or target
       targetBottom = bubbleBottom > targetElBottom ? bubbleBottom : targetElBottom,
 
-
       // Calculate the current viewport top and bottom
       windowTop = utils.getScrollTop(),
           windowBottom = windowTop + utils.getWindowHeight(),
-
 
       // This is our final target scroll value.
       scrollToVal = targetTop - getOption('scrollTopMargin'),
@@ -1514,7 +1503,6 @@
           }
     },
 
-
     /**
      * goToStepWithTarget
      *
@@ -1529,7 +1517,6 @@
       var target, step, goToStepFn;
 
       if (currStepNum + direction >= 0 && currStepNum + direction < currTour.steps.length) {
-
         currStepNum += direction;
         step = getCurrStep();
 
@@ -1563,7 +1550,6 @@
         cb(-1); // signal that we didn't find any step with a valid target
       }
     },
-
 
     /**
      * changeStep
@@ -1668,7 +1654,6 @@
       return this;
     },
 
-
     /**
      * loadTour
      *
@@ -1710,7 +1695,6 @@
 
       return this;
     },
-
 
     /**
      * Find the first step to show for a tour. (What is the first step with a
@@ -1797,7 +1781,6 @@
       utils.setState(getOption('cookieName'), cookieVal, 1);
     },
 
-
     /**
      * init
      *
@@ -1847,7 +1830,6 @@
       // loadTour if we are calling startTour directly. (When we call startTour
       // from window onLoad handler, we'll use currTour)
       if (!currTour) {
-
         // Sanity check! Is there a tour?
         if (!tour) {
           throw new Error('Tour data is required for startTour.');
@@ -2421,7 +2403,7 @@
  */
 _.escape = function(str){
   if(customEscape){ return customEscape(str); }
-  
+
   if(str == null) return '';
   return ('' + str).replace(new RegExp('[&<>"\']', 'g'), function(match){
     if(match == '&'){ return '&amp;' }
@@ -2437,7 +2419,6 @@ _.escape = function(str){
 this["templates"]["bubble_default"] = function(data) {
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
-
 
   function optEscape(str, unsafe){
     if(unsafe){
@@ -2507,5 +2488,4 @@ return __p
   var winHopscotch$1 = winHopscotch;
 
   return winHopscotch$1;
-
 })));

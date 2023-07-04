@@ -16,6 +16,7 @@ namespace Titan_BugTracker.Data
         //    builder.Entity<Notification>().HasOne(u => u.Sender).
         //}
         public DbSet<Company> Companies { get; set; }
+
         public DbSet<Invite> Invites { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Ticket> Tickets { get; set; }

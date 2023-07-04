@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using Titan_BugTracker.Models;
 using Titan_BugTracker.Services.Interfaces;
 
@@ -56,7 +53,6 @@ namespace Titan_BugTracker.Areas.Identity.Pages.Account.Manage
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            
 
             Username = userName;
 
@@ -113,7 +109,7 @@ namespace Titan_BugTracker.Areas.Identity.Pages.Account.Manage
                 }
             }
 
-            if(Input.FirstName != user.FirstName)
+            if (Input.FirstName != user.FirstName)
             {
                 user.FirstName = Input.FirstName;
                 await _userManager.UpdateAsync(user);

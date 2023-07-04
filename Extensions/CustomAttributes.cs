@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Titan_BugTracker.Extensions
 {
@@ -34,7 +32,7 @@ namespace Titan_BugTracker.Extensions
 
         public string GetErrorMessage()
         {
-            return $"Maximum allowed file size is { _maxFileSize} bytes.";
+            return $"Maximum allowed file size is {_maxFileSize} bytes.";
         }
     }
 

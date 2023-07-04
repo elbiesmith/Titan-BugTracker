@@ -1,5 +1,3 @@
-using System;
-
 namespace Titan_BugTracker.Models
 {
     public class ErrorViewModel

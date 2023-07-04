@@ -17,9 +17,7 @@
     root.JustGage = factory(Raphael);
   }
 }(typeof window !== 'undefined' ? window : this, function (Raphael) {
-
   var JustGage = function (config) {
-
     var obj = this
 
     obj.events = {}
@@ -113,7 +111,6 @@
       // humanFriendlyDecimal : int
       // number of decimal places for our human friendly number to contain
       humanFriendlyDecimal: kvLookup('humanFriendlyDecimal', config, dataset, 0),
-
 
       // textRenderer: func
       // function applied before rendering text
@@ -426,7 +423,6 @@
      * @returns SVG path string for gauge level
      */
     obj.canvas.customAttributes.pki = function (value) {
-
       var min = obj.config.min;
       var max = obj.config.max;
       var w = obj.params.widgetW;
@@ -515,7 +511,6 @@
      * @returns SVG path string for gauge pointer
      */
     obj.canvas.customAttributes.ndl = function (value) {
-
       var min = obj.config.min;
       var max = obj.config.max;
       var w = obj.params.widgetW;
@@ -536,7 +531,6 @@
       var alpha, Ro, Ri, Cx, Cy, Xo, Yo, Xi, Yi, Xc, Yc, Xz, Yz, Xa, Ya, Xb, Yb, path;
 
       if (donut) {
-
         alpha = (1 - 2 * (value - min) / (max - min)) * Math.PI;
         Ro = w / 2 - w / 30;
         Ri = Ro - w / 6.666666666666667 * gws;
@@ -567,7 +561,6 @@
         return {
           path: path
         };
-
       } else {
         alpha = (1 - (value - min) / (max - min)) * Math.PI;
         Ro = w / 2 - w / 10;
@@ -765,10 +758,8 @@
         setDy(obj.txtValue, obj.params.valueFontSize, obj.params.valueY);
       };
 
-
       this.bindEvent("raphael.anim.finish", onFinish)
       this.bindEvent("raphael.anim.frame", onFrame)
-
     } else {
       //on animation start
       var onStart = function () {
@@ -804,7 +795,6 @@
     }, obj.config.startAnimationTime, obj.config.startAnimationType);
   };
 
-
   /**
    * Bind a function to a Raphael eve event
    *
@@ -824,7 +814,6 @@
     this.events[eventName] = func
   }
 
-
   /**
    * Update Gauge values
    *
@@ -834,7 +823,6 @@
    * @param {String} label The Label
    */
   JustGage.prototype.refresh = function (val, max, min, label) {
-
     var obj = this;
     var displayVal, color;
 
@@ -1044,7 +1032,6 @@
    * @param {Object} defs The defs element Object
    */
   JustGage.prototype.generateShadow = function (svg, defs) {
-
     var obj = this;
     var sid = "inner-shadow-" + obj.config.id;
     var gaussFilter, feOffset, feGaussianBlur, feComposite1, feFlood, feComposite2, feComposite3;
@@ -1154,7 +1141,6 @@
 
   /** Get color for value */
   function getColor(val, pct, col, noGradient, custSec) {
-
     var no, inc, colors, percentage, rval, gval, bval, lower, upper, range, rangePct, pctLower, pctUpper, color;
     var cust = custSec && custSec.ranges && custSec.ranges.length > 0;
     var noGradient = noGradient || cust;
@@ -1211,7 +1197,6 @@
         }
       }
     }
-
   }
 
   /** Fix Raphael display:none tspan dy attribute bug */
@@ -1303,7 +1288,6 @@
   // ----------------------------------------------------------
   // UPDATE: Now using Live NodeList idea from @jdalton
   var ie = (function () {
-
     var undef,
       v = 3,
       div = document.createElement('div'),

@@ -515,7 +515,6 @@
       return;
     } // IE10-11 doesn't support the second parameter of `classList.toggle`
 
-
     if (added) {
       addClass(element, value);
     } else {
@@ -628,7 +627,6 @@
    * @param {Function} listener - The event listener.
    * @param {Object} options - The event options.
    */
-
 
   function removeListener(element, type, listener) {
     var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
@@ -776,7 +774,6 @@
     if (isNumber(translateY) && translateY !== 0) {
       values.push("translateY(".concat(translateY, "px)"));
     } // Rotate should come first before scale to match orientation transform
-
 
     if (isNumber(rotate) && rotate !== 0) {
       values.push("rotate(".concat(rotate, "deg)"));
@@ -1520,7 +1517,6 @@
           }
         } // The minWidth/Height must be less than maxWidth/Height
 
-
         cropBoxData.minWidth = Math.min(minCropBoxWidth, maxCropBoxWidth);
         cropBoxData.minHeight = Math.min(minCropBoxHeight, maxCropBoxHeight);
         cropBoxData.maxWidth = maxCropBoxWidth;
@@ -1918,7 +1914,6 @@
       }) === false) {
         return;
       } // This line is required for preventing page zooming in iOS browsers
-
 
       event.preventDefault();
       this.action = action;
@@ -2416,7 +2411,6 @@
             top -= height;
           } // Show the crop box if is hidden
 
-
           if (!this.cropped) {
             removeClass(this.cropBox, CLASS_HIDDEN);
             this.cropped = true;
@@ -2437,7 +2431,6 @@
         this.action = action;
         this.renderCropBox();
       } // Override
-
 
       forEach(pointers, function (p) {
         p.startX = p.endX;
@@ -3090,7 +3083,6 @@
         context.imageSmoothingQuality = imageSmoothingQuality;
       } // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.drawImage
 
-
       var sourceWidth = source.width;
       var sourceHeight = source.height; // Source canvas parameters
 
@@ -3143,7 +3135,6 @@
         params.push(dstX * scale, dstY * scale, dstWidth * scale, dstHeight * scale);
       } // All the numerical parameters should be integer for `drawImage`
       // https://github.com/fengyuanchen/cropper/issues/476
-
 
       context.drawImage.apply(context, [source].concat(_toConsumableArray(params.map(function (param) {
         return Math.floor(normalizeDecimalNumber(param));
@@ -3259,7 +3250,6 @@
             return;
           } // e.g.: "https://example.com/img/picture.jpg"
 
-
           url = element.src;
         } else if (tagName === 'canvas' && window.HTMLCanvasElement) {
           url = element.toDataURL();
@@ -3285,12 +3275,10 @@
           options.checkOrientation = false;
         } // Only IE10+ supports Typed Arrays
 
-
         if (!options.checkOrientation || !window.ArrayBuffer) {
           this.clone();
           return;
         } // Detect the mime type of the image directly if it is a Data URL
-
 
         if (REGEXP_DATA_URL.test(url)) {
           // Read ArrayBuffer from Data URL of JPEG images directly for better performance
@@ -3305,7 +3293,6 @@
           return;
         } // 1. Detect the mime type of the image by a XMLHttpRequest.
         // 2. Load the image as ArrayBuffer for reading orientation if its a JPEG image.
-
 
         var xhr = new XMLHttpRequest();
         var clone = this.clone.bind(this);
@@ -3334,7 +3321,6 @@
           _this.reloading = false;
           _this.xhr = null;
         }; // Bust cache when there is a "crossOrigin" property to avoid browser cache error
-
 
         if (options.checkCrossOrigin && isCrossOriginURL(url) && element.crossOrigin) {
           url = addTimestamp(url);
@@ -3392,7 +3378,6 @@
             crossOrigin = 'anonymous';
           } // Bust cache when there is not a "crossOrigin" property (#519)
 
-
           crossOriginUrl = addTimestamp(url);
         }
 
@@ -3437,7 +3422,6 @@
 
           _this2.build();
         }; // Most modern browsers (excepts iOS WebKit)
-
 
         if (image.naturalWidth && !isIOSWebKit) {
           done(image.naturalWidth, image.naturalHeight);
@@ -3595,7 +3579,6 @@
        * Get the no conflict cropper class.
        * @returns {Cropper} The cropper class.
        */
-
     }], [{
       key: "noConflict",
       value: function noConflict() {
@@ -3606,7 +3589,6 @@
        * Change the default options.
        * @param {Object} options - The new default options.
        */
-
     }, {
       key: "setDefaults",
       value: function setDefaults(options) {
@@ -3620,5 +3602,4 @@
   assign(Cropper.prototype, render, preview, events, handlers, change, methods);
 
   return Cropper;
-
 })));

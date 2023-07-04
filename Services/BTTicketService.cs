@@ -83,7 +83,6 @@ namespace Titan_BugTracker.Services
             List<Ticket> tickets = new();
             try
             {
-
                 tickets = await _context.Projects.Where(p => p.CompanyId == companyId)
                                                  .SelectMany(t => t.Tickets)
                                                   .Where(t => t.Archived == false)
@@ -154,7 +153,6 @@ namespace Titan_BugTracker.Services
                 throw;
             }
         }
-
 
         public async Task<List<Ticket>> GetAllTicketsByTypeAsync(int companyId, string typeName)
         {

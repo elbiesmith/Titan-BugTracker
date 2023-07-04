@@ -112,7 +112,7 @@ function executeExample(sub){
             },
             buttonsStyling: false
           })
-          
+
           swalWithBootstrapButtons.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -140,7 +140,7 @@ function executeExample(sub){
             }
           })
         return;
-        
+
         case 'customImage':
           Swal.fire({
             title: 'Metrica!',
@@ -151,7 +151,7 @@ function executeExample(sub){
             imageAlt: 'Custom image',
           })
         return;
-        
+
         case 'customWidth':
           Swal.fire({
             title: 'Custom width, padding, background.',
@@ -160,7 +160,7 @@ function executeExample(sub){
             background: 'rgba(254,254,254,1) url(assets/images/pattern.png)',
           })
         return;
-        
+
         case 'timer':
           let timerInterval
             Swal.fire({
@@ -190,7 +190,7 @@ function executeExample(sub){
               }
             })
         return;
-        
+
         case 'rtl':
           Swal.fire({
             title: 'هل تريد الاستمرار؟',
@@ -202,7 +202,7 @@ function executeExample(sub){
             showCloseButton: true
           })
         return;
-        
+
         case 'ajaxRequest':
           Swal.fire({
             title: 'Submit your Github username',
@@ -237,7 +237,7 @@ function executeExample(sub){
             }
           })
         return;
-        
+
         case 'chainingModals':
           Swal.mixin({
             input: 'text',
@@ -265,7 +265,7 @@ function executeExample(sub){
             }
           })
         return;
-        
+
         case 'dynamicQueue':
           const ipAPI = '//api.ipify.org?format=json'
 
@@ -289,7 +289,7 @@ function executeExample(sub){
             }
           }])
         return;
-        
+
         case 'mixin':
           const Toast = Swal.mixin({
             toast: true,
@@ -302,20 +302,20 @@ function executeExample(sub){
               toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
           })
-          
+
           Toast.fire({
             icon: 'success',
             title: 'Signed in successfully'
           })
         return;
-        
+
         case 'declarativeTemplate':
-          
+
           Swal.fire({
             template: '#my-template',
-          })          
+          })
         return;
-        
+
         case 'TriggerModalToast':
           Swal.bindClickHandler()
           Swal.mixin({
@@ -330,7 +330,7 @@ function executeExample(sub){
             timer: 1500
             })
         return;
-        
+
         case 'error':
           Swal.fire({
               icon: 'error',
@@ -360,6 +360,5 @@ function executeExample(sub){
               text: 'Icon question!',
             })
         return;
-
     }
 }

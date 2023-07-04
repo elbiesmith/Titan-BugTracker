@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Titan_BugTracker.Models;
+using Titan_BugTracker.Models.Enums;
 using Titan_BugTracker.Models.ViewModels;
 using Titan_BugTracker.Services.Interfaces;
-using Titan_BugTracker.Models.Enums;
 
 namespace Titan_BugTracker.Services
 {

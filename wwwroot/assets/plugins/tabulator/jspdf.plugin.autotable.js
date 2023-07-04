@@ -1,13 +1,13 @@
 /*!
- * 
+ *
  *             jsPDF AutoTable plugin v3.0.5
- *             
+ *
  *             Copyright (c) 2014 Simon Bengtsson, https://github.com/simonbengtsson/jsPDF-AutoTable
  *             Licensed under the MIT License.
  *             http://opensource.org/licenses/mit-license
- *             
+ *
  *             * /if (typeof window === 'object') window.jspdfAutoTableVersion = '" + newVersion + "';/*"
- *         
+ *
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -108,7 +108,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -187,11 +186,9 @@ function setDefaults(defaults, doc) {
 }
 exports.setDefaults = setDefaults;
 
-
 /***/ }),
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -342,11 +339,9 @@ function styles(styles) {
 }
 exports.styles = styles;
 
-
 /***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -446,11 +441,9 @@ function getTheme(name) {
 }
 exports.getTheme = getTheme;
 
-
 /***/ }),
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
 
 /*
@@ -483,17 +476,14 @@ function assign(target) {
 }
 exports.assign = assign;
 
-
 /***/ }),
 /* 4 */
 /***/ (function(module, exports) {
-
 module.exports = __WEBPACK_EXTERNAL_MODULE__4__;
 
 /***/ }),
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -604,11 +594,9 @@ jsPDF.API.autoTableAddPage = function () {
     return this;
 };
 
-
 /***/ }),
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -696,7 +684,7 @@ function printFullRow(row) {
         }
     }
     printRow(row);
-    // Parts of the row is now printed. Time for adding a new page, prune 
+    // Parts of the row is now printed. Time for adding a new page, prune
     // the text and start over
     if (Object.keys(remainingTexts).length > 0) {
         for (var j = 0; j < table.columns.length; j++) {
@@ -791,7 +779,7 @@ function addPage() {
         table.foot.forEach(function (row) { return printRow(row); });
     }
     table.finalY = table.cursor.y;
-    // Add user content just before adding new page ensure it will 
+    // Add user content just before adding new page ensure it will
     // be drawn above other things on the page
     table.callEndPageHooks();
     common_1.addTableBorder();
@@ -814,11 +802,9 @@ function nextPage(doc) {
     }
 }
 
-
 /***/ }),
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -991,11 +977,9 @@ function distributeWidth(autoColumns, diffWidth, wrappedAutoColumnsWidth) {
     }
 }
 
-
 /***/ }),
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
 
 var __assign = (this && this.__assign) || function () {
@@ -1216,11 +1200,9 @@ function cellStyles(sectionName, dataKey, rowIndex) {
     return polyfills_1.assign.apply(void 0, [config_1.defaultStyles()].concat(otherStyles.concat([rowStyles, colStyles])));
 }
 
-
 /***/ }),
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -1394,11 +1376,9 @@ var Column = /** @class */ (function () {
 }());
 exports.Column = Column;
 
-
 /***/ }),
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
 
 var __extends = (this && this.__extends) || (function () {
@@ -1449,18 +1429,15 @@ var CellHookData = /** @class */ (function (_super) {
 }(HookData));
 exports.CellHookData = CellHookData;
 
-
 /***/ }),
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
 /*
 object-assign
 (c) Sindre Sorhus
 @license MIT
 */
-
 
 /* eslint-disable no-unused-vars */
 var getOwnPropertySymbols = Object.getOwnPropertySymbols;
@@ -1546,11 +1523,9 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 	return to;
 };
 
-
 /***/ }),
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -1609,11 +1584,9 @@ function parseTableSection(window, sectionElement, includeHidden, useCss) {
     return results;
 }
 
-
 /***/ }),
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -1701,11 +1674,9 @@ function parsePadding(val, fontSize, lineHeight, scaleFactor) {
     return padding;
 }
 
-
 /***/ }),
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -1793,11 +1764,9 @@ function checkStyles(styles) {
     }
 }
 
-
 /***/ }),
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
-
 var jsPDF = __webpack_require__(4);
 /**
  * Improved text function with halign and valign support
@@ -1845,7 +1814,6 @@ jsPDF.API.autoTableText = function (text, x, y, styles) {
     }
     return this;
 };
-
 
 /***/ })
 /******/ ]);

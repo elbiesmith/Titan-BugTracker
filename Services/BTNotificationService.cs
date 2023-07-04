@@ -127,7 +127,7 @@ namespace Titan_BugTracker.Services
                 throw;
             }
         }
-    
+
         public async Task MarkNotificationAsRead(int id)
         {
             Notification notification = await _context.Notifications.FirstOrDefaultAsync(n => n.Id == id);
@@ -136,7 +136,5 @@ namespace Titan_BugTracker.Services
             _context.Update(notification);
             await _context.SaveChangesAsync();
         }
-    
-    
     }
 }
