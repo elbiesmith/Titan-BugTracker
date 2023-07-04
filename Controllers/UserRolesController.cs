@@ -65,7 +65,11 @@ namespace Titan_BugTracker.Controllers
             if (!string.IsNullOrEmpty(userRole))
             {
                 //Sweet alert possible here
-                await _roleService.AddUserToRoleAsync(user, userRole);
+                // this allows for multiple user roles, remove foreach to go back to singular roles.
+                foreach (string role in member.SelectedRoles)
+                {
+                    await _roleService.AddUserToRoleAsync(user, role);
+                }
             }
 
             return RedirectToAction("ManageUserRoles");
